@@ -5,11 +5,6 @@ import QtQuick.Shapes 1.9
 
 ApplicationWindow {
     id: main
-    enum BottomPanelMode {
-        Hidden,
-        Visible,
-        Big
-    }
 
     visible: true
     width: 1080
@@ -25,7 +20,6 @@ ApplicationWindow {
     property point app_selectionPoint
 
     property bool isTopPanelVisible: true
-    property int botPanelMode: Main.BottomPanelMode.Visible
 
     // Background
     Rectangle {
@@ -56,7 +50,7 @@ ApplicationWindow {
         anchors.horizontalCenter: parent.horizontalCenter
 
         width: parent.width
-        height: (isTopPanelVisible && botPanelMode != Main.BottomPanelMode.Big ? parent.height * 0.25 : 0)
+        height: (isTopPanelVisible ? parent.height * 0.25 : 0)
 
         color: "#2b2b2b"
         border.width: 1
@@ -130,7 +124,10 @@ ApplicationWindow {
 
     // Small button to pup up the Bottom Panel
     Rectangle {
-        anchors.bottom: bottomPanel.top
+        id: smallButtonBotPanel
+        z: 2 // To get over the Bottom Panel
+        anchors.bottom: undefined
+        anchors.top: bottomPanel.top
         anchors.horizontalCenter: parent.horizontalCenter
         width: llmText.contentWidth
         height: llmText.contentHeight
@@ -143,20 +140,25 @@ ApplicationWindow {
             id: llmText
             anchors.bottom: parent.bottom
             anchors.horizontalCenter: parent.horizontalCenter
-            font.bold:      (botPanelMode == Main.BottomPanelMode.Hidden ? "true"   : "false"   )
-            font.pointSize: (botPanelMode == Main.BottomPanelMode.Hidden ? 15       : 15        )
-            text:           (botPanelMode == Main.BottomPanelMode.Hidden ? "LLM"    : "close"   )
+            font.pointSize: 15
             color: "white"
+
+            // default state of bottomPanel:
+            font.bold:      false
+            text:           "close"
         }
 
         MouseArea {
             anchors.fill: parent
             drag.target: parent
 
-            onClicked: botPanelMode = (botPanelMode == Main.BottomPanelMode.Hidden ?
-                                        Main.BottomPanelMode.Visible
-                                        :  Main.BottomPanelMode.Hidden)
-            
+            onClicked: {
+                if (bottomPanel.state == 'closed'){
+                    bottomPanel.state = ""
+                } else {
+                    bottomPanel.state = 'closed'
+                }
+            }
         }
     }
 
@@ -168,21 +170,89 @@ ApplicationWindow {
 
 
         width: parent.width
-        height: (botPanelMode == Main.BottomPanelMode.Visible ?
-                parent.height * 0.25
-                :   (botPanelMode == Main.BottomPanelMode.Big ?
-                        parent.height * 0.5
-                        : 0
-                    )
-                )
+        height: main.height * 0.25
         
         color: "#2b2b2b"
         border.width: 1
         border.color: "#444444"
 
-        LLM {
+        Rectangle {
             id: llm
+            anchors.fill: parent
+            color: "transparent"
+
+            Column {
+                anchors.centerIn: parent
+                spacing: 10
+
+                Text {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    font.bold: true
+                    font.pointSize: 20
+                    color: "white"
+                    text: "LLM"
+                }
+
+                Text {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    color: "white"
+                    text: "(not yet implemented)"
+                }
+
+                Text {
+                    id: clickForDetailsText
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    color: "#AAAAAA"
+                    text: "Click for details... "
+                }
+            }
+
+            MouseArea {
+                id: dragArea
+                anchors.fill: parent
+                drag.target: parent
+
+                onClicked: bottomPanel.state = "big"
+            }
         }
 
+        states: [
+            State {
+                name: "closed"
+                PropertyChanges {
+                    target: llmText
+                    font.bold:      true
+                    text:           "LLM"
+                }
+                PropertyChanges {
+                    target: bottomPanel
+                    height: 0
+                }
+                PropertyChanges {
+                    target: llm
+                    visible: false
+                }
+                AnchorChanges {
+                    target: smallButtonBotPanel
+                    anchors.top: undefined
+                    anchors.bottom : parent.bottom
+                }
+            },
+            State {
+                name: "big"
+                PropertyChanges {
+                    target: topPanel
+                    height: 0
+                }
+                PropertyChanges {
+                    target: bottomPanel
+                    height: main.height * 0.5
+                }
+                PropertyChanges {
+                    target: clickForDetailsText
+                    visible: false
+                }
+            }
+        ]
     }
 }

@@ -13,7 +13,7 @@ ApplicationWindow {
 
     property var app_selectedAct_Real: null
     property var app_selectedAct_Prop: null
-    property var app_selectedGap: null
+    property var app_selectedGap: true // DEBUG
     property bool app_hasSelection: (app_selectedAct_Real != null ||
                                     app_selectedAct_Prop != null ||
                                     app_selectedGap != null)
@@ -24,7 +24,7 @@ ApplicationWindow {
     // Background
     Rectangle {
         anchors.fill: parent
-        color: "pink"
+        color: "purple"
     }
 
     MouseArea {
@@ -32,11 +32,9 @@ ApplicationWindow {
 
         onClicked: (mouse) => {
             console.log("The main window has been clicked - reseting selections")
-            app_selectedAct_Real = true
+            app_selectedAct_Real = null
             app_selectedAct_Prop = null
             app_selectedGap = null
-            console.log("TODO: reset the selectionPoint")
-            app_selectionPoint = Qt.point(mouse.x, mouse.y)
         }
         
     }
@@ -118,6 +116,12 @@ ApplicationWindow {
             color: "#222222"
             border.width: 1
             border.color: "#444444"
+
+            Library {
+                id: library
+                visible: app_selectedGap != null
+            }
+            
         }
     }
 

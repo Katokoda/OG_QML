@@ -20,6 +20,6 @@ app = QGuiApplication(sys.argv)
 engine = QQmlApplicationEngine()
 engine.quit.connect(app.quit)
 
-engine.load('./GUI/main.qml')
+engine.load('./GUI/Main.qml')
 
 sys.exit(app.exec())

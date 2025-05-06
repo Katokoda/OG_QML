@@ -3,7 +3,7 @@ import QtQuick 2.15
 Rectangle {
     anchors.fill: parent
     color: "transparent"
-    visible: isBotPanelVisible
+    visible: botPanelMode != Main.BottomPanelMode.Hidden
 
     Column {
         anchors.centerIn: parent
@@ -26,7 +26,8 @@ Rectangle {
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
             color: "#AAAAAA"
-            text: "Click for closing..."
+            text: "Click for details... "
+            visible: botPanelMode !== Main.BottomPanelMode.Big
         }
     }
 
@@ -35,6 +36,6 @@ Rectangle {
         anchors.fill: parent
         drag.target: parent
 
-        onClicked: isBotPanelVisible = false
+        onClicked: botPanelMode = Main.BottomPanelMode.Big
     }
 }

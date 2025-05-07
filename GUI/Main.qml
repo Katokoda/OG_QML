@@ -80,6 +80,7 @@ ApplicationWindow {
     // MIDDLE SECTION
     Rectangle {
         id: middleSection
+        z: Math.max(mainSection.z, rightPanel.z)
         anchors.bottom: bottomPanel.top
         anchors.horizontalCenter: parent.horizontalCenter
 
@@ -102,6 +103,18 @@ ApplicationWindow {
             OrchestrationGraph {
                 id: og
             }
+
+
+            states: [
+                State {
+                    name: "hasDraggedElement"
+                    PropertyChanges {
+                        target: mainSection
+                        z: 2
+                    }
+                }
+            ]
+
         }
 
         // RIGHT PANEL
@@ -121,6 +134,16 @@ ApplicationWindow {
                 id: library
                 visible: app_selectedGap != null
             }
+
+            states: [
+                State {
+                    name: "hasDraggedElement"
+                    PropertyChanges {
+                        target: rightPanel
+                        z: 2
+                    }
+                }
+            ]
             
         }
     }

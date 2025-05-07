@@ -4,23 +4,26 @@ Rectangle {
     anchors.fill: parent
     color: "transparent"
 
-
-
-    Column {
+    Row {
+        spacing: 5
         anchors.centerIn: parent
-        spacing: 10
-        Text {
-            anchors.horizontalCenter: parent.horizontalCenter
-            font.bold: true
-            font.pointSize: 20
-            color: "white"
-            text: "Orchestration Graph"
-        }
 
-        Text {
-            anchors.horizontalCenter: parent.horizontalCenter
-            color: "white"
-            text: "(not yet implemented)"
+        Repeater {
+            model: OGraph.listeReal
+
+            delegate: Item {
+                width: thisAct.width
+                height: thisAct.height
+
+                InstAct {
+                    id: thisAct
+                    instAct: modelData
+                    myIdx: index
+                }
+
+                // ONLY in relation to the other items in the same parent
+                //z: (thisAct.isCurrentlyDragged ? 2 : 1)
+            }
         }
     }
 

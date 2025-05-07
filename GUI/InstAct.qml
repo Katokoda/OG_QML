@@ -5,7 +5,7 @@ Rectangle {
     width: 80
     height: 40
     radius: 8
-    color: "lime"
+    color: "cyan"
 
     border.color : "black"
     border.width: 2
@@ -15,9 +15,9 @@ Rectangle {
     property bool acceptedDrag: false
     property point beginDrag
 
-    property string myType: "activity"
+    property string myType: "instAct"
     required property int myIdx
-    required property var activity
+    required property var instAct
 
 
     Text {
@@ -25,7 +25,7 @@ Rectangle {
         anchors.centerIn: parent
         font.bold: true
         color: "#222222"
-        text: activity?.label
+        text: instAct?.label
         font.pointSize: 8
     }
 
@@ -43,12 +43,12 @@ Rectangle {
             parent.beginDrag = Qt.point(parent.x, parent.y);
             parent.Drag.start()
             parent.isCurrentlyDragged = true
-            rightPanel.state = 'hasDraggedElement'
+            mainSection.state = 'hasDraggedElement'
         }
 
         onReleased: {
             parent.isCurrentlyDragged = false
-            rightPanel.state = ""
+            mainSection.state = ""
             if (parent.acceptedDrag){
                 parent.acceptedDrag = false
                 parent.Drag.drop()
@@ -62,7 +62,7 @@ Rectangle {
         }
 
         onClicked: (mouse) => {
-            app_selectedAct_Prop = activity
+            app_selectedAct_Real = instAct
             app_selectionPoint = actId.mapToGlobal(Qt.point(mouse.x, mouse.y))
         }
     }

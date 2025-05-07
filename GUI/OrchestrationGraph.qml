@@ -5,24 +5,43 @@ Rectangle {
     color: "transparent"
 
     Row {
-        spacing: 5
+        spacing: 0
         anchors.centerIn: parent
+
+
+
+
+        Item {
+            width: mydropzone.width
+            height: 40
+            MyDropZone{
+                id: mydropzone
+                myIdx: 0
+            }
+        }
 
         Repeater {
             model: OGraph.listeReal
 
             delegate: Item {
-                width: thisAct.width
+                width: thisAct.width + mydropzone.width //thisAct.occuping_width + mydropzone.width
                 height: thisAct.height
 
                 InstAct {
                     id: thisAct
                     instAct: modelData
                     myIdx: index
+                    z: 2
+                }
+
+                MyDropZone{
+                    id: mydropzone
+                    myIdx: index + 1
+                    z: 1
                 }
 
                 // ONLY in relation to the other items in the same parent
-                //z: (thisAct.isCurrentlyDragged ? 2 : 1)
+                z: (wagon.isCurrentlyDragged ? 2 : 1)
             }
         }
     }

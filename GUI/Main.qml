@@ -11,12 +11,15 @@ ApplicationWindow {
     height: 1080
     title: "Engine"
 
-    property var app_selectedAct_Real: null
     property var app_selectedAct_Prop: null
-    property var app_selectedGap: true // DEBUG
+    property var app_selectedAct_Real: null
+    property var app_selectedGap: true // DEBUG 
     property bool app_hasSelection: (app_selectedAct_Real != null ||
                                     app_selectedAct_Prop != null ||
                                     app_selectedGap != null)
+    property bool app_selectionError: ((app_selectedAct_Real != null && app_selectedAct_Prop != null) ||
+                                        (app_selectedAct_Real != null && app_selectedGap != null) ||
+                                        (app_selectedAct_Prop != null && app_selectedGap != null))
     property point app_selectionPoint
 
     property bool isTopPanelVisible: true
@@ -68,7 +71,7 @@ ApplicationWindow {
 
         ShapePath {
             strokeWidth: 2
-            strokeColor: "red"
+            strokeColor: (app_selectionError ? "red" : "green")
             capStyle: ShapePath.RoundCap
 
             startX: topPanelBalise.x; startY: topPanelBalise.y
@@ -132,7 +135,7 @@ ApplicationWindow {
 
             Library {
                 id: library
-                visible: app_selectedGap != null
+                visible: true //app_selectedGap != null
             }
 
             states: [

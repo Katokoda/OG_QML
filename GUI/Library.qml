@@ -4,6 +4,9 @@ Rectangle {
     anchors.fill: parent
     color: "transparent"
 
+    DropZoneLibrary{
+    }
+
     Column {
         spacing: 5
         anchors.centerIn: parent
@@ -22,7 +25,7 @@ Rectangle {
                 }
 
                 // ONLY in relation to the other items in the same parent
-                //z: (thisAct.isCurrentlyDragged ? 2 : 1)
+                z: (thisAct.isCurrentlyDragged ? 2 : 1)
             }
         }
     }

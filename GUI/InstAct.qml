@@ -5,14 +5,15 @@ Rectangle {
     width: 80
     height: 40
     radius: 8
-    color: "cyan"
+    color: ((willBeDeleted)? "lime" : "cyan") 
 
     border.color : "black"
     border.width: 2
 
-    scale: ((isCurrentlyDragged)? 1.1 : 1.0)
+    scale: ((isCurrentlyDragged)? ((willBeDeleted)? 1.0 : 1.1) : 1.0)
     property bool isCurrentlyDragged: false
     property bool acceptedDrag: false
+    property bool willBeDeleted: false
     property point beginDrag
 
     property string myType: "instAct"

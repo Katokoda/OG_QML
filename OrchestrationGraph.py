@@ -135,6 +135,7 @@ class OrchestrationGraph(QObject):
             current = iAct.end
         self.reached = current
         self.ogChangeSignal.emit()
+        print(self)
         
     def getStatus(self, actIdx):
         flags = []
@@ -151,6 +152,7 @@ class OrchestrationGraph(QObject):
         other.quantities = self.quantities.copy()
         return other
     
+    @pyqtSlot(int, int)
     def insert(self, actIdx, idx):
         instanceToAdd = InstanciatedAct(self.lib.getAct(actIdx), self.reached, len(self.listOfFixedInstancedAct))
         if len(self.listOfFixedInstancedAct) < idx:
@@ -165,6 +167,25 @@ class OrchestrationGraph(QObject):
         #self.totTime += instanceToAdd.act.time
         #self.reached = None
         #self.ogChangeSignal.emit()
+
+    @pyqtSlot(int, int)
+    def exchange(self, iActIdx : int, spaceIdx : int):
+        #    0   1   2   3   4   5   6      # InsActIndices
+        #  0   1   2   3   4   5   6   7    # SpacesIndices
+        movingInstAct = self.listOfFixedInstancedAct[iActIdx]
+        modifiedListe = self.listOfFixedInstancedAct[:iActIdx] + self.listOfFixedInstancedAct[iActIdx+1:]  # Remove the instAct from its current position
+        if spaceIdx > iActIdx: #Find the index of the goal-space with the modified list's point of view
+            spaceIdx -= 1
+
+        preList = modifiedListe[:spaceIdx]
+        postList = modifiedListe[spaceIdx:]
+        self.listOfFixedInstancedAct = preList + [movingInstAct] + postList
+        self.reStructurate()
+
+    @pyqtSlot(int)
+    def remove(self, iActIdx : int):
+        self.listOfFixedInstancedAct = self.listOfFixedInstancedAct[:iActIdx] + self.listOfFixedInstancedAct[iActIdx+1:]  # Remove the instAct from its current position
+        self.reStructurate()
         
 
 

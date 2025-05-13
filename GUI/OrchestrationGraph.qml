@@ -8,13 +8,10 @@ Rectangle {
         spacing: 0
         anchors.centerIn: parent
 
-
-
-
         Item {
             width: mydropzone.width
             height: 40
-            MyDropZone{
+            DropZoneOG{
                 id: mydropzone
                 myIdx: 0
             }
@@ -34,14 +31,14 @@ Rectangle {
                     z: 2
                 }
 
-                MyDropZone{
+                DropZoneOG{
                     id: mydropzone
                     myIdx: index + 1
                     z: 1
                 }
 
                 // ONLY in relation to the other items in the same parent
-                z: (wagon.isCurrentlyDragged ? 2 : 1)
+                z: (thisAct.isCurrentlyDragged ? 2 : 1)
             }
         }
     }

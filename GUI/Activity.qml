@@ -5,7 +5,7 @@ Rectangle {
     width: 80
     height: 40
     radius: 8
-    color: "lime"
+    color: ((willBeAdded)? "cyan" : "lime") 
 
     border.color : "black"
     border.width: 2
@@ -13,6 +13,7 @@ Rectangle {
     scale: ((isCurrentlyDragged)? 1.1 : 1.0)
     property bool isCurrentlyDragged: false
     property bool acceptedDrag: false
+    property bool willBeAdded: false
     property point beginDrag
 
     property string myType: "activity"
@@ -52,6 +53,12 @@ Rectangle {
             if (parent.acceptedDrag){
                 parent.acceptedDrag = false
                 parent.Drag.drop()
+                console.log("\nComingBack")
+                tpBackAnimX.from = actId.x;
+                tpBackAnimX.to = beginDrag.x;
+                tpBackAnimY.from = actId.y;
+                tpBackAnimY.to = beginDrag.y;
+                tpBackAnim.start()
             } else {
                 backAnimX.from = actId.x;
                 backAnimX.to = beginDrag.x;
@@ -64,12 +71,20 @@ Rectangle {
         onClicked: (mouse) => {
             app_selectedAct_Prop = activity
             app_selectionPoint = actId.mapToGlobal(Qt.point(mouse.x, mouse.y))
+            parent.acceptedDrag = false
+            parent.Drag.drop()
         }
     }
     ParallelAnimation {
         id: backAnim
         SpringAnimation { id: backAnimX; target: actId; property: "x"; duration: 500; spring: 10; damping: 0.45 }
         SpringAnimation { id: backAnimY; target: actId; property: "y"; duration: 500; spring: 10; damping: 0.45 }
+    }
+    ParallelAnimation {
+        id: tpBackAnim
+        NumberAnimation { id: tpBackAnimX; target: actId; property: "x"; duration: 1}
+        NumberAnimation { id: tpBackAnimY; target: actId; property: "y"; duration: 1}
+        NumberAnimation { id: tpBackAnimScale; target: actId; from: 0.0; to: 1.0; property: "scale"; duration: 50}
     }
 }
  

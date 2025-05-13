@@ -2,10 +2,14 @@ import QtQuick 2.15
 
 Rectangle {
     id: mydropzone
-    width: acceptsDrag ? 80 : 20
-    height: parent.height
-    anchors.right: parent.right
+    height: 50 // DEBUG
     anchors.verticalCenter: parent.verticalCenter
+
+    width: acceptsDrag ? 80 : 20
+    property int occuping_width: acceptsDrag ? 60 : 0
+    //anchors.right: acceptsDrag ? parent.right : parent.right - 10
+    anchors.right: parent.right
+
     color: "transparent"
     border.width: 1 // TO DEBUG, put to 1
     border.color: (acceptsDrag ? "lightgreen" : "lightgray")

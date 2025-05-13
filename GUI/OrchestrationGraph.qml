@@ -8,9 +8,16 @@ Rectangle {
         spacing: 0
         anchors.centerIn: parent
 
-        Item {
-            width: mydropzone.width
-            height: 40
+        Rectangle {
+            width: mydropzone.occuping_width
+            height: 100
+
+                //DEBUG
+                border.width: 1
+                border.color: "red"
+                color: "transparent"
+                //DEBUG
+
             DropZoneOG{
                 id: mydropzone
                 myIdx: 0
@@ -20,9 +27,16 @@ Rectangle {
         Repeater {
             model: OGraph.listeReal
 
-            delegate: Item {
-                width: thisAct.width + mydropzone.width //thisAct.occuping_width + mydropzone.width
-                height: thisAct.height
+            delegate: Rectangle {
+                //width: thisAct.width + mydropzone.width
+                width: thisAct.width + mydropzone.occuping_width
+                height: 100
+
+                    //DEBUG
+                    border.width: 1
+                    border.color: "red"
+                    color: "transparent"
+                    //DEBUG
 
                 InstAct {
                     id: thisAct

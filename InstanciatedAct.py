@@ -7,6 +7,7 @@ Created on Tue Feb 25 09:43:43 2025
 
 from pValues import pVal
 from Library import Library
+from Plane import planeFromInt
 
 import params as p
 from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot, QVariant
@@ -19,11 +20,13 @@ class InstanciatedAct(QObject):
         self.act = activity
         self.start, self.end, self.time = self.act.what_from(pstate)
         self.depth = rec_depth
+        self.plane_ = activity.defPlane
     
     def __repr__(self):
         string = "InstAct of " + p.FORMAT_NAME.format(self.act.name) + " from "
         string += str(self.start) + " to " + str(self.end) + " (" + str(self.depth) + ")"
         string += "(" + str(self.time) + "')"
+        string += " on " + planeFromInt(self.plane_)
         return string
     
     def adjust(self, pNew, notDefTime = None):
@@ -34,6 +37,10 @@ class InstanciatedAct(QObject):
     @pyqtProperty(QVariant, notify=instActChangeSignal)
     def activity(self):
         return self.act
+    
+    @pyqtProperty(int, notify=instActChangeSignal)
+    def plane(self):
+        return self.plane_
     
     @pyqtProperty(str, notify=instActChangeSignal)
     def label(self):

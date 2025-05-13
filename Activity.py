@@ -8,6 +8,8 @@ Created on Tue Feb 25 09:43:43 2025
 from pValues import pVal
 from pValues import InterPVal
 from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot, QVariant
+from Plane import intFromPlane
+from Plane import planeFromInt
 
 import params as p
 
@@ -55,6 +57,9 @@ class Activity(QObject):
 
         # int: The max number of repetition recommended
         self.maxRepetition = int(data[7])
+
+        # int: index representing the plane
+        self.defPlane = intFromPlane(data[8])
     
     def toString(self, details = False):
         string = "Act " + p.FORMAT_NAME.format(self.name) + " {"
@@ -66,6 +71,7 @@ class Activity(QObject):
         else:
             string += " in " + p.FORMAT_TIME.format(str(self.defT)) + "'"
         string += " and " + str(self.maxRepetition) + " max rep."
+        string += " on " + planeFromInt(self.defPlane)
         string += "}"
         return string
     

@@ -35,7 +35,7 @@ Rectangle {
         border.color : "black"
         border.width: 2
 
-        scale: ((parent.isCurrentlyDragged)? ((parent.willBeDeleted)? 1.0 : 1.1) : 1.0)
+        scale: ((parent.isCurrentlyDragged)? ((parent.willBeDeleted)? 1.0 : 1.2) : 1.0)
 
 
         Text {

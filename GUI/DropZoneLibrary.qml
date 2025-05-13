@@ -17,7 +17,6 @@ Rectangle {
 
 
         onEntered: (drag) => {
-            console.log("DEBUG : something entered the library drop")
             if (drag.source.myType == "instAct") {
                 drag.source.willBeDeleted = true
 
@@ -30,7 +29,6 @@ Rectangle {
         }
 
         onExited:{
-            console.log("DEBUG : something EXITED the library drop")
             if (drag.source.myType == "instAct") {
                 drag.source.willBeDeleted = false
             }
@@ -40,7 +38,6 @@ Rectangle {
 
         onDropped: (drop) => {
             if (acceptsDrag){
-                console.log("DROPPED in Library")
                 if (drag.source.myType == "instAct") {
                     drag.source.willBeDeleted = false
                 }

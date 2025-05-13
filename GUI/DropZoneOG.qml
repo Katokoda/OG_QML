@@ -2,13 +2,14 @@ import QtQuick 2.15
 
 Rectangle {
     id: mydropzone
-    height: 50 // DEBUG
+    height: parent.height + 20
     anchors.verticalCenter: parent.verticalCenter
 
-    width: acceptsDrag ? 80 : 20
+    width: 20 + occuping_width
     property int occuping_width: acceptsDrag ? 60 : 0
     //anchors.right: acceptsDrag ? parent.right : parent.right - 10
     anchors.right: parent.right
+    anchors.rightMargin: -10
 
     color: "transparent"
     border.width: 1 // TO DEBUG, put to 1
@@ -29,14 +30,17 @@ Rectangle {
 
                 drag.source.acceptedDrag = true
                 acceptsDrag = true
+                og.myExtendedLength = occuping_width
             } else {
                 if (!((drag.source.myIdx == myIdx) || (drag.source.myIdx == myIdx - 1)))
                 {
                     drag.source.acceptedDrag = true
                     acceptsDrag = true
+                    og.myExtendedLength = occuping_width
                 } else {
                     drag.source.acceptedDrag = false
                     acceptsDrag = false
+                    og.myExtendedLength = 0
                 }
             }
         }
@@ -47,17 +51,14 @@ Rectangle {
             }
             drag.source.acceptedDrag = false
             acceptsDrag = false
+            og.myExtendedLength = 0
         }
 
         onDropped: (drop) => {
             if (acceptsDrag){
-                console.log("DROPPED")
                 if (drag.source.myType == "instAct"){
-                    console.log("Permuting instAct ", drag.source.myIdx, "with ", myIdx)
                     OGraph.exchange(drag.source.myIdx, myIdx)
                 } else {
-                    console.log("Inserting new activity with LOCAL index ", drag.source.myIdx)
-                    // LOCAL = index in the shown Library
                     OGraph.insert(drag.source.myIdx, myIdx)
                 }
                 if (drag.source.myType == "activity"){
@@ -65,6 +66,10 @@ Rectangle {
                 }
                 drag.source.acceptedDrag = false
                 acceptsDrag = false
+                console.log("")
+                console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                console.log(og)
+                og.myExtendedLength = 0
             }
         }
     }

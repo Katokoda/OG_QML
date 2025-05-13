@@ -10,7 +10,7 @@ Rectangle {
     border.color : "black"
     border.width: 2
 
-    scale: ((isCurrentlyDragged)? 1.1 : 1.0)
+    scale: ((isCurrentlyDragged)? 1.2 : 1.0)
     property bool isCurrentlyDragged: false
     property bool acceptedDrag: false
     property bool willBeAdded: false
@@ -53,7 +53,6 @@ Rectangle {
             if (parent.acceptedDrag){
                 parent.acceptedDrag = false
                 parent.Drag.drop()
-                console.log("\nComingBack")
                 tpBackAnimX.from = actId.x;
                 tpBackAnimX.to = beginDrag.x;
                 tpBackAnimY.from = actId.y;

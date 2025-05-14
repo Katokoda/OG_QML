@@ -39,6 +39,10 @@ class InstanciatedAct(QObject):
         return self.act
     
     @pyqtProperty(int, notify=instActChangeSignal)
+    def myTime(self):
+        return self.time
+    
+    @pyqtProperty(int, notify=instActChangeSignal)
     def plane(self):
         return self.plane_
     

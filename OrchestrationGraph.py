@@ -87,10 +87,16 @@ class OrchestrationGraph(QObject):
     
 
     @pyqtProperty(int, notify=ogChangeSignal)
+    def totalTime(self):
+        return self.totTime
+
+    
+
+    @pyqtProperty(int, notify=ogChangeSignal)
     def numberPlanes(self):
         print("Python has been asked the number of planes and answered three")
         return 3
-
+    
     @pyqtProperty(QVariant, notify=ogChangeSignal)
     def labelPlanes(self):
         print("Python has been asked the labels of planes and answered hard-written list")

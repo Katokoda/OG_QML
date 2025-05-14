@@ -2,29 +2,31 @@ import QtQuick 2.15
 
 Rectangle {
     id: invisibleAct
-    width: 80
-    height: 120
-
-        //DEBUG
-        border.width: 1
-        border.color: "orange"
-        color: "transparent"
-        //DEBUG
+    property string myType: "instAct"
 
     property bool isCurrentlyDragged: false
     property bool acceptedDrag: false
     property bool willBeDeleted: false
     property point beginDrag
 
-    property string myType: "instAct"
     required property int myIdx
     required property var instAct
 
     property int verticalOffset: 40 * instAct.plane
 
+
+    width: pixelPerMinute * instAct.myTime
+    height: 120
+    color: "transparent"
+
+        // //DEBUG
+        // border.width: 1
+        // border.color: "orange"
+        // //DEBUG
+
     Rectangle{
         id: visibleAct
-        width: 80
+        width: invisibleAct.width
         height: 40
         radius: 8
         color: ((parent.willBeDeleted)? "lime" : "cyan")

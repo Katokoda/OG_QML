@@ -7,13 +7,15 @@ Rectangle {
 
     width: 20 + occuping_width
     property int occuping_width: acceptsDrag ? 60 : 0
-    //anchors.right: acceptsDrag ? parent.right : parent.right - 10
     anchors.right: parent.right
     anchors.rightMargin: -10
 
     color: "transparent"
-    border.width: 1 // TO DEBUG, put to 1
-    border.color: (acceptsDrag ? "lightgreen" : "lightgray")
+
+        // // DEBUG to make the dropZone visible
+        // border.width: 1
+        // border.color: (acceptsDrag ? "lightgreen" : "lightgray")
+        // // DEBUG
 
     required property QtObject localOGreference
     required property int myIdx

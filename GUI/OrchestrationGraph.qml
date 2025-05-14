@@ -7,10 +7,24 @@ Rectangle {
     anchors.fill: parent
     color: "transparent"
 
+
+    property int lessonIdealWidth: og.width * 0.8
+    property int lessonTotalTime: OGraph.totalTime
+    property double pixelPerMinute: lessonIdealWidth / lessonTotalTime
+
+    // // DEBUG to make some property visible live
+    // Text{
+    //     anchors.top: parent.top
+    //     anchors.horizontalCenter: parent.horizontalCenter
+    //     text: pixelPerMinute
+    //     color: "white"
+    // }
+
     property int myExtendedLength: 0    // the dropzones change this length if they extend or contracts
     property int labelRightMargin: 30
-    property int myPixelLength: 500 + myExtendedLength  // This is the pixel-width from the start to the finish of the current lesson
+    property int myPixelLength: lessonIdealWidth + myExtendedLength  // This is the pixel-width from the start to the finish of the current lesson
     property int myPixelHeight: 40*OGraph.numberPlanes
+
 
     // LABELS for each plane + Line for each planes
     Item {
@@ -60,12 +74,12 @@ Rectangle {
         Rectangle {
             width: mydropzone.occuping_width
             height: myPixelHeight
+            color: "transparent"
 
-                //DEBUG
-                border.width: 1
-                border.color: "red"
-                color: "transparent"
-                //DEBUG
+                // //DEBUG to make the item visible
+                // border.width: 1
+                // border.color: "red"
+                // //DEBUG
 
             DropZoneOG{
                 id: mydropzone
@@ -81,12 +95,12 @@ Rectangle {
             delegate: Rectangle {
                 width: thisAct.width + mydropzone.occuping_width
                 height: myPixelHeight
+                color: "transparent"
 
-                    //DEBUG
-                    border.width: 1
-                    border.color: "red"
-                    color: "transparent"
-                    //DEBUG
+                    // //DEBUG to make the item visible
+                    // border.width: 1
+                    // border.color: "red"
+                    // //DEBUG
 
                 InstAct {
                     id: thisAct

@@ -15,6 +15,7 @@ Rectangle {
     border.width: 1 // TO DEBUG, put to 1
     border.color: (acceptsDrag ? "lightgreen" : "lightgray")
 
+    required property QtObject localOGreference
     required property int myIdx
     property bool acceptsDrag: false
 
@@ -30,28 +31,28 @@ Rectangle {
 
                 drag.source.acceptedDrag = true
                 acceptsDrag = true
-                og.myExtendedLength = occuping_width
+                localOGreference.myExtendedLength = occuping_width
             } else {
                 if (!((drag.source.myIdx == myIdx) || (drag.source.myIdx == myIdx - 1)))
                 {
                     drag.source.acceptedDrag = true
                     acceptsDrag = true
-                    og.myExtendedLength = occuping_width
+                    localOGreference.myExtendedLength = occuping_width
                 } else {
                     drag.source.acceptedDrag = false
                     acceptsDrag = false
-                    og.myExtendedLength = 0
+                    localOGreference.myExtendedLength = 0
                 }
             }
         }
 
-        onExited:{
+        onExited: {
             if (drag.source.myType == "activity"){
                 drag.source.willBeAdded = false
             }
             drag.source.acceptedDrag = false
             acceptsDrag = false
-            og.myExtendedLength = 0
+            localOGreference.myExtendedLength = 0
         }
 
         onDropped: (drop) => {
@@ -66,10 +67,7 @@ Rectangle {
                 }
                 drag.source.acceptedDrag = false
                 acceptsDrag = false
-                console.log("")
-                console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                console.log(og)
-                og.myExtendedLength = 0
+                localOGreference.myExtendedLength = 0
             }
         }
     }

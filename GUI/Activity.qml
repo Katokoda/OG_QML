@@ -26,7 +26,7 @@ Rectangle {
         anchors.centerIn: parent
         font.bold: true
         color: "#222222"
-        text: activity?.label
+        text: activity.label
         font.pointSize: 8
     }
 

@@ -3,38 +3,21 @@ import QtQuick.Shapes 1.9
 
 
 Rectangle {
+    id: og
     anchors.fill: parent
     color: "transparent"
 
-    property int myExtendedLength: 0
-    property int myRightMargin: 30
-    property int myPixelLength: 500 + myExtendedLength
+    property int myExtendedLength: 0    // the dropzones change this length if they extend or contracts
+    property int labelRightMargin: 30
+    property int myPixelLength: 500 + myExtendedLength  // This is the pixel-width from the start to the finish of the current lesson
     property int myPixelHeight: 40*OGraph.numberPlanes
 
-    Text {
-        id:dbgText
-        anchors.top: parent.top
-        anchors.horizontalCenter: parent.horizontalCenter
-        font.bold: true
-        color: "white"
-        text: myExtendedLength
-        font.pointSize: 8
-    }
-    Text {
-        anchors.top: dbgText.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
-        font.bold: true
-        color: "white"
-        text: myPixelLength
-        font.pointSize: 8
-    }
-
-
+    // LABELS for each plane + Line for each planes
     Item {
         id: labelColumn
         anchors.right: myRow.left
         anchors.top: myRow.top
-        anchors.rightMargin: myRightMargin
+        anchors.rightMargin: labelRightMargin
 
         Repeater {
             model: OGraph.labelPlanes
@@ -57,8 +40,8 @@ Rectangle {
                         strokeWidth: 2
                         strokeColor: "gray"
 
-                        startX: myRightMargin; startY: 0
-                        PathLine { x: og.myPixelLength; y: 0}
+                        startX: labelRightMargin; startY: 0
+                        PathLine { x: labelRightMargin + og.myPixelLength; y: 0}
                     }
                 }
             }
@@ -66,11 +49,14 @@ Rectangle {
         }
     }
 
+
+    // This holds the lesson itself
     Row {
         id: myRow
         spacing: 0
         anchors.centerIn: parent
 
+        // First item holding only a DropZone for inserting things at the start
         Rectangle {
             width: mydropzone.occuping_width
             height: myPixelHeight
@@ -84,14 +70,15 @@ Rectangle {
             DropZoneOG{
                 id: mydropzone
                 myIdx: 0
+                localOGreference: og
             }
         }
 
         Repeater {
             model: OGraph.listeReal
 
+            // Item holding an InstanciatedActivity followed by a DropZone
             delegate: Rectangle {
-                //width: thisAct.width + mydropzone.width
                 width: thisAct.width + mydropzone.occuping_width
                 height: myPixelHeight
 
@@ -112,6 +99,7 @@ Rectangle {
                     id: mydropzone
                     myIdx: index + 1
                     z: 1
+                    localOGreference: og
                 }
 
                 // ONLY in relation to the other items in the same parent
@@ -119,5 +107,4 @@ Rectangle {
             }
         }
     }
-
 }

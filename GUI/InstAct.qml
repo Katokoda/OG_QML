@@ -20,7 +20,7 @@ Rectangle {
     required property int myIdx
     required property var instAct
 
-    property int verticalOffset: 40 * instAct?.plane
+    property int verticalOffset: 40 * instAct.plane
 
     Rectangle{
         id: visibleAct
@@ -43,7 +43,7 @@ Rectangle {
             anchors.centerIn: parent
             font.bold: true
             color: "#222222"
-            text: invisibleAct.instAct?.label
+            text: invisibleAct.instAct.label
             font.pointSize: 8
         }
     }

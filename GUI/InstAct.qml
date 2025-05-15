@@ -83,8 +83,14 @@ Rectangle {
         }
 
         onClicked: (mouse) => {
-            app_selectedAct_Real = instAct
-            app_selectionPoint = invisibleAct.mapToGlobal(Qt.point(mouse.x, mouse.y))
+            resetSelection()
+            app_selectedAct = instAct
+            app_selectedActIsInstanciated = true
+            // The point (0, 0 + verticalOffset) is, in the local coordinate system, the "top-left-corner" of the activity.
+            // However, as the rectangle are rounded, this point is visibly outside of the rectangle.
+            // The precise coordinates of the goal point is (1 - sin(45°)) * radius) for each coordinate.
+            // However, this is still visibly outside of the rectangle, hence I rounded this 0.29289 to 0.5 (weird, I might have not understood the radius property)
+            app_selectionActAngle = invisibleAct.mapToGlobal(Qt.point(visibleAct.radius * 0.5, visibleAct.radius * 0.5 + verticalOffset))
         }
     }
     ParallelAnimation {

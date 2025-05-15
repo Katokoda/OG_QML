@@ -9,37 +9,36 @@ ApplicationWindow {
     visible: true
     width: 1080
     height: 1080
-    title: "Engine"
+    title: "Orchestration Graph - interactive Engine"
 
-    property var app_selectedAct_Prop: null
-    property var app_selectedAct_Real: null
-    property var app_selectedGap: true // DEBUG 
-    property bool app_hasSelection: (app_selectedAct_Real != null ||
-                                    app_selectedAct_Prop != null ||
-                                    app_selectedGap != null)
-    property bool app_selectionError: ((app_selectedAct_Real != null && app_selectedAct_Prop != null) ||
-                                        (app_selectedAct_Real != null && app_selectedGap != null) ||
-                                        (app_selectedAct_Prop != null && app_selectedGap != null))
-    property point app_selectionPoint
-
+    color: "#000000"
     property bool isTopPanelVisible: true
 
-    // Background
-    Rectangle {
-        anchors.fill: parent
-        color: "purple"
+
+    property var app_selectedAct: null
+    property bool app_selectedActIsInstanciated: false
+    property var app_selectedGap: null
+
+    property point app_selectionActAngle
+    property point app_selectionGapCenter
+
+    function resetSelection() {
+        console.log("")
+        console.log("resetSelection")
+        app_selectedAct = null
+        app_selectedActIsInstanciated = false
+        app_selectedGap = null
+        app_selectionActAngle = null
+        app_selectionGapCenter = null
+        console.log("done")
     }
 
+    // This mouseArea covers the whole window and catchs clicks to "un-select" anything.
     MouseArea {
         anchors.fill: parent
-
         onClicked: (mouse) => {
-            console.log("The main window has been clicked - reseting selections")
-            app_selectedAct_Real = null
-            app_selectedAct_Prop = null
-            app_selectedGap = null
+            resetSelection()
         }
-        
     }
 
 
@@ -64,18 +63,17 @@ ApplicationWindow {
         }
     }
 
-    // SELECTION INDICATOR
+    // ACTIVITY SELECTION INDICATOR
     Shape {
         z : 1000
-        visible: app_hasSelection
+        visible: app_selectedAct != null
 
         ShapePath {
             strokeWidth: 2
-            strokeColor: (app_selectionError ? "red" : "green")
-            capStyle: ShapePath.RoundCap
+            strokeColor: (app_selectedActIsInstanciated ? "cyan" : "lime")
 
             startX: topPanelBalise.x; startY: topPanelBalise.y
-            PathLine { x: app_selectionPoint.x; y: app_selectionPoint.y }
+            PathLine { x: app_selectionActAngle.x; y: app_selectionActAngle.y }
         }
     }
 
@@ -83,13 +81,13 @@ ApplicationWindow {
     // MIDDLE SECTION
     Rectangle {
         id: middleSection
-        z: Math.max(mainSection.z, rightPanel.z)
+        z: 3
         anchors.bottom: bottomPanel.top
         anchors.horizontalCenter: parent.horizontalCenter
 
         width: parent.width
         height: parent.height - topPanel.height - bottomPanel.height
-        color: "purple"
+        color: "transparent"
 
         // MAIN SECTION
         Rectangle {
@@ -99,7 +97,7 @@ ApplicationWindow {
 
             width: parent.width - rightPanel.width
             height: parent.height
-            color: "#000000"
+            color: "transparent"
             border.width: 1
             border.color: "#444444"
 
@@ -135,7 +133,7 @@ ApplicationWindow {
 
             Library {
                 id: library
-                visible: true //app_selectedGap != null
+                visible: true
             }
 
             states: [
@@ -155,7 +153,7 @@ ApplicationWindow {
     // Small button to pup up the Bottom Panel
     Rectangle {
         id: smallButtonBotPanel
-        z: 2 // To get over the Bottom Panel
+        z: 2 // To get over the Bottom Panel as well as the other sections
         anchors.bottom: undefined
         anchors.top: bottomPanel.top
         anchors.horizontalCenter: parent.horizontalCenter

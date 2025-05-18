@@ -1,4 +1,5 @@
 import QtQuick 2.15
+import QtQuick.Shapes 1.9
 
 Rectangle {
     id: mydropzone
@@ -22,6 +23,39 @@ Rectangle {
     required property QtObject localOGreference
     required property int myIdx
     property bool acceptsDrag: false
+
+    // 
+    Rectangle{
+        visible: isCurrentlySelected
+        anchors.fill: parent
+
+
+        color: "transparent"
+
+        Shape {
+            ShapePath {
+                strokeWidth: 2
+                strokeColor: "white"
+
+                startX:       mydropzone.width/2; startY: 0
+                PathLine { x: mydropzone.width/2; y: mydropzone.height}
+            }
+        }
+
+        Rectangle{
+            color: "black"
+            anchors.centerIn: parent
+            height: 25
+            width: height
+            radius: height/2
+
+            MyPlus {
+                height: 14
+                anchors.centerIn: parent
+            }
+        }
+
+    }
 
     DropArea {
         id: dropArea

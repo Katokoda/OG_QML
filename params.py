@@ -6,7 +6,7 @@ Created on Thu Mar  6 14:27:39 2025
 """
 
 import os
-os.system('color')
+#os.system('color')
 
 PRECISION = 0.01 # to avoid saying "not reached" when 0.00001 from goal.
 TRESHOLD = 0.05 # Should depend of the dimensionality.

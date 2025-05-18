@@ -5,9 +5,9 @@ Created on Tue Feb 25 09:43:43 2025
 @author: Samuel
 """
 
-
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
+# See WARNING in OrchestrationGraph.__repr__.
+#import matplotlib.pyplot as plt
+#import matplotlib.patches as patches
 
 
 from InstanciatedAct import InstanciatedAct

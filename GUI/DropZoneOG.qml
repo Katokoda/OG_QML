@@ -5,12 +5,14 @@ Rectangle {
     height: parent.height + 20
     anchors.verticalCenter: parent.verticalCenter
 
+    property bool isCurrentlySelected: false
+
     width: 20 + occuping_width
     property int occuping_width: acceptsDrag ? 60 : 0
     anchors.right: parent.right
     anchors.rightMargin: -10
 
-    color: "transparent"
+    color: (isCurrentlySelected ? "pink" : "transparent")
 
         // // DEBUG to make the dropZone visible
         // border.width: 1
@@ -71,6 +73,14 @@ Rectangle {
                 acceptsDrag = false
                 localOGreference.myExtendedLength = 0
             }
+        }
+    }
+
+    MouseArea {
+        anchors.fill: parent
+
+        onClicked: (mouse) => {
+            setGapSelection(mydropzone)
         }
     }
 }

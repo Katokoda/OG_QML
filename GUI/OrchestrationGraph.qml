@@ -8,17 +8,17 @@ Rectangle {
     color: "transparent"
 
 
-    property int lessonIdealWidth: og.width * 0.8
+    property int lessonIdealWidth: (og.width-50) * 0.8
     property int lessonTotalTime: OGraph.totalTime
     property double pixelPerMinute: lessonIdealWidth / lessonTotalTime
 
-    // // DEBUG to make some property visible live
-    // Text{
-    //     anchors.top: parent.top
-    //     anchors.horizontalCenter: parent.horizontalCenter
-    //     text: pixelPerMinute
-    //     color: "white"
-    // }
+        // // DEBUG to make some property visible live
+        // Text{
+        //     anchors.top: parent.top
+        //     anchors.horizontalCenter: parent.horizontalCenter
+        //     text: pixelPerMinute
+        //     color: "white"
+        // }
 
     property int myExtendedLength: 0    // the dropzones change this length if they extend or contracts
     property int labelRightMargin: 30

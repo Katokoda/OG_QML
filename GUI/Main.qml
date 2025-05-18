@@ -6,6 +6,15 @@ import QtQuick.Shapes 1.9
 ApplicationWindow {
     id: main
 
+        // // DEBUG to make some property visible live
+        // Text{
+        //     z:1000
+        //     anchors.top: parent.top
+        //     anchors.horizontalCenter: parent.horizontalCenter
+        //     text: (app_selectedGap != null ? app_selectedGap.myIdx : "no gap selected")
+        //     color: "white"
+        // }
+
     visible: true
     width: 1080
     height: 1080
@@ -21,7 +30,6 @@ ApplicationWindow {
     property var app_selectedGap: null
 
     function resetActSelection() {
-        console.log("resetActSelection")
         if (app_selectedAct != null){
             app_selectedAct.isCurrentlySelected = false
         }
@@ -32,17 +40,29 @@ ApplicationWindow {
     function setActSelection(selAct: var, isInstanciated: bool){
         resetActSelection()
         selAct.isCurrentlySelected = true
-        console.log("setActSelection", selAct, selAct.isCurrentlySelected)
         app_selectedAct = selAct
         app_selectedActIsInstanciated = isInstanciated
+    }
+
+    function resetGapSelection() {
+        if (app_selectedGap != null){
+            app_selectedGap.isCurrentlySelected = false
+        }
+        app_selectedGap = null
+    }
+    
+    function setGapSelection(selGap: var){
+        resetGapSelection()
+        selGap.isCurrentlySelected = true
+        app_selectedGap = selGap
     }
 
     // This mouseArea covers the whole window and catchs clicks to "un-select" anything.
     MouseArea {
         anchors.fill: parent
         onClicked: (mouse) => {
-            console.log("clicked on background")
             resetActSelection()
+            resetGapSelection()
         }
     }
 

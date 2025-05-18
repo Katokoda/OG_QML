@@ -20,9 +20,11 @@ Rectangle {
         //     color: "white"
         // }
 
-    property int myExtendedLength: 0    // the dropzones change this length if they extend or contracts
+    property int dragExtendedLength: 0    // the dropzones change this length if they accept a drag
+    property int selectExtendedLength: 0    // the dropzones change this length if they get selected or unselected
     property int labelRightMargin: 30
-    property int myPixelLength: lessonIdealWidth + myExtendedLength  // This is the pixel-width from the start to the finish of the current lesson
+    // KNOWN BUG: when the selected gap is dragged over, the size is counted in both extended lengths but it should not.
+    property int myPixelLength: lessonIdealWidth + dragExtendedLength + selectExtendedLength // This is the pixel-width from the start to the finish of the current lesson
     property int myPixelHeight: 40*OGraph.numberPlanes
 
 

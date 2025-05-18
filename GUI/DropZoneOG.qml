@@ -7,12 +7,12 @@ Rectangle {
 
     property bool isCurrentlySelected: false
 
-    width: 20 + occuping_width
-    property int occuping_width: acceptsDrag ? 60 : 0
+    width:  (acceptsDrag ? 60 : 20)
+    property int occuping_width: width + 2*anchors.rightMargin
     anchors.right: parent.right
-    anchors.rightMargin: -10
+    anchors.rightMargin: (isCurrentlySelected ? 0 : -10)
 
-    color: (isCurrentlySelected ? "pink" : "transparent")
+    color: "transparent"
 
         // // DEBUG to make the dropZone visible
         // border.width: 1
@@ -35,17 +35,17 @@ Rectangle {
 
                 drag.source.acceptedDrag = true
                 acceptsDrag = true
-                localOGreference.myExtendedLength = occuping_width
+                localOGreference.dragExtendedLength = occuping_width
             } else {
                 if (!((drag.source.myIdx == myIdx) || (drag.source.myIdx == myIdx - 1)))
                 {
                     drag.source.acceptedDrag = true
                     acceptsDrag = true
-                    localOGreference.myExtendedLength = occuping_width
+                    localOGreference.dragExtendedLength = occuping_width
                 } else {
                     drag.source.acceptedDrag = false
                     acceptsDrag = false
-                    localOGreference.myExtendedLength = 0
+                    localOGreference.dragExtendedLength = 0
                 }
             }
         }
@@ -56,7 +56,7 @@ Rectangle {
             }
             drag.source.acceptedDrag = false
             acceptsDrag = false
-            localOGreference.myExtendedLength = 0
+            localOGreference.dragExtendedLength = 0
         }
 
         onDropped: (drop) => {
@@ -71,7 +71,7 @@ Rectangle {
                 }
                 drag.source.acceptedDrag = false
                 acceptsDrag = false
-                localOGreference.myExtendedLength = 0
+                localOGreference.dragExtendedLength = 0
             }
         }
     }

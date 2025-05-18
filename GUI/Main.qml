@@ -45,6 +45,7 @@ ApplicationWindow {
     }
 
     function resetGapSelection() {
+        og.selectExtendedLength = 0
         if (app_selectedGap != null){
             app_selectedGap.isCurrentlySelected = false
         }
@@ -54,6 +55,7 @@ ApplicationWindow {
     function setGapSelection(selGap: var){
         resetGapSelection()
         selGap.isCurrentlySelected = true
+        og.selectExtendedLength = selGap.occuping_width
         app_selectedGap = selGap
     }
 

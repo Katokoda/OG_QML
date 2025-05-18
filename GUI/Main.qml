@@ -17,18 +17,16 @@ ApplicationWindow {
 
     property var app_selectedAct: null
     property bool app_selectedActIsInstanciated: false
-    property point app_selectionActAngle
 
     property var app_selectedGap: null
-    property point app_selectionGapCenter
 
     function resetActSelection() {
+        console.log("resetActSelection")
         if (app_selectedAct != null){
             app_selectedAct.isCurrentlySelected = false
         }
         app_selectedAct = null
         app_selectedActIsInstanciated = false
-        app_selectionActAngle = null
     }
     
     function setActSelection(selAct: var, isInstanciated: bool){
@@ -43,6 +41,7 @@ ApplicationWindow {
     MouseArea {
         anchors.fill: parent
         onClicked: (mouse) => {
+            console.log("clicked on background")
             resetActSelection()
         }
     }
@@ -80,7 +79,7 @@ ApplicationWindow {
                 anchors.centerIn: parent
 
                 ShapePath {
-                    fillColor: app_selectedAct.color
+                    fillColor: (app_selectedAct!=null ? app_selectedAct.color : "pink")
                     strokeColor: "white"
                     strokeWidth: 2
 

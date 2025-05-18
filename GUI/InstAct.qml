@@ -54,11 +54,6 @@ Rectangle {
         }
     }
 
-    Component.onCompleted: {
-        console.log("ACTIVITY COMPLETED:", instAct.label, "on plane", instAct.plane, "of duration", instAct.myTime)
-        console.log("                   ", instAct.isCurrentlySelected)
-    }
-
 
     Drag.active: dragArea.drag.active
     Drag.hotSpot.x: dragArea.mouseX

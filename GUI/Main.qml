@@ -17,27 +17,33 @@ ApplicationWindow {
 
     property var app_selectedAct: null
     property bool app_selectedActIsInstanciated: false
-    property var app_selectedGap: null
-
     property point app_selectionActAngle
+
+    property var app_selectedGap: null
     property point app_selectionGapCenter
 
-    function resetSelection() {
-        console.log("")
-        console.log("resetSelection")
+    function resetActSelection() {
+        if (app_selectedAct != null){
+            app_selectedAct.isCurrentlySelected = false
+        }
         app_selectedAct = null
         app_selectedActIsInstanciated = false
-        app_selectedGap = null
         app_selectionActAngle = null
-        app_selectionGapCenter = null
-        console.log("done")
+    }
+    
+    function setActSelection(selAct: var, isInstanciated: bool){
+        resetActSelection()
+        selAct.isCurrentlySelected = true
+        console.log("setActSelection", selAct, selAct.isCurrentlySelected)
+        app_selectedAct = selAct
+        app_selectedActIsInstanciated = isInstanciated
     }
 
     // This mouseArea covers the whole window and catchs clicks to "un-select" anything.
     MouseArea {
         anchors.fill: parent
         onClicked: (mouse) => {
-            resetSelection()
+            resetActSelection()
         }
     }
 
@@ -56,26 +62,42 @@ ApplicationWindow {
         border.width: 1
         border.color: "#444444"
 
-        Item {
+
+        // ACTIVITY SELECTION INDICATOR
+        Rectangle {
+            visible: app_selectedAct != null
             id: topPanelBalise
             anchors.bottom: parent.bottom
             anchors.horizontalCenter: parent.horizontalCenter
+            height: 40
+            width: height*2
+            z : 2
+            color : "transparent"
+            border.color : "transparent"
+            border.width: 1
+
+            Shape {
+                anchors.centerIn: parent
+
+                ShapePath {
+                    fillColor: app_selectedAct.color
+                    strokeColor: "white"
+                    strokeWidth: 2
+
+                    capStyle: ShapePath.FlatCap
+
+                    PathAngleArc {
+                        centerX: topPanelBalise.height; centerY: topPanelBalise.height
+                        radiusX: topPanelBalise.height; radiusY: topPanelBalise.height
+                        startAngle: -180
+                        sweepAngle: 180
+                    }
+                }
+            }
         }
     }
 
-    // ACTIVITY SELECTION INDICATOR
-    Shape {
-        z : 1000
-        visible: app_selectedAct != null
 
-        ShapePath {
-            strokeWidth: 2
-            strokeColor: (app_selectedActIsInstanciated ? "cyan" : "lime")
-
-            startX: topPanelBalise.x; startY: topPanelBalise.y
-            PathLine { x: app_selectionActAngle.x; y: app_selectionActAngle.y }
-        }
-    }
 
 
     // MIDDLE SECTION
@@ -115,7 +137,6 @@ ApplicationWindow {
                     }
                 }
             ]
-
         }
 
         // RIGHT PANEL

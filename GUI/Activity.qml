@@ -5,13 +5,15 @@ Rectangle {
     width: 80
     height: 40
     radius: 8
-    color: ((willBeAdded)? "cyan" : "lime") 
 
-    border.color : "black"
+    // lime = "#00FF00" hence the un-selected color will be de-saturated, "#00CC00"
+    color: ((willBeAdded)? "cyan" : (isCurrentlySelected ? "lime" : "#00CC00")) 
+    border.color : (isCurrentlySelected ? "white" : "black")
     border.width: 2
 
     scale: ((isCurrentlyDragged)? 1.2 : 1.0)
     property bool isCurrentlyDragged: false
+    property bool isCurrentlySelected: false
     property bool acceptedDrag: false
     property bool willBeAdded: false
     property point beginDrag
@@ -68,15 +70,7 @@ Rectangle {
         }
 
         onClicked: (mouse) => {
-            resetSelection()
-            app_selectedAct = activity
-            app_selectedActIsInstanciated = false
-            // The point (0, 0) is, in the local coordinate system, the "top-left-corner" of the activity.
-            // However, as the rectangle are rounded, this point is visibly outside of the rectangle.
-            // The precise coordinates of the goal point is (1 - sin(45°)) * radius) for each coordinate.
-            // However, this is still visibly outside of the rectangle, hence I rounded this 0.29289 to 0.5 (weird, I might have not understood the radius property)
-            app_selectionActAngle = actId.mapToGlobal(Qt.point(actId.radius * 0.5, actId.radius * 0.5))
-
+            setActSelection(actId, false)
             parent.acceptedDrag = false
             parent.Drag.drop()
         }

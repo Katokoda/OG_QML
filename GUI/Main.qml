@@ -93,6 +93,13 @@ ApplicationWindow {
                     }
                 }
             }
+
+            Text {
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+                color: "black"
+                text: "close"
+            }
         }
     }
 

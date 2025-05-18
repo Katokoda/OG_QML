@@ -74,7 +74,7 @@ class OrchestrationGraph(QObject):
         
         # plt.show()
 
-        return "OG printed as plot:\n"\
+        return "OG printed (but not as plot):\n"\
                 + res\
                 + str(round(self.evaluate_gaps()[0], 4))\
                 + " " + str(self.totTime) + " min (budget = "\

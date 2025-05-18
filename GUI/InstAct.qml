@@ -12,7 +12,7 @@ Rectangle {
     required property int myIdx
     required property var instAct
 
-    property int verticalOffset: 40 * instAct.plane
+    property int verticalOffset: og.myPixelHeight - 40 - (40 * instAct.plane)
 
 
     width: pixelPerMinute * instAct.myTime

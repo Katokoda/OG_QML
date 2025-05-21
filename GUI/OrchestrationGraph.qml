@@ -31,9 +31,11 @@ Rectangle {
     // LABELS for each plane + Line for each planes
     Item {
         id: labelColumn
-        anchors.right: myRow.left
-        anchors.top: myRow.top
+        visible: lessonRow.visible
+        anchors.right: lessonRow.left
+        anchors.top: lessonRow.top
         anchors.rightMargin: labelRightMargin
+
 
         Repeater {
             model: OGraph.labelPlanes
@@ -66,9 +68,29 @@ Rectangle {
     }
 
 
+    Rectangle {
+        anchors.centerIn: parent
+        visible: OGraph.totalTime == 0
+        width: 200
+        height: 200
+        color: "transparent"
+
+        border.width: 1
+        border.color: "lightgray"
+
+        DropZoneWhenEmpty{
+            id: startDropZone
+            myIdx: 0
+            localOGreference: og
+    }
+}
+
+
     // This holds the lesson itself
     Row {
-        id: myRow
+        id: lessonRow
+        visible: OGraph.totalTime > 0
+
         spacing: 0
         anchors.centerIn: parent
 

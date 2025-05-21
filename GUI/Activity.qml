@@ -23,13 +23,11 @@ Rectangle {
     required property var activity
 
 
-    Text {
+    MyText {
         id: labelText
-        anchors.centerIn: parent
-        font.bold: true
-        color: "#222222"
-        text: activity.label
-        font.pointSize: 8
+        myText: activity.label
+        myColor: "#222222"
+        mySize: 8
     }
 
 

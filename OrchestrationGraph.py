@@ -152,7 +152,6 @@ class OrchestrationGraph(QObject):
             current = iAct.end
         self.reached = current
         self.ogChangeSignal.emit()
-        print(self)
         
     def getStatus(self, actIdx):
         flags = []
@@ -203,6 +202,10 @@ class OrchestrationGraph(QObject):
     def remove(self, iActIdx : int):
         self.listOfFixedInstancedAct = self.listOfFixedInstancedAct[:iActIdx] + self.listOfFixedInstancedAct[iActIdx+1:]  # Remove the instAct from its current position
         self.reStructurate()
+
+    @pyqtSlot()
+    def print(self):
+        print(self)
         
 
 

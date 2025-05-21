@@ -43,14 +43,12 @@ Rectangle {
 
         scale: ((parent.isCurrentlyDragged)? ((parent.willBeDeleted)? 1.0 : 1.2) : 1.0)
 
-
-        Text {
+        
+        MyText {
             id: labelText
-            anchors.centerIn: parent
-            font.bold: true
-            color: "#222222"
-            text: invisibleAct.instAct.label
-            font.pointSize: 8
+            myText: invisibleAct.instAct.label
+            myColor: "#222222"
+            mySize: 8
         }
     }
 

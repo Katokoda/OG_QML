@@ -46,6 +46,7 @@ ApplicationWindow {
 
     function resetGapSelection() {
         og.selectExtendedLength = 0
+        library.state = ""
         if (app_selectedGap != null){
             app_selectedGap.isCurrentlySelected = false
         }
@@ -57,6 +58,7 @@ ApplicationWindow {
         selGap.isCurrentlySelected = true
         og.selectExtendedLength = selGap.occuping_width
         app_selectedGap = selGap
+        library.state = "PresentingSelectionGap"
     }
 
     // This mouseArea covers the whole window and catchs clicks to "un-select" anything.
@@ -65,6 +67,10 @@ ApplicationWindow {
         onClicked: (mouse) => {
             resetActSelection()
             resetGapSelection()
+
+            console.log("")
+            console.log("Orchestration Graph printed just for demo and debug purposes")
+            OGraph.print()
         }
     }
 
@@ -331,5 +337,9 @@ ApplicationWindow {
                 }
             }
         ]
+
+        Component.onCompleted: {
+            bottomPanel.state = "closed"
+        }
     }
 }

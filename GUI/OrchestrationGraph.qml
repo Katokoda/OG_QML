@@ -141,7 +141,7 @@ Rectangle {
                 }
 
                 // ONLY in relation to the other items in the same parent
-                z: (thisAct.isCurrentlyDragged ? 2 : 1)
+                z: (thisAct.shouldBeAbove ? 2 : 1)
             }
         }
     }

@@ -5,6 +5,7 @@ Rectangle {
     property string myType: "instAct"
 
     property bool isCurrentlyDragged: false
+    property bool shouldBeAbove: (isCurrentlyDragged || labelText.isCurrentlyHovered)
     property bool acceptedDrag: false
     property bool willBeDeleted: false
     property point beginDrag
@@ -48,7 +49,7 @@ Rectangle {
             id: labelText
             myText: invisibleAct.instAct.label
             myColor: "#222222"
-            mySize: 8
+            mySize: 10
         }
     }
 

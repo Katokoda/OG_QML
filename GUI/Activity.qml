@@ -27,7 +27,7 @@ Rectangle {
         id: labelText
         myText: activity.label
         myColor: "#222222"
-        mySize: 8
+        mySize: 10
     }
 
 

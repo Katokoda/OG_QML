@@ -6,6 +6,9 @@ import threading
 from PyQt6.QtGui import QGuiApplication
 from PyQt6.QtQml import QQmlApplicationEngine
 from PyQt6.QtQuick import QQuickWindow
+
+from PyQt6.QtCore import QMetaObject
+
 from Library import Library
 from OrchestrationGraph import OrchestrationGraph
 from TextShortener import TextShortener
@@ -36,7 +39,17 @@ engine.rootContext().setContextProperty("context_textShortener", myTextShortener
 #    OG.insert(2*i, i)
 print(OG)
 
-
 engine.load('./GUI/Main.qml')
+if not engine.rootObjects():
+    print("Failed to load QML file.")
+    sys.exit(-1)
+
+
+root_obj = engine.rootObjects()[0]
+
+def mySignalToQMLofAnOgReset():
+    QMetaObject.invokeMethod(root_obj, "myGraphUpdate") # Call QML function
+
+OG.ogChangeSignal.connect(mySignalToQMLofAnOgReset)
 
 sys.exit(app.exec())

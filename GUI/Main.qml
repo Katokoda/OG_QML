@@ -29,6 +29,13 @@ ApplicationWindow {
 
     property var app_selectedGap: null
 
+    function myGraphUpdate() {
+        console.log("DBG - myGraphUpdate has been called within QML!")
+        resetActSelection()
+        resetGapSelection()
+        // Add your selection-resetting logic here
+    }
+
     function resetActSelection() {
         if (app_selectedAct != null){
             app_selectedAct.isCurrentlySelected = false

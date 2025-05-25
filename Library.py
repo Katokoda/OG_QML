@@ -7,7 +7,7 @@ Created on Tue Feb 25 09:43:43 2025
 
 from Activity import Activity
 from Efficience import getEff
-from ScoreMap import ScoreMap
+from ContextActivity import ContextActivity
 from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot, QVariant
 
 
@@ -48,10 +48,11 @@ class Library(QObject):
             wouldStart, wouldEnd, _ = act.what_from(start)
             d1 = start.distance_onlyForward(wouldStart)
             d2 = wouldEnd.distance_onlyForward(goal)
-            if not wouldStart.isPast(goal):
-                efficiency = getEff(d, d1, d2, act.defT, remTime)
-                result.append((efficiency, i, len(flags)==0))
-        return ScoreMap(result, len(self.liste))
+            if wouldStart.isPast(goal):
+                flags.append("isPast")
+            efficiency = getEff(d, d1, d2, act.defT, remTime)
+            result.append(ContextActivity(act, efficiency, flags, (len(flags) == 0)))
+        return result
 
     
 def tests():

@@ -29,6 +29,7 @@ Rectangle {
         color: "white"
     }
 
+    // This is the standard library column. It is shown when no gap is selected.
     Column {
         id: libraryColumn
         spacing: 5
@@ -52,6 +53,35 @@ Rectangle {
             }
         }
     }
+
+    // This is the GAP-SPECIFIC library column.
+    Column {
+        id: gapColumn
+        spacing: 5
+        anchors.centerIn: parent
+        visible: false
+
+        Repeater {
+            model: OGraph.listActivityForGap
+
+            delegate: Item {
+                width: thisAct.width
+                height: thisAct.height
+
+                Activity {
+                    id: thisAct
+                    activity: modelData
+                    myIdx: index
+                }
+
+                // ONLY in relation to the other items in the same parent
+                z: (thisAct.isCurrentlyDragged ? 2 : 1)
+            }
+        }
+    }
+    
+
+
     
     states: [
         State {
@@ -62,6 +92,14 @@ Rectangle {
             }
             PropertyChanges {
                 target: selectedGapText
+                visible: true
+            }
+            PropertyChanges {
+                target: libraryColumn
+                visible: false
+            }
+            PropertyChanges {
+                target: gapColumn
                 visible: true
             }
         }

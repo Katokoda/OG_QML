@@ -11,7 +11,6 @@ Created on Tue Feb 25 09:43:43 2025
 
 
 from InstanciatedAct import InstanciatedAct
-from ScoreMap import ScoreMap
 
 
 import params as p
@@ -28,6 +27,7 @@ from Library import Library
 
 class OrchestrationGraph(QObject):
     ogChangeSignal = pyqtSignal()
+    ogLibraryChangeSignal = pyqtSignal()
 
     def __init__(self, library, timeBudget, start, goal):
         super().__init__()
@@ -40,6 +40,8 @@ class OrchestrationGraph(QObject):
         self.listOfFixedInstancedAct = []
         self.quantities = [0]*len(self.lib.liste)
         self.totTime = 0
+
+        self.gapFocus = None # Index of the gap currently selected in QML.
         
         
     def __repr__(self):
@@ -86,11 +88,41 @@ class OrchestrationGraph(QObject):
         return self.listOfFixedInstancedAct
     
 
+    @pyqtSlot(int)
+    # Should always be called before listActivityForGap is required.
+    def setGapFocus(self, gapIdx : int):
+        print("DBG - setGapFocus(", gapIdx, ")", sep = '')
+        if gapIdx < 0:
+            self.gapFocus = None
+            return
+        self.gapFocus = gapIdx
+        self.ogLibraryChangeSignal.emit()
+
+    @pyqtProperty(QVariant, notify=ogLibraryChangeSignal)
+    def listActivityForGap(self):
+        if (self.gapFocus == None):
+            return []
+        print("=================================")
+        print("TODO IMPLEMENT listActivityForGap")
+        print("gapFocus =", self.gapFocus)
+        start = self.start if self.gapFocus == 0 else self.listOfFixedInstancedAct[self.gapFocus - 1].end
+        end = self.goal if self.gapFocus == len(self.listOfFixedInstancedAct) else self.listOfFixedInstancedAct[self.gapFocus].start
+
+        [print(ContextAct) for ContextAct in self.lib.evaluateFor(start, end, self, self.tBudget - self.totTime)]
+        print("")
+        return self.lib.liste
+    
+    @pyqtProperty(QVariant, notify=ogLibraryChangeSignal)
+    def sortedListActivityForGap(self):
+        if (self.gapFocus == None):
+            return []
+        print("TODO IMPLEMENT sortedListActivityForGap")
+        return self.lib.liste
+    
+
     @pyqtProperty(int, notify=ogChangeSignal)
     def totalTime(self):
         return self.totTime
-
-    
 
     @pyqtProperty(int, notify=ogChangeSignal)
     def numberPlanes(self):
@@ -141,7 +173,7 @@ class OrchestrationGraph(QObject):
             if p.TRESHOLD < curr_gap:
                 gapsToCover.append((curr_gap, gap_idx))
             
-        return remainingGap, ScoreMap(gapsToCover, len(self.listOfFixedInstancedAct)+1)
+        return remainingGap, gapsToCover
         
     def reStructurate(self):
         current = self.start
@@ -179,7 +211,7 @@ class OrchestrationGraph(QObject):
         self.listOfFixedInstancedAct = temp[:idx]\
             + [instanceToAdd] + temp[idx:]
         self.reStructurate()
-        # self.reStructurate() takes care of this:
+        # this last call "self.reStructurate()" takes care of this:
         #self.totTime += instanceToAdd.act.time
         #self.reached = None
         #self.ogChangeSignal.emit()

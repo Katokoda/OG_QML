@@ -30,10 +30,8 @@ ApplicationWindow {
     property var app_selectedGap: null
 
     function myGraphUpdate() {
-        console.log("DBG - myGraphUpdate has been called within QML!")
         resetActSelection()
         resetGapSelection()
-        // Add your selection-resetting logic here
     }
 
     function resetActSelection() {
@@ -52,6 +50,7 @@ ApplicationWindow {
     }
 
     function resetGapSelection() {
+        OGraph.setGapFocus(-1)
         og.selectExtendedLength = 0
         library.state = ""
         if (app_selectedGap != null){
@@ -65,6 +64,7 @@ ApplicationWindow {
         selGap.isCurrentlySelected = true
         og.selectExtendedLength = selGap.occuping_width
         app_selectedGap = selGap
+        OGraph.setGapFocus(selGap.myIdx)
         library.state = "PresentingSelectionGap"
     }
 

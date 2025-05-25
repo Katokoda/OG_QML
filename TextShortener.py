@@ -9,7 +9,7 @@ from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot, QVariant
 
 
 def extractCapitals(s: str):
-    # Coded entirely with ChatGPT
+    # Function coded entirely by ChatGPT
     
     # Extract all uppercase letters
     capitals = ''.join([char for char in s if char.isupper()])
@@ -38,7 +38,8 @@ class TextShortener(QObject):
         if txtSize <= 0:
             return ""
         len_text = len(text)
-        len_shorten = round(len_text * (mySize / txtSize))
+        # (mySize / txtSize) is the reduction ratio. However, as the letters have different widths, we add 0.9 to increase margins.
+        len_shorten = round(len_text * 0.9 * (mySize / txtSize))
 
         myCapitals = extractCapitals(text)
 
@@ -49,6 +50,7 @@ def tests():
     print("testing TextShortener")
     myTS = TextShortener()
 
+    # Test cases for the ExtractCapitals function, written by chatGPT
     print(extractCapitals("AbcdeFghiJklmn"))  # Output: "AFJklmn"
     print(extractCapitals("hello"))           # Output: "hello"
     print(extractCapitals("HELLO"))           # Output: "HELLO"

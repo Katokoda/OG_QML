@@ -50,22 +50,24 @@ ApplicationWindow {
     }
 
     function resetGapSelection() {
-        OGraph.setGapFocus(-1)
         og.selectExtendedLength = 0
         library.state = ""
         if (app_selectedGap != null){
+            OGraph.setGapFocus(-1)
             app_selectedGap.isCurrentlySelected = false
         }
         app_selectedGap = null
     }
     
     function setGapSelection(selGap: var){
-        resetGapSelection()
-        selGap.isCurrentlySelected = true
-        og.selectExtendedLength = selGap.occuping_width
-        app_selectedGap = selGap
-        OGraph.setGapFocus(selGap.myIdx)
-        library.state = "PresentingSelectionGap"
+        if (app_selectedGap != selGap){
+            resetGapSelection()
+            selGap.isCurrentlySelected = true
+            og.selectExtendedLength = selGap.occuping_width
+            app_selectedGap = selGap
+            OGraph.setGapFocus(selGap.myIdx)
+            library.state = "PresentingSelectionGap"
+        }
     }
 
     // This mouseArea covers the whole window and catchs clicks to "un-select" anything.

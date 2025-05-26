@@ -36,50 +36,23 @@ Rectangle {
         anchors.centerIn: parent
 
         Repeater {
-            model: ContextLibrary.listeProp
-
-            delegate: Item {
-                width: thisAct.width
-                height: thisAct.height
-
-                Activity {
-                    id: thisAct
-                    activity: modelData
-                    myIdx: index
-                }
-
-                // ONLY in relation to the other items in the same parent
-                z: (thisAct.isCurrentlyDragged ? 2 : 1)
-            }
-        }
-    }
-
-    // This is the GAP-SPECIFIC library column.
-    Column {
-        id: gapColumn
-        spacing: 5
-        anchors.centerIn: parent
-        visible: false
-
-        Repeater {
             model: OGraph.listActivityForGap
 
             delegate: Item {
-                width: thisAct.width
-                height: thisAct.height
+                width: contextAct.occuping_width
+                height: contextAct.occuping_height
 
-                Activity {
-                    id: thisAct
-                    activity: modelData
-                    myIdx: index
+                ContextAct {
+                    id: contextAct
+                    contextActObject: modelData
+                    ctxActIdx: index
                 }
 
                 // ONLY in relation to the other items in the same parent
-                z: (thisAct.isCurrentlyDragged ? 2 : 1)
+                z: (contextAct.shouldBeAbove ? 2 : 1)
             }
         }
     }
-    
 
 
     
@@ -87,19 +60,7 @@ Rectangle {
         State {
             name: "PresentingSelectionGap"
             PropertyChanges {
-                target: library
-                color: "purple"
-            }
-            PropertyChanges {
                 target: selectedGapText
-                visible: true
-            }
-            PropertyChanges {
-                target: libraryColumn
-                visible: false
-            }
-            PropertyChanges {
-                target: gapColumn
                 visible: true
             }
         }

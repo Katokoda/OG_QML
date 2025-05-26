@@ -11,6 +11,8 @@ Created on Tue Feb 25 09:43:43 2025
 
 
 from InstanciatedAct import InstanciatedAct
+from ContextActivity import ContextActivity
+from Efficience import getEff
 
 
 import params as p
@@ -27,7 +29,7 @@ from Library import Library
 
 class OrchestrationGraph(QObject):
     ogChangeSignal = pyqtSignal()
-    ogLibraryChangeSignal = pyqtSignal()
+    gapSelectionChangeSignal = pyqtSignal()
 
     def __init__(self, library, timeBudget, start, goal):
         super().__init__()
@@ -42,6 +44,11 @@ class OrchestrationGraph(QObject):
         self.totTime = 0
 
         self.gapFocus = None # Index of the gap currently selected in QML.
+        self.currentListForSelectedGap = [] # REQUIRED --> Segmentation Fault
+        # otherwise the QML objects references to a temporary variable
+
+        self.setGapFocus(-1)
+
         
         
     def __repr__(self):
@@ -87,37 +94,52 @@ class OrchestrationGraph(QObject):
     def listeReal(self):
         return self.listOfFixedInstancedAct
     
+    def evaluateGlobal(self):
+        result = []
+        for i in range(len(self.lib.liste)):
+            flags = self.getStatus(i)
+            act = self.lib.getAct(i)
+            result.append(ContextActivity(act, 100, flags, (len(flags) == 0)))
+        return result
+    
+    def evaluateFor(self, start, goal):
+        result = []
+        d = start.distance_onlyForward(goal)
+        
+        for i in range(len(self.lib.liste)):
+            flags = self.getStatus(i)
+            act = self.lib.getAct(i)
+            wouldStart, wouldEnd, _ = act.what_from(start)
+            d1 = start.distance_onlyForward(wouldStart)
+            d2 = wouldEnd.distance_onlyForward(goal)
+            if wouldStart.isPast(goal):
+                flags.append("isPast")
+            efficiency = getEff(d, d1, d2, act.defT, self.tBudget - self.totTime)
+            result.append(ContextActivity(act, efficiency, flags, (len(flags) == 0)))
+        return result
 
     @pyqtSlot(int)
     # Should always be called before listActivityForGap is required.
     def setGapFocus(self, gapIdx : int):
-        print("DBG - setGapFocus(", gapIdx, ")", sep = '')
         if gapIdx < 0:
             self.gapFocus = None
-            return
-        self.gapFocus = gapIdx
-        self.ogLibraryChangeSignal.emit()
+            self.currentListForSelectedGap = self.evaluateGlobal()
+        else:
+            self.gapFocus = gapIdx
+            start = self.start if self.gapFocus == 0 else self.listOfFixedInstancedAct[self.gapFocus - 1].end
+            end = self.goal if self.gapFocus == len(self.listOfFixedInstancedAct) else self.listOfFixedInstancedAct[self.gapFocus].start
 
-    @pyqtProperty(QVariant, notify=ogLibraryChangeSignal)
+            self.currentListForSelectedGap = self.evaluateFor(start, end)
+        self.gapSelectionChangeSignal.emit()
+
+    @pyqtProperty(QVariant, notify=gapSelectionChangeSignal)
     def listActivityForGap(self):
-        if (self.gapFocus == None):
-            return []
-        print("=================================")
-        print("TODO IMPLEMENT listActivityForGap")
-        print("gapFocus =", self.gapFocus)
-        start = self.start if self.gapFocus == 0 else self.listOfFixedInstancedAct[self.gapFocus - 1].end
-        end = self.goal if self.gapFocus == len(self.listOfFixedInstancedAct) else self.listOfFixedInstancedAct[self.gapFocus].start
-
-        [print(ContextAct) for ContextAct in self.lib.evaluateFor(start, end, self, self.tBudget - self.totTime)]
-        print("")
-        return self.lib.liste
+        return self.currentListForSelectedGap
     
-    @pyqtProperty(QVariant, notify=ogLibraryChangeSignal)
+    @pyqtProperty(QVariant, notify=gapSelectionChangeSignal)
     def sortedListActivityForGap(self):
-        if (self.gapFocus == None):
-            return []
-        print("TODO IMPLEMENT sortedListActivityForGap")
-        return self.lib.liste
+        print("WARNING - sortedListActivityForGap - not sorted")
+        return self.currentListForSelectedGap[0:-1:-1]
     
 
     @pyqtProperty(int, notify=ogChangeSignal)
@@ -126,12 +148,12 @@ class OrchestrationGraph(QObject):
 
     @pyqtProperty(int, notify=ogChangeSignal)
     def numberPlanes(self):
-        print("Python has been asked the number of planes and answered three")
+        print("Python has been asked the number of planes and answered three") #TODO
         return 3
     
     @pyqtProperty(QVariant, notify=ogChangeSignal)
     def labelPlanes(self):
-        print("Python has been asked the labels of planes and answered hard-written list")
+        print("Python has been asked the labels of planes and answered hard-written list") #TODO
         return ["Indiv.", "Team", "Class"]
 
     def create(self, verbose = False):

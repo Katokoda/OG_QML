@@ -1,33 +1,31 @@
 import QtQuick 2.15
 
 Rectangle {
-    id: contextAct
+    required property var contextActObject
+    required property int ctxActIdx
 
-    //required property var contextActObject
-    //required property int myIdx
+    width: thisAct.width
+    height: thisAct.height
 
+    color: "transparent"
 
-    width: 20
-    height: 20
-    color: "white"
+    property int occuping_width: thisAct.width
+    property int occuping_height: thisAct.height
+    property bool shouldBeAbove: thisAct.isCurrentlyDragged || thisAct.isCurrentlySelected
 
-    property int occuping_width: 20
-    property int occuping_height: 20
-    property bool shouldBeAbove: false
+    Activity {
+        id: thisAct
+        activity: contextActObject.activity
+        myIdx: ctxActIdx
+    }
 
-
-
-    // width: thisAct.width
-    // height: thisAct.height
-
-    // property int occuping_width: thisAct.width
-    // property int occuping_height: thisAct.height
-    // property bool shouldBeAbove: thisAct.isCurrentlyDragged || thisAct.isCurrentlySelected
-
-    // Activity {
-    //     id: thisAct
-    //     activity: contextActObject.activity
-    //     myIdx: myIdx
-    // }
+    Text {
+        id: labelText
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.left: parent.right
+        text: contextActObject.efficiencyDEBUG
+        color: "white"
+        font.pixelSize: 12
+    }
 }
  

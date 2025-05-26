@@ -9,7 +9,7 @@ Rectangle {
 
 
     property int lessonIdealWidth: (og.width-50) * 0.8
-    property int lessonTotalTime: OGraph.totalTime
+    property int lessonTotalTime: context_OGraph.totalTime
     property double pixelPerMinute: lessonIdealWidth / lessonTotalTime
 
         // // DEBUG to make some property visible live
@@ -25,7 +25,7 @@ Rectangle {
     property int labelRightMargin: 30
     // KNOWN BUG: when the selected gap is dragged over, the size is counted in both extended lengths but it should not.
     property int myPixelLength: lessonIdealWidth + dragExtendedLength + selectExtendedLength // This is the pixel-width from the start to the finish of the current lesson
-    property int myPixelHeight: 40*OGraph.numberPlanes
+    property int myPixelHeight: 40*context_OGraph.numberPlanes
 
 
     // LABELS for each plane + Line for each planes
@@ -38,7 +38,7 @@ Rectangle {
 
 
         Repeater {
-            model: OGraph.labelPlanes
+            model: context_OGraph.labelPlanes
             delegate: Item {
                 anchors.top: labelColumn.top
                 anchors.topMargin: (index * 40) + 20
@@ -70,7 +70,7 @@ Rectangle {
 
     Rectangle {
         anchors.centerIn: parent
-        visible: OGraph.totalTime == 0
+        visible: context_OGraph.totalTime == 0
         width: 200
         height: 200
         color: "transparent"
@@ -89,7 +89,7 @@ Rectangle {
     // This holds the lesson itself
     Row {
         id: lessonRow
-        visible: OGraph.totalTime > 0
+        visible: context_OGraph.totalTime > 0
 
         spacing: 0
         anchors.centerIn: parent
@@ -113,7 +113,7 @@ Rectangle {
         }
 
         Repeater {
-            model: OGraph.listeReal
+            model: context_OGraph.listeReal
 
             // Item holding an InstanciatedActivity followed by a DropZone
             delegate: Rectangle {

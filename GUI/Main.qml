@@ -53,7 +53,7 @@ ApplicationWindow {
         og.selectExtendedLength = 0
         library.state = ""
         if (app_selectedGap != null){
-            OGraph.setGapFocus(-1)
+            context_OGraph.setGapFocus(-1)
             app_selectedGap.isCurrentlySelected = false
         }
         app_selectedGap = null
@@ -65,7 +65,7 @@ ApplicationWindow {
             selGap.isCurrentlySelected = true
             og.selectExtendedLength = selGap.occuping_width
             app_selectedGap = selGap
-            OGraph.setGapFocus(selGap.myIdx)
+            context_OGraph.setGapFocus(selGap.myIdx)
             library.state = "PresentingSelectionGap"
         }
     }
@@ -79,7 +79,7 @@ ApplicationWindow {
 
             console.log("")
             console.log("Orchestration Graph printed just for demo and debug purposes")
-            OGraph.print()
+            context_OGraph.print()
         }
     }
 

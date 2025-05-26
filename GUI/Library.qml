@@ -36,7 +36,7 @@ Rectangle {
         anchors.centerIn: parent
 
         Repeater {
-            model: OGraph.listActivityForGap
+            model: context_OGraph.listActivityForGap
 
             delegate: Item {
                 width: contextAct.occuping_width

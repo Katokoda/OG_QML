@@ -29,10 +29,9 @@ myTextShortener = TextShortener()
 myLib = Library("inputData/interpolation_2D_library.csv")
 print("Printing my library")
 print(myLib)
-engine.rootContext().setContextProperty("ContextLibrary", myLib)
 
 OG = OrchestrationGraph(myLib, 50, pVal((0.0, 0.0)), pVal((0.9, 0.9)))
-engine.rootContext().setContextProperty("OGraph", OG)
+engine.rootContext().setContextProperty("context_OGraph", OG)
 engine.rootContext().setContextProperty("context_textShortener", myTextShortener)
 
 #for i in range(5):

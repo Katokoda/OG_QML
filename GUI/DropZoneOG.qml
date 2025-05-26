@@ -96,9 +96,9 @@ Rectangle {
         onDropped: (drop) => {
             if (acceptsDrag){
                 if (drag.source.myType == "instAct"){
-                    OGraph.exchange(drag.source.myIdx, myIdx)
+                    context_OGraph.exchange(drag.source.myIdx, myIdx)
                 } else {
-                    OGraph.insert(drag.source.myIdx, myIdx)
+                    context_OGraph.insert(drag.source.myIdx, myIdx)
                 }
                 if (drag.source.myType == "activity"){
                     drag.source.willBeAdded = false

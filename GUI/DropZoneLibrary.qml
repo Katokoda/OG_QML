@@ -43,7 +43,7 @@ Rectangle {
                 }
                 drag.source.acceptedDrag = false
                 acceptsDrag = false
-                OGraph.remove(drag.source.myIdx)
+                context_OGraph.remove(drag.source.myIdx)
             }
         }
     }

@@ -15,17 +15,48 @@ Rectangle {
 
     Activity {
         id: thisAct
-        activity: contextActObject.activity
+        visible: contextActObject != null
+        activity: (contextActObject != null ? contextActObject.activity : null)
         myIdx: ctxActIdx
     }
 
     Text {
-        id: labelText
+        id: exhaustionWarning
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.right
-        text: contextActObject.efficiencyDEBUG
+        text: (contextActObject != null ?
+            (contextActObject.flags.isExhausted ? " tooMuch " : "")
+            : "null")
         color: "white"
         font.pixelSize: 12
+        Text {
+            id: timeWarning
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.right
+            text: (contextActObject != null ?
+                (contextActObject.flags.isTooLong ? " time " : "")
+                : "null")
+            color: "white"
+            font.pixelSize: 12
+            Text {
+                id: worseWarning
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.right
+                text: (contextActObject != null ?
+                    (contextActObject.flags.isWorse ? " NO " : "")
+                    : "null")
+                color: "white"
+                font.pixelSize: 12
+            }
+        }
+    }
+
+    Text {
+        anchors.bottom: parent.bottom
+        anchors.left: parent.right
+        text: (contextActObject != null ? contextActObject.efficiencyDEBUG : "null")
+        color: "gray"
+        font.pixelSize: 10
     }
 }
  

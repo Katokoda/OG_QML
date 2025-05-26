@@ -7,6 +7,32 @@ Created on Tue Feb 25 09:43:43 2025
 
 from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot, QVariant
 
+class FlagContainer(QObject):
+    def __init__(self, list):
+        super().__init__()
+        self.exhausted = "tooM" in list
+        self.tooLong = "long" in list
+        self.worse = "isPast" in list
+
+    flagChangeSignal = pyqtSignal()
+    
+    @pyqtProperty(bool, notify=flagChangeSignal)
+    def isExhausted(self):
+        return self.exhausted
+    
+    @pyqtProperty(bool, notify=flagChangeSignal)
+    def isTooLong(self):
+        return self.tooLong
+    
+    @pyqtProperty(bool, notify=flagChangeSignal)
+    def isWorse(self):
+        return self.worse
+    
+    def __repr__(self):
+        return f"FlagContainer(exhausted={self.exhausted}, tooLong={self.tooLong}, worse={self.worse})"
+
+
+
 class ContextActivity(QObject):
     contextActivityChangeSignal = pyqtSignal()
 
@@ -14,7 +40,7 @@ class ContextActivity(QObject):
         super().__init__()
         self.myAct = activity
         self.myScore = score
-        self.myFlags = flags
+        self.myFlags = FlagContainer(flags)
         self.isRecommended = isRecommended
 
     def __repr__(self):
@@ -23,6 +49,10 @@ class ContextActivity(QObject):
     @pyqtProperty(QObject, notify=contextActivityChangeSignal)
     def activity(self):
         return self.myAct
+    
+    @pyqtProperty(QObject, notify=contextActivityChangeSignal)
+    def flags(self):
+        return self.myFlags
     
     @pyqtProperty(float, notify=contextActivityChangeSignal)
     def efficiencyDEBUG(self):

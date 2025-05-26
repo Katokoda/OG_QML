@@ -25,7 +25,7 @@ Rectangle {
 
     MyText {
         id: labelText
-        myText: activity.label
+        myText: (activity != null ? activity.label : "null")
         myColor: "#222222"
         mySize: 10
     }

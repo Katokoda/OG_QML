@@ -254,6 +254,7 @@ class OrchestrationGraph(QObject):
 
     @pyqtSlot(int)
     def remove(self, iActIdx : int):
+        self.quantities[iActIdx] -= 1
         self.listOfFixedInstancedAct = self.listOfFixedInstancedAct[:iActIdx] + self.listOfFixedInstancedAct[iActIdx+1:]  # Remove the instAct from its current position
         self.reStructurate()
 

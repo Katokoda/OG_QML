@@ -1,5 +1,0 @@
-#OG_QML
-
-This repository contains my QML application that helps creating Orchestration Graphs. It is part of my semester project with Pr. Dillenbourg during spring 2025, my IN-MA2.
-This application will use the engine implemented at the start of the semester and create an interactive application with PyQt and QML as this is the framework chosen after a few weeks of testing.
-

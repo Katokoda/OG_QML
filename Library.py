@@ -19,7 +19,12 @@ class Library(QObject):
         with open(nameOfFile) as inputFile:
             data = inputFile.readlines()
             data = data[1:] #removing the headline
-            self.liste = [Activity(line.strip()) for line in data]
+
+            self.liste = []
+            idx = 0
+            for line in data:
+                self.liste.append(Activity(line.strip(), idx))
+                idx += 1
             
     def __str__(self):
         res = ""

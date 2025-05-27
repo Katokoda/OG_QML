@@ -94,6 +94,15 @@ class OrchestrationGraph(QObject):
     def listeReal(self):
         return self.listOfFixedInstancedAct
     
+    def reEvaluate(self):
+        if self.gapFocus == None:
+            self.currentListForSelectedGap = self.evaluateGlobal()
+        else:
+            start = self.start if self.gapFocus == 0 else self.listOfFixedInstancedAct[self.gapFocus - 1].end
+            end = self.goal if self.gapFocus == len(self.listOfFixedInstancedAct) else self.listOfFixedInstancedAct[self.gapFocus].start
+            self.currentListForSelectedGap = self.evaluateFor(start, end)
+        self.gapSelectionChangeSignal.emit()
+    
     def evaluateGlobal(self):
         result = []
         for i in range(len(self.lib.liste)):
@@ -123,14 +132,12 @@ class OrchestrationGraph(QObject):
     def setGapFocus(self, gapIdx : int):
         if gapIdx < 0:
             self.gapFocus = None
-            self.currentListForSelectedGap = self.evaluateGlobal()
+            self.reEvaluate()
         else:
             self.gapFocus = gapIdx
-            start = self.start if self.gapFocus == 0 else self.listOfFixedInstancedAct[self.gapFocus - 1].end
-            end = self.goal if self.gapFocus == len(self.listOfFixedInstancedAct) else self.listOfFixedInstancedAct[self.gapFocus].start
-
-            self.currentListForSelectedGap = self.evaluateFor(start, end)
+            self.reEvaluate()
         self.gapSelectionChangeSignal.emit()
+
 
     @pyqtProperty(QVariant, notify=gapSelectionChangeSignal)
     def listActivityForGap(self):
@@ -205,6 +212,8 @@ class OrchestrationGraph(QObject):
             iAct.adjust(current, iAct.time)
             current = iAct.end
         self.reached = current
+        self.reEvaluate()
+        
         self.ogChangeSignal.emit()
         
     def getStatus(self, actIdx):
@@ -254,7 +263,7 @@ class OrchestrationGraph(QObject):
 
     @pyqtSlot(int)
     def remove(self, iActIdx : int):
-        self.quantities[iActIdx] -= 1
+        self.quantities[self.listOfFixedInstancedAct[iActIdx].act.idx] -= 1
         self.listOfFixedInstancedAct = self.listOfFixedInstancedAct[:iActIdx] + self.listOfFixedInstancedAct[iActIdx+1:]  # Remove the instAct from its current position
         self.reStructurate()
 

@@ -16,9 +16,12 @@ import params as p
 class Activity(QObject):
     activityChangeSignal = pyqtSignal()
 
-    def __init__(self, line):
+    def __init__(self, line, idx:int):
         super().__init__()
         data = line.split(',')
+
+        # idx: Index of the activity in the library
+        self.idx = idx
         
         # str: Name of the activity
         self.name = data[0]

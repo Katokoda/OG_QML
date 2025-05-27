@@ -12,7 +12,11 @@ If you want to run the application, I recommend using a linux machine which can 
 
 \>>> pip install -r requirements.txt
 
-This installs all packages listed in the requirements.txt file. Note: This file was generated using pipreqs //TODO redo after project completion
+TEMP: 
+pip install git+https://github.com/jmitrevs/matplotlib_backend_qtquick
+pip install PyQt5
+
+This installs all packages listed in the requirements.txt file. Note for myself: This file was generated using \>>> pipreqs --ignore myVenvForOGraph/
 
 Then, you can run the application using
 

@@ -6,16 +6,10 @@ Created on Tue Feb 25 09:43:43 2025
 """
 
 from Activity import Activity
-from ContextActivity import ContextActivity
-from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot, QVariant
 
 
-class Library(QObject):
-    libraryChangedSignal = pyqtSignal()
-
-
+class Library:
     def __init__(self, nameOfFile):
-        super().__init__()
         with open(nameOfFile) as inputFile:
             data = inputFile.readlines()
             data = data[1:] #removing the headline
@@ -33,7 +27,6 @@ class Library(QObject):
         return res
 
     
-    @pyqtProperty(QVariant, notify=libraryChangedSignal)
     def listeProp(self):
         return self.liste
     

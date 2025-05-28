@@ -9,6 +9,9 @@ Created on Tue Feb 25 09:43:43 2025
 #import matplotlib.pyplot as plt
 #import matplotlib.patches as patches
 
+import subprocess
+import threading
+
 
 from InstanciatedAct import InstanciatedAct
 from ContextActivity import ContextActivity
@@ -48,6 +51,17 @@ class OrchestrationGraph(QObject):
         # otherwise the QML objects references to a temporary variable
 
         self.setGapFocus(-1)
+
+    def myCallerForPrintingSubprocess(self):
+        print("Caller - myCallerForPrintingSubprocess - start")
+        subprocess.call(['sh', './callMyPythonPrinter.sh'])
+        print("Caller - myCallerForPrintingSubprocess - done")
+    
+    @pyqtSlot()
+    def myCustomPrintFunction(self):
+        t_thread = threading.Thread(target=self.myCallerForPrintingSubprocess)
+        t_thread.daemon = True
+        t_thread.start()
 
         
         

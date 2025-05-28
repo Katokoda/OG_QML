@@ -80,6 +80,7 @@ ApplicationWindow {
             console.log("")
             console.log("Orchestration Graph printed just for demo and debug purposes")
             context_OGraph.print()
+            context_OGraph.myCustomPrintFunction()
         }
     }
 

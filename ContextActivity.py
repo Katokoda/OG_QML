@@ -5,7 +5,8 @@ Created on Tue Feb 25 09:43:43 2025
 @author: Samuel
 """
 
-from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot, QVariant
+from Activity import Activity, ActivityData
+from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal
 
 class FlagContainer(QObject):
     def __init__(self, list):
@@ -36,19 +37,19 @@ class FlagContainer(QObject):
 class ContextActivity(QObject):
     contextActivityChangeSignal = pyqtSignal()
 
-    def __init__(self, activity, score, flags, isRecommended):
+    def __init__(self, activity : ActivityData, score:float, flags, isRecommended:bool):
         super().__init__()
-        self.myAct = activity
+        self.myActData = activity
         self.myScore = score
         self.myFlags = FlagContainer(flags)
         self.isRecommended = isRecommended
 
     def __repr__(self):
-        return f"ContextActivity({self.myAct.name}, {self.myScore}, {self.myFlags}, {self.isRecommended})"
+        return f"ContextActivity({self.myActData.name}, {self.myScore}, {self.myFlags}, {self.isRecommended})"
     
     @pyqtProperty(QObject, notify=contextActivityChangeSignal)
     def activity(self):
-        return self.myAct
+        return self.myActData.getQtObject()
     
     @pyqtProperty(QObject, notify=contextActivityChangeSignal)
     def flags(self):

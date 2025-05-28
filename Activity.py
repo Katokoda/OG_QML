@@ -7,17 +7,14 @@ Created on Tue Feb 25 09:43:43 2025
 
 from pValues import pVal
 from pValues import InterPVal
-from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot, QVariant
+from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal
 from Plane import intFromPlane
 from Plane import planeFromInt
 
 import params as p
 
-class Activity(QObject):
-    activityChangeSignal = pyqtSignal()
-
-    def __init__(self, line, idx:int):
-        super().__init__()
+class ActivityData:
+    def __init__(self, line:str, idx:int):
         data = line.split(',')
 
         # idx: Index of the activity in the library
@@ -81,11 +78,6 @@ class Activity(QObject):
     def __repr__(self):
         return self.toString(False)
     
-
-    @pyqtProperty(str, notify=activityChangeSignal)
-    def label(self):
-        return self.name
-    
     def what_from(self, start, notDefTime = None):
         would_start = start.needToReach(self.pcond)
         if notDefTime == None:
@@ -95,6 +87,23 @@ class Activity(QObject):
             would_end = would_start.plus(self.peffect.get(notDefTime))
             time = notDefTime
         return would_start, would_end, time
+    
+    def getQtObject(self):
+        # Returns a PyQt6 object to be used in the GUI
+        self.QTObjectNotVisibleFromPickle = Activity(self)
+        return self.QTObjectNotVisibleFromPickle
+    
+
+class Activity(QObject):
+    activityChangeSignal = pyqtSignal()
+
+    def __init__(self, data:ActivityData):
+        super().__init__()
+        self.data = data
+
+    @pyqtProperty(str, notify=activityChangeSignal)
+    def label(self):
+        return self.data.name
         
     
     

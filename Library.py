@@ -5,7 +5,7 @@ Created on Tue Feb 25 09:43:43 2025
 @author: Samuel
 """
 
-from Activity import Activity
+from Activity import ActivityData
 
 
 class Library:
@@ -17,7 +17,7 @@ class Library:
             self.liste = []
             idx = 0
             for line in data:
-                self.liste.append(Activity(line.strip(), idx))
+                self.liste.append(ActivityData(line.strip(), idx))
                 idx += 1
             
     def __str__(self):
@@ -25,12 +25,14 @@ class Library:
         for val in self.liste:
             res += str(val) + "\n"
         return res
-
     
-    def listeProp(self):
+    def getLength(self):
+        return len(self.liste)
+
+    def listeActData(self):
         return self.liste
     
-    def getAct(self, number):
+    def getActData(self, number):
         if len(self.liste) < number:
             print("Error in getAct,", number, "out of range")
         return self.liste[number]

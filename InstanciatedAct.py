@@ -5,50 +5,65 @@ Created on Tue Feb 25 09:43:43 2025
 @author: Samuel
 """
 
+from Activity import ActivityData
 from pValues import pVal
 from Library import Library
 from Plane import planeFromInt
 
 import params as p
-from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot, QVariant
+from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, QVariant
 
-class InstanciatedAct(QObject):
-    instActChangeSignal = pyqtSignal()
-
-    def __init__(self, activity, pstate, notDefTime = None, rec_depth = 0):
-        super().__init__()
-        self.act = activity
-        self.start, self.end, self.time = self.act.what_from(pstate)
+class InstanciatedActData:
+    def __init__(self, activityData:ActivityData, pstate, notDefTime = None, rec_depth = 0):
+        self.actData = activityData
+        self.start, self.end, self.time = self.actData.what_from(pstate)
         self.depth = rec_depth
-        self.plane_ = activity.defPlane
+        self.plane_ = self.actData.defPlane
     
     def __repr__(self):
-        string = "InstAct of " + p.FORMAT_NAME.format(self.act.name) + " from "
+        string = "InstAct of " + p.FORMAT_NAME.format(self.actData.name) + " from "
         string += str(self.start) + " to " + str(self.end) + " (" + str(self.depth) + ")"
         string += "(" + str(self.time) + "')"
         string += " on " + planeFromInt(self.plane_)
         return string
     
+    def __getstate__(self):
+        # https://stackoverflow.com/questions/1939058/simple-example-of-use-of-setstate-and-getstate
+        out = self.__dict__.copy()
+        del out["QTObjectNotVisibleFromPickle"]
+        return out
+    
     def adjust(self, pNew, notDefTime = None):
         # Modify the start and end pValues given a new starting-position
-        self.start, self.end, self.time = self.act.what_from(pNew, notDefTime)
-        self.instActChangeSignal.emit()
+        self.start, self.end, self.time = self.actData.what_from(pNew, notDefTime)
+        #self.instActChangeSignal.emit() # This will bug but it is trouble for later
+
+    def getQtObject(self):
+        # Returns a PyQt6 object to be used in the GUI
+        self.QTObjectNotVisibleFromPickle = InstanciatedAct(self)
+        return self.QTObjectNotVisibleFromPickle
+
+class InstanciatedAct(QObject):
+    instActChangeSignal = pyqtSignal()
+
+    def __init__(self, data:InstanciatedActData):
+        super().__init__()
+        self.data = data
     
-    @pyqtProperty(QVariant, notify=instActChangeSignal)
-    def activity(self):
-        return self.act
+    def __repr__(self):
+        return str(self.data)
     
     @pyqtProperty(int, notify=instActChangeSignal)
     def myTime(self):
-        return self.time
+        return self.data.time
     
     @pyqtProperty(int, notify=instActChangeSignal)
     def plane(self):
-        return self.plane_
+        return self.data.plane_
     
     @pyqtProperty(str, notify=instActChangeSignal)
     def label(self):
-        return self.act.name
+        return self.data.actData.name
     
 def tests():
     print("testing Activities and Librairies")

@@ -78,6 +78,12 @@ class ActivityData:
     def __repr__(self):
         return self.toString(False)
     
+    def __getstate__(self):
+        # https://stackoverflow.com/questions/1939058/simple-example-of-use-of-setstate-and-getstate
+        out = self.__dict__.copy()
+        del out["QTObjectNotVisibleFromPickle"]
+        return out
+    
     def what_from(self, start, notDefTime = None):
         would_start = start.needToReach(self.pcond)
         if notDefTime == None:

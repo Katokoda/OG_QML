@@ -13,10 +13,10 @@ Rectangle {
     required property int myIdx
     required property var instAct
 
-    property int verticalOffset: og.myPixelHeight - 40 - (40 * instAct.plane)
+    property int verticalOffset: (instAct != null ? og.myPixelHeight - 40 - (40 * instAct.plane) : 0)
 
 
-    width: pixelPerMinute * instAct.myTime
+    width: (instAct != null ? pixelPerMinute * instAct.myTime : 0)
     height: 120
     color: "transparent"
 
@@ -47,7 +47,7 @@ Rectangle {
         
         MyText {
             id: labelText
-            myText: invisibleAct.instAct.label
+            myText: (instAct != null ? invisibleAct.instAct.label : "null")
             myColor: "#222222"
             mySize: 10
         }

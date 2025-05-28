@@ -1,13 +1,14 @@
 
-from Library import Library
-from OrchestrationGraph import OrchestrationGraph
+import pickle
+
+from OrchestrationGraph import OrchestrationGraphData
 from pValues import pVal
 import params as p
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
-def myExternalPrint(OG):
+def myExternalPrint(OG:OrchestrationGraphData):
     # WARNING: this should not be called from a file or process including a PyQt component
     # The utilisation of matplotlib conflicts with PyQT, see
     # https://stackoverflow.com/questions/36675269/cannot-move-matplotlib-plot-window-and-exit-it-using-red-x-button/36704822#36704822
@@ -39,11 +40,10 @@ def myExternalPrint(OG):
 
 print("    SUB - This is another python process speaking")
 
-myLib = Library("inputData/interpolation_2D_library.csv")
-OG = OrchestrationGraph(myLib, 50, pVal((0.0, 0.0)), pVal((0.9, 0.9)))
-for i in range(5):
-    OG.insert(2*i, i)
-myExternalPrint(OG)
+with open("temp/OGSaveForPrinting.pickle", 'rb') as f:
+    OG = pickle.load(f)
+    print(OG)
+    myExternalPrint(OG)
 
 print("    SUB - Done")
 

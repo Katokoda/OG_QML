@@ -13,7 +13,7 @@ import pickle
 
 
 from Library import Library
-from InstanciatedAct import InstanciatedAct
+from InstanciatedAct import InstanciatedActData
 from ContextActivity import ContextActivity
 from Efficience import getEff
 
@@ -116,7 +116,7 @@ class OrchestrationGraphData:
     
 
     def insert(self, actIdx:int, idx:int):
-        instanceToAdd = InstanciatedAct(self.lib.getActData(actIdx), self.reached, len(self.listOfFixedInstancedAct))
+        instanceToAdd = InstanciatedActData(self.lib.getActData(actIdx), self.reached, len(self.listOfFixedInstancedAct))
         if len(self.listOfFixedInstancedAct) < idx:
             print("WARNING: inserted at index", idx)
         self.quantities[actIdx] += 1
@@ -140,7 +140,7 @@ class OrchestrationGraphData:
 
 
     def remove(self, iActIdx:int):
-        self.quantities[self.listOfFixedInstancedAct[iActIdx].act.idx] -= 1
+        self.quantities[self.listOfFixedInstancedAct[iActIdx].actData.idx] -= 1
         self.listOfFixedInstancedAct = self.listOfFixedInstancedAct[:iActIdx] + self.listOfFixedInstancedAct[iActIdx+1:]  # Remove the instAct from its current position
         
 
@@ -202,6 +202,7 @@ class OrchestrationGraph(QObject):
 
 
     def myCallerForPrintingSubprocess(self):
+        self.saveAsFile("temp/OGSaveForPrinting")
         print("Caller - myCallerForPrintingSubprocess - start")
         subprocess.call(['sh', './callMyPythonPrinter.sh'])
         print("Caller - myCallerForPrintingSubprocess - done")
@@ -254,7 +255,7 @@ class OrchestrationGraph(QObject):
 
     @pyqtProperty(QVariant, notify=ogChangeSignal)
     def listeReal(self):
-        return self.data.listOfFixedInstancedAct
+        return [iActData.getQtObject() for iActData in self.data.listOfFixedInstancedAct]
 
 
     @pyqtProperty(QVariant, notify=gapSelectionChangeSignal)
@@ -292,9 +293,10 @@ def tests():
         OG.insert(actIdx, actIdx)
 
     print(OG)
-    OG.saveAsFile("MYTEST")
+    OG.saveAsFile("test/OG_file_test")
 
-    OG2 = pickle.load(open("MYTEST.pickle", 'rb'))
+    OG2 = pickle.load(open("test/OG_file_test.pickle", 'rb'))
+    print("")
     print("PICKLED OG:")
     print(OG2)
 

@@ -60,43 +60,14 @@ class OrchestrationGraph(QObject):
     @pyqtSlot()
     def myCustomPrintFunction(self):
         t_thread = threading.Thread(target=self.myCallerForPrintingSubprocess)
-        t_thread.daemon = True
         t_thread.start()
+        print("MAIN - after threading continues")
 
-        
         
     def __repr__(self):
-        """ WARNING """
-        # The utilisation of matplotlib conflicts with PyQT, see
-        # https://stackoverflow.com/questions/36675269/cannot-move-matplotlib-plot-window-and-exit-it-using-red-x-button/36704822#36704822
-        # That explains the comments below which are use to print the OG but can't be used with PyQT. They are not maintained anymore
-
-
-        # fig, ax = plt.subplots(1)
-        
-        # reached = None
         res = ""
         for iAct in self.listOfFixedInstancedAct:
             res += str(iAct) + "\n"
-        #     temp_effect = iAct.end.minus(iAct.start)
-        #     ax.add_patch( patches.Rectangle(iAct.start.v,
-        #                 temp_effect.v[0], temp_effect.v[1], fc = 'none', #facecolor
-        #                 color = p.COLORS_DEPTH[iAct.depth], linewidth = 1, linestyle="-"))
-        #     if reached != None:
-        #         ax.add_patch( patches.FancyArrowPatch(reached.v, iAct.start.v, arrowstyle='->', mutation_scale=10))
-        #         # draw arrow from reached to act.start
-        #     reached = iAct.end
-        
-
-            
-        # ax.scatter(self.start.v[0], self.start.v[1], marker='x')
-        # ax.scatter(self.goal.v[0], self.goal.v[1], marker='x')
-        # plt.xlabel("fluency")
-        # plt.ylabel("depth")
-        # plt.title("OG")
-        
-        # plt.show()
-
         return "OG printed (but not as plot):\n"\
                 + res\
                 + str(round(self.evaluate_gaps()[0], 4))\

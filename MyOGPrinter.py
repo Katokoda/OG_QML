@@ -1,8 +1,15 @@
+"""
+This file is an external process called by an external script (in file callMyPythonPrinter.sh).
+It loads an OrchestrationGraphData object from a pickle file and prints it using matplotlib.
+
+This is necessary because the matplotlib package conflicts heavily with PyQt
+and because both librairies need to be called from the main thread.
+"""
+
 
 import pickle
 
 from OrchestrationGraph import OrchestrationGraphData
-from pValues import pVal
 import params as p
 
 import matplotlib.pyplot as plt
@@ -37,13 +44,7 @@ def myExternalPrint(OG:OrchestrationGraphData):
     plt.show()
 
 
-
-print("    SUB - This is another python process speaking")
-
 with open("temp/OGSaveForPrinting.pickle", 'rb') as f:
     OG = pickle.load(f)
-    print(OG)
     myExternalPrint(OG)
-
-print("    SUB - Done")
 

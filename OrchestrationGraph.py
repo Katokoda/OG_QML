@@ -40,19 +40,23 @@ class OrchestrationGraphData:
         self.quantities = [0]*self.lib.getLength()
         self.totTime = 0
 
+        self.remainingGapsCount = 1
+        self.remainingGapsDistance = start.distance_onlyForward(goal)
+
         self.gapFocus = None # Index of the gap currently selected in QML.
         self.currentListForSelectedGap = [] # REQUIRED --> Segmentation Fault
         # otherwise the QML objects references to a temporary variable
 
     def __repr__(self):
-        res = ""
+        textList = ""
         for iAct in self.listOfFixedInstancedAct:
-            res += str(iAct) + "\n"
-        return "OG printed (but not as plot):\n"\
-                + res\
-                + str(round(self.evaluate_gaps()[0], 4))\
-                + " " + str(self.totTime) + " min (budget = "\
-                + str(self.tBudget) + " min)"
+            textList += str(iAct) + "\n"
+        return "\nThe lesson plan is:\n"\
+                + textList\
+                + "Time spent " + str(self.totTime) + " min (budget = "\
+                + str(self.tBudget) + " min).\n"\
+                + "Remains " + str(self.remainingGapsCount) + " gaps to cover, "\
+                + "for a \"distance\" of " + str(self.remainingGapsDistance) + ".\n"
     
     def __getstate__(self):
         # https://stackoverflow.com/questions/1939058/simple-example-of-use-of-setstate-and-getstate
@@ -116,6 +120,7 @@ class OrchestrationGraphData:
             iAct.adjust(current, iAct.time)
             current = iAct.end
         self.reached = current
+        self.evaluate_gaps()
     
 
     def insert(self, actIdx:int, idx:int):
@@ -147,6 +152,11 @@ class OrchestrationGraphData:
         self.listOfFixedInstancedAct = self.listOfFixedInstancedAct[:iActIdx] + self.listOfFixedInstancedAct[iActIdx+1:]  # Remove the instAct from its current position
         
 
+    def reset(self):
+        self.quantities = [0]*self.lib.getLength()
+        self.listOfFixedInstancedAct = []
+        
+
     # ========== GETTERS ========== #
     
     def getFlags(self, actIdx:int):
@@ -158,8 +168,9 @@ class OrchestrationGraphData:
         return flags
     
     def evaluate_gaps(self):
-        # returns the total remaining gap and the idx of the all gaps to cover
-        remainingGap = 0
+        # returns the idx of the all gaps to cover
+        self.remainingGapsCount = 0
+        self.remainingGapsDistance = 0
         gapsToCover = []
         current = self.start
         
@@ -171,11 +182,13 @@ class OrchestrationGraphData:
             else:
                 curr_gap = current.distance_onlyForward(self.goal)
                 
-            remainingGap += curr_gap
             if p.TRESHOLD < curr_gap:
+                self.remainingGapsCount += 1
+                self.remainingGapsDistance += curr_gap
                 gapsToCover.append((curr_gap, gap_idx))
-            
-        return remainingGap, gapsToCover
+
+        print(gapsToCover)
+        return gapsToCover
 
   
 
@@ -203,9 +216,7 @@ class OrchestrationGraph(QObject):
 
     def myCallerForPrintingSubprocess(self):
         self.saveAsFile("temp/OGSaveForPrinting")
-        print("Caller - myCallerForPrintingSubprocess - start")
         subprocess.call(['sh', './callMyPythonPrinter.sh'])
-        print("Caller - myCallerForPrintingSubprocess - done")
 
 
     # ============== SLOTS ============== #
@@ -218,7 +229,6 @@ class OrchestrationGraph(QObject):
     def myCustomPrintFunction(self):
         t_thread = threading.Thread(target=self.myCallerForPrintingSubprocess)
         t_thread.start()
-        print("MAIN - after threading continues")
 
     @pyqtSlot(str)
     def saveAsFile(self, filename):
@@ -250,6 +260,12 @@ class OrchestrationGraph(QObject):
         self.data.remove(iActIdx)
         self.reStructurate()
 
+
+    @pyqtSlot()
+    def reset(self):
+        self.data.reset()
+        self.reStructurate()
+
     
     # ============== PROPERTIES ============== #
 
@@ -271,6 +287,14 @@ class OrchestrationGraph(QObject):
     @pyqtProperty(int, notify=ogChangeSignal)
     def totalTime(self):
         return self.data.totTime
+    
+    @pyqtProperty(int, notify=ogChangeSignal)
+    def lessonTime(self):
+        return self.data.tBudget
+    
+    @pyqtProperty(int, notify=ogChangeSignal)
+    def remainingGapsCount(self):
+        return self.data.remainingGapsCount
 
     @pyqtProperty(int, notify=ogChangeSignal)
     def numberPlanes(self):

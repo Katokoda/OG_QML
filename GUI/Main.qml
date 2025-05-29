@@ -76,11 +76,6 @@ ApplicationWindow {
         onClicked: (mouse) => {
             resetActSelection()
             resetGapSelection()
-
-            console.log("")
-            console.log("Orchestration Graph printed just for demo and debug purposes")
-            context_OGraph.print()
-            context_OGraph.myCustomPrintFunction()
         }
     }
 
@@ -99,46 +94,16 @@ ApplicationWindow {
         border.width: 1
         border.color: "#444444"
 
-
-        // ACTIVITY SELECTION INDICATOR
-        Rectangle {
-            visible: app_selectedAct != null
-            id: topPanelBalise
-            anchors.bottom: parent.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-            height: 40
-            width: height*2
-            z : 2
-            color : "transparent"
-            border.color : "transparent"
-            border.width: 1
-
-            Shape {
-                anchors.centerIn: parent
-
-                ShapePath {
-                    fillColor: (app_selectedAct!=null ? app_selectedAct.color : "pink")
-                    strokeColor: "white"
-                    strokeWidth: 2
-
-                    capStyle: ShapePath.FlatCap
-
-                    PathAngleArc {
-                        centerX: topPanelBalise.height; centerY: topPanelBalise.height
-                        radiusX: topPanelBalise.height; radiusY: topPanelBalise.height
-                        startAngle: -180
-                        sweepAngle: 180
-                    }
-                }
-            }
-
-            Text {
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: parent.verticalCenter
-                color: "black"
-                text: "close"
-            }
+        Top_Lesson {
+            anchors.fill: parent
+            visible: (app_selectedAct == null)
         }
+
+        Top_Activity {
+            anchors.fill: parent
+            visible: (app_selectedAct != null)
+        }
+
     }
 
 

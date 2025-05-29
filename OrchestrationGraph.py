@@ -54,22 +54,25 @@ class OrchestrationGraphData:
                 + " " + str(self.totTime) + " min (budget = "\
                 + str(self.tBudget) + " min)"
     
-    def copyData(self):
-        other = OrchestrationGraphData(self.lib, self.tBudget, self.start, self.goal)
-        other.listOfFixedInstancedAct = self.listOfFixedInstancedAct.copy()
-        other.totTime = self.totTime
-        other.reached = self.reached
-        other.quantities = self.quantities.copy()
-        return other
+    def __getstate__(self):
+        # https://stackoverflow.com/questions/1939058/simple-example-of-use-of-setstate-and-getstate
+        out = self.__dict__.copy()
+        del out["currentListForSelectedGap"]
+        del out["gapFocus"]
+        return out
     
+    def __setstate__(self, d):
+        self.__dict__ = d
+        self.currentListForSelectedGap = []
+        self.gapFocus = None
+
 
     # ========== ACTIONNABLES ========== #
 
     def saveAsFile(self, filename:str):
-        other = self.copyData()
         with open(filename+".pickle", 'wb') as f:
             # Pickle the 'data' dictionary using the highest protocol available.
-            pickle.dump(other, f, pickle.HIGHEST_PROTOCOL)
+            pickle.dump(self, f, pickle.HIGHEST_PROTOCOL)
 
 
     def reEvaluateData(self):
@@ -187,9 +190,6 @@ class OrchestrationGraph(QObject):
 
     def __repr__(self):
         return self.data.__repr__()
-    
-    def copy(self):
-        return OrchestrationGraph(self.data.copyData())
     
     def reEvaluate(self):
         self.data.reEvaluateData()

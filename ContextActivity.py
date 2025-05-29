@@ -5,7 +5,7 @@ Created on Tue Feb 25 09:43:43 2025
 @author: Samuel
 """
 
-from Activity import Activity, ActivityData
+from Activity import ActivityData
 from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal
 
 class FlagContainer(QObject):

@@ -157,10 +157,6 @@ Rectangle {
                 
                 buttonText: "Add Recommended"
                 onClicked: {
-<<<<<<< HEAD
-=======
-                    console.log("Clicked Add Recommended GENERAL button - not yet implemented")
->>>>>>> 736b56bf261ec4e7960afce7d5a7762784a69c73
                     context_OGraph.autoAdd()
                 }
             }
@@ -173,10 +169,6 @@ Rectangle {
                 
                 buttonText: "Add Recommended here"
                 onClicked: {
-<<<<<<< HEAD
-=======
-                    console.log("Clicked Add Recommended HERE button - not yet implemented")
->>>>>>> 736b56bf261ec4e7960afce7d5a7762784a69c73
                     context_OGraph.autoAddFromSelectedGap()
                 }
             }

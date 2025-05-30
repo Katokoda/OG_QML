@@ -13,11 +13,11 @@ Rectangle {
     required property int myIdx
     required property var instAct
 
-    property int verticalOffset: (instAct != null ? og.myPixelHeight - 40 - (40 * instAct.plane) : 0)
+    property int verticalOffset: (instAct != null ? (40 * instAct.plane) : 0)
 
 
     width: (instAct != null ? pixelPerMinute * instAct.myTime : 0)
-    height: 120
+    height: parent.height
     color: "transparent"
 
         // //DEBUG

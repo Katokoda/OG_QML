@@ -1,22 +1,15 @@
 
-PLANE_NAMES = ["Class", "Team", "Individual"]
+# Insert the name as they will be present in the DATA
+# And in top-to-bottom order according to GUI
+PLANE_NAMES = ["Indiv.", "Team", "Class"]
 
 def intFromPlane(string : str):
     # Convert a string representing the plane to an int
-    if string == "Class":
-        return 0
-    elif string == "Team":
-        return 1
-    elif string == "Individual":
-        return 2
-    else:
-        print("Error - intFromPlane: unknown plane")
-        1/0
+    return PLANE_NAMES.index(string)
         
 def planeFromInt(idx : int):
     # Convert a string representing the plane to an int
     if 0 <= idx < len(PLANE_NAMES):
         return PLANE_NAMES[idx]
     else:
-        print("Error - planeFromInt: invalid idx")
-        1/0
+        raise ValueError('Error - planeFromInt: invalid idx.')

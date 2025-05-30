@@ -126,8 +126,7 @@ class InterPVal:
     def get(self, t):
         # Returns the p-effect corresponding to the time t if t in the accepted frame.
         if t < self.tMin or self.tMax < t:
-            print("Error - InterPVal: time out of Bound")
-            1/0
+            raise ValueError('Error - InterPVal: time out of Bound')
         #return self.pMin + self.pDelta * lambda
         return self.pMin.plus( self.pDelta.times(linInterp(self.tMin, self.tMax, t)) )
     

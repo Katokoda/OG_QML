@@ -16,6 +16,7 @@ from Library import Library
 from InstanciatedAct import InstanciatedActData
 from ContextActivity import ContextActivity
 from Efficience import getEff
+from Plane import PLANE_NAMES
 
 import params as p
 from params import NUMBER_PRINT
@@ -187,7 +188,6 @@ class OrchestrationGraphData:
                 self.remainingGapsDistance += curr_gap
                 gapsToCover.append((curr_gap, gap_idx))
 
-        print(gapsToCover)
         return gapsToCover
 
   
@@ -298,13 +298,11 @@ class OrchestrationGraph(QObject):
 
     @pyqtProperty(int, notify=ogChangeSignal)
     def numberPlanes(self):
-        print("Python has been asked the number of planes and answered three") #TODO
-        return 3
+        return len(PLANE_NAMES)
     
     @pyqtProperty(QVariant, notify=ogChangeSignal)
     def labelPlanes(self):
-        print("Python has been asked the labels of planes and answered hard-written list") #TODO
-        return ["Indiv.", "Team", "Class"]
+        return PLANE_NAMES
     
 
 

@@ -10,14 +10,4 @@ opt min time:       A minimal number of minutes during which the activity can be
     max time:       A maximal number of minutes during which the activity can be done (with maximal effect)
     def time:       The default time. Note that the default effect is a linear interpolation of the defined extremes.
     max repetitions:The maximal number of repetitions. If reached, the user will see a warning recommending not to add this activity.
-    def plane:      A string representing in which "plane" the activity takes place according to the Orchestration Graphs book.
-
-
-Note:
-1. Individual
-2. Team
-3. Class
-Those are the most used one. One could continue with
-4. Periphery
-5. Community
-6. World
+    def plane:      A string representing in which "plane" the activity takes place according to the Orchestration Graphs book. The string should be present in PLANE_NAMES of Plane.py file.

@@ -61,63 +61,88 @@ Rectangle {
         width: parent.width
         height: parent.height * 0.25
 
-        MyButton {
-            id: button_reset
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.left: parent.left
+        Row {
+            anchors.fill: parent
             anchors.leftMargin: 20
+            anchors.rightMargin: 20
+            spacing: 5
 
-            buttonText: "Reset"
-            onClicked: {
-                context_OGraph.reset()
-            }
-        }
-        
-        MyButton {
-            id: button_load
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.left: button_reset.right
-            anchors.leftMargin: 5
-            
-            buttonText: "Load"
-            onClicked: {
-                console.log("Clicked load button - not yet implemented")
-            }
-        }
+            // This is the row of buttons for the lesson
+            id: buttonRow
 
-        MyButton {
-            id: button_save
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.left: button_load.right
-            anchors.leftMargin: 5
-            
-            buttonText: "Save"
-            onClicked: {
-                console.log("Clicked save button - not yet implemented")
-            }
-        }
+            MyButton {
+                id: button_reset
+                anchors.verticalCenter: parent.verticalCenter
+                enabled: (context_OGraph.totalTime > 0)
 
-        MyButton {
-            id: button_textprint
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.left: button_save.right
-            anchors.leftMargin: 5
-            
-            buttonText: "Print"
-            onClicked: {
-                context_OGraph.print()
+                buttonText: "Reset"
+                onClicked: {
+                    context_OGraph.reset()
+                }
             }
-        }
-
-        MyButton {
-            id: button_techprint
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.left: button_textprint.right
-            anchors.leftMargin: 5
             
-            buttonText: "Print (technical)"
-            onClicked: {
-                context_OGraph.myCustomPrintFunction()
+            MyButton {
+                id: button_load
+                anchors.verticalCenter: parent.verticalCenter
+                
+                buttonText: "Load"
+                onClicked: {
+                    console.log("Clicked load button - not yet implemented")
+                }
+            }
+
+            MyButton {
+                id: button_save
+                anchors.verticalCenter: parent.verticalCenter
+                
+                buttonText: "Save"
+                onClicked: {
+                    console.log("Clicked save button - not yet implemented")
+                }
+            }
+
+            MyButton {
+                id: button_textprint
+                anchors.verticalCenter: parent.verticalCenter
+                
+                buttonText: "Print"
+                onClicked: {
+                    context_OGraph.print()
+                }
+            }
+
+            MyButton {
+                id: button_techprint
+                anchors.verticalCenter: parent.verticalCenter
+                
+                buttonText: "Print (technical)"
+                onClicked: {
+                    context_OGraph.myCustomPrintFunction()
+                }
+            }
+
+            MyButton {
+                id: button_addRecoGeneral
+                visible: (app_selectedGap == null)
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.leftMargin: 5
+                
+                buttonText: "Add Recommended"
+                onClicked: {
+                    console.log("Clicked Add Recommended GENERAL button - not yet implemented")
+                }
+            }
+
+            MyButton {
+                id: button_addRecoGap
+                visible: (app_selectedGap != null)
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.leftMargin: 5
+                
+                buttonText: "Add Recommended here"
+                onClicked: {
+                    console.log("Clicked Add Recommended HERE button - not yet implemented")
+                }
             }
         }
     }

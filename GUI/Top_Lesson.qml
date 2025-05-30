@@ -88,7 +88,23 @@ Rectangle {
                 
                 buttonText: "Load"
                 onClicked: {
-                    console.log("Clicked load button - not yet implemented")
+                    loadFileDialog.open()
+                }
+
+
+                FileDialog {
+                    id: loadFileDialog
+                    defaultSuffix: "pickle"
+                    acceptLabel: "Save"
+
+                    nameFilters: ["Pickle Files (*.pickle)", "All Files (*)"]
+
+                    onAccepted: {
+                        context_OGraph.loadFromFile(selectedFile)
+                    }
+                    onRejected: {
+                        console.log("Rejected File")
+                    }
                 }
             }
 
@@ -103,7 +119,6 @@ Rectangle {
 
                 FileDialog {
                     id: saveFileDialog
-                    //currentFolder: "file:///home/"
                     defaultSuffix: "pickle"
                     acceptLabel: "Save"
                     fileMode: FileDialog.SaveFile
@@ -111,6 +126,7 @@ Rectangle {
                     nameFilters: ["Pickle Files (*.pickle)", "All Files (*)"]
 
                     onAccepted: {
+                        loadFileDialog.currentFolder = currentFolder
                         context_OGraph.saveAsFile(selectedFile)
                     }
                     onRejected: {

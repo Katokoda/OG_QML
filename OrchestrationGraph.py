@@ -97,6 +97,19 @@ class OrchestrationGraphData:
             # Pickle the 'data' dictionary using the highest protocol available.
             pickle.dump(self, f, pickle.HIGHEST_PROTOCOL)
 
+    def loadFromFile(filename:str):
+        qurl = QUrl(filename)
+        if qurl.isValid():
+            filename = qurl.toLocalFile()
+        else:
+            print("WARNING: QUrl is not valid, using filename as is.")
+
+        if not filename.endswith(".pickle"):
+            filename += ".pickle"
+        with open(filename, 'rb') as f:
+            newOG = pickle.load(f)
+            return newOG
+
 
     def reEvaluateData(self):
         if self.gapFocus == None:
@@ -251,6 +264,12 @@ class OrchestrationGraph(QObject):
     @pyqtSlot(str)
     def saveAsFile(self, filename):
         self.data.saveAsFile(filename)
+
+
+    @pyqtSlot(str)
+    def loadFromFile(self, filename):
+        self.data = OrchestrationGraphData.loadFromFile(filename)
+        self.reStructurate()
 
     @pyqtSlot(int)
     # Should always be called before listActivityForGap is required.

@@ -102,9 +102,6 @@ Rectangle {
                     onAccepted: {
                         context_OGraph.loadFromFile(selectedFile)
                     }
-                    onRejected: {
-                        console.log("Rejected File")
-                    }
                 }
             }
 
@@ -128,9 +125,6 @@ Rectangle {
                     onAccepted: {
                         loadFileDialog.currentFolder = currentFolder
                         context_OGraph.saveAsFile(selectedFile)
-                    }
-                    onRejected: {
-                        console.log("Rejected File")
                     }
                 }
             }
@@ -164,6 +158,7 @@ Rectangle {
                 buttonText: "Add Recommended"
                 onClicked: {
                     console.log("Clicked Add Recommended GENERAL button - not yet implemented")
+                    context_OGraph.autoAdd()
                 }
             }
 
@@ -176,6 +171,7 @@ Rectangle {
                 buttonText: "Add Recommended here"
                 onClicked: {
                     console.log("Clicked Add Recommended HERE button - not yet implemented")
+                    context_OGraph.autoAddFromSelectedGap()
                 }
             }
         }

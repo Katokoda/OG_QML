@@ -29,6 +29,9 @@ class FlagContainer(QObject):
     def isWorse(self):
         return self.worse
     
+    def hasNoFlag(self):
+        return not (self.exhausted or self.tooLong or self.worse)
+    
     def __repr__(self):
         return f"FlagContainer(exhausted={self.exhausted}, tooLong={self.tooLong}, worse={self.worse})"
 
@@ -37,15 +40,18 @@ class FlagContainer(QObject):
 class ContextActivity(QObject):
     contextActivityChangeSignal = pyqtSignal()
 
-    def __init__(self, activity : ActivityData, score:float, flags, isRecommended:bool):
+    def __init__(self, activity : ActivityData, score:float, flags):
         super().__init__()
         self.myActData = activity
         self.myScore = score
         self.myFlags = FlagContainer(flags)
-        self.isRecommended = isRecommended
+        self.isBest = False #by default
 
     def __repr__(self):
-        return f"ContextActivity({self.myActData.name}, {self.myScore}, {self.myFlags}, {self.isRecommended})"
+        return f"ContextActivity({self.myActData.name}, {self.myScore}, {self.myFlags})"
+
+    def hasNoFlag(self):
+        return self.myFlags.hasNoFlag()
     
     @pyqtProperty(QObject, notify=contextActivityChangeSignal)
     def activity(self):
@@ -58,6 +64,10 @@ class ContextActivity(QObject):
     @pyqtProperty(float, notify=contextActivityChangeSignal)
     def efficiencyDEBUG(self):
         return self.myScore
+    
+    @pyqtProperty(bool, notify=contextActivityChangeSignal)
+    def isRecommended(self): #TODO
+        return self.isBest
 
 
     

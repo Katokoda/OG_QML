@@ -19,15 +19,12 @@ from Efficience import getEff
 from Plane import PLANE_NAMES
 
 import params as p
-from params import NUMBER_PRINT
 
 from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot, QVariant
-from PyQt6.QtWidgets import QFileDialog
 from PyQt6.QtCore import QUrl
 
 
 #For tests
-import random as r
 from pValues import pVal
 from Library import Library
 
@@ -124,7 +121,7 @@ class OrchestrationGraphData:
         for i in range(self.lib.getLength()):
             flags = self.getFlags(i)
             actData = self.lib.getActData(i)
-            result.append(ContextActivity(actData, 100, flags, (len(flags) == 0)))
+            result.append(ContextActivity(actData, 100, flags))
         return result
     
     def evaluateFor(self, start, goal):
@@ -140,8 +137,22 @@ class OrchestrationGraphData:
             if wouldStart.isPast(goal):
                 flags.append("isPast")
             efficiency = getEff(d, d1, d2, actData.defT, self.tBudget - self.totTime)
-            result.append(ContextActivity(actData, efficiency, flags, (len(flags) == 0)))
+            result.append(ContextActivity(actData, efficiency, flags))
+        self.getAndSetBestFromList(result)
         return result
+    
+    def getAndSetBestFromList(self, listOfContextAct):
+        if self.gapFocus is None:
+            return None
+        
+        bestCAct = listOfContextAct[0]
+        for CAct in listOfContextAct:
+            if (CAct.hasNoFlag and not bestCAct.hasNoFlag) or (CAct.myScore > bestCAct.myScore):
+                bestCAct = CAct
+        if bestCAct.flags.isWorse:
+            return None
+        bestCAct.isBest = True
+        return bestCAct
     
 
     def reStructurateData(self):
@@ -187,6 +198,11 @@ class OrchestrationGraphData:
     def reset(self):
         self.quantities = [0]*self.lib.getLength()
         self.listOfFixedInstancedAct = []
+
+    def insertBestForSelectedGap(self):
+        for CAct in self.currentListForSelectedGap:
+            if CAct.isBest:
+                return CAct.myActData.idx
         
 
     # ========== GETTERS ========== #
@@ -302,6 +318,19 @@ class OrchestrationGraph(QObject):
     def reset(self):
         self.data.reset()
         self.reStructurate()
+
+    @pyqtSlot()
+    def autoAdd(self):
+        print("WARNING: autoAdd not implemented yet.")
+        print("Should disable the button if the selected gap has no gap")
+        self.setGapFocus(0) #TODO
+        self.autoAddFromSelectedGap()
+
+    @pyqtSlot()
+    def autoAddFromSelectedGap(self):
+        #TODO
+        print("Should disable the button if the selected gap has no recommended activity")
+        self.insert(self.data.insertBestForSelectedGap(), self.data.gapFocus)
 
     
     # ============== PROPERTIES ============== #

@@ -58,7 +58,7 @@ def myExternalPrint(OG:OrchestrationGraphData):
     plt.show()
 
 
-with open("temp/OGSaveForPrinting.pickle", 'rb') as f:
+with open("temp/saveForPrint.pickle", 'rb') as f:
     OG = pickle.load(f)
     myExternalPrint(OG)
 

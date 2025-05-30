@@ -3,3 +3,4 @@ myVenvForOGraph/
 output.txt
 test/
 temp/OGSaveForPrinting.pickle
+temp/saveForPrint.pickle

@@ -22,6 +22,8 @@ import params as p
 from params import NUMBER_PRINT
 
 from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot, QVariant
+from PyQt6.QtWidgets import QFileDialog
+from PyQt6.QtCore import QUrl
 
 
 #For tests
@@ -75,7 +77,23 @@ class OrchestrationGraphData:
     # ========== ACTIONNABLES ========== #
 
     def saveAsFile(self, filename:str):
-        with open(filename+".pickle", 'wb') as f:
+        # chatGPT indicated the existance of QUrl
+        # https://doc.qt.io/archives/qtforpython-5/PySide2/QtCore/QUrl.html
+
+        qurl = QUrl(filename)
+        if qurl.isValid():
+            filename = qurl.toLocalFile()
+        else:
+            print("WARNING: QUrl is not valid, using filename as is.")
+
+        if not filename.endswith(".pickle"):
+            filename += ".pickle"
+        with open(filename, 'wb') as f:
+            # Pickle the 'data' dictionary using the highest protocol available.
+            pickle.dump(self, f, pickle.HIGHEST_PROTOCOL)
+
+    def saveAsTempFile(self):
+        with open("temp/saveForPrint.pickle", 'wb') as f:
             # Pickle the 'data' dictionary using the highest protocol available.
             pickle.dump(self, f, pickle.HIGHEST_PROTOCOL)
 
@@ -215,7 +233,7 @@ class OrchestrationGraph(QObject):
 
 
     def myCallerForPrintingSubprocess(self):
-        self.saveAsFile("temp/OGSaveForPrinting")
+        self.data.saveAsTempFile()
         subprocess.call(['sh', './callMyPythonPrinter.sh'])
 
 

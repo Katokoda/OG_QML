@@ -1,3 +1,3 @@
 This folder is a temporary folder that will be populated during the execution of the application (in particular the External printing of an Orchestration graph).
-Do not delete the folder but feel free to delete its content.
-Do not add or touch files except if you know what you are doing.
+Do not delete the folder but feel free to delete its content when the application is not running.
+Do not add or modify files except if you know what you are doing (those files may be unpickled which can cause undefined behavior).

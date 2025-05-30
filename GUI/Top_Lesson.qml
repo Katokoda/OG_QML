@@ -1,4 +1,5 @@
 import QtQuick 2.15
+import QtQuick.Dialogs
 
 
 Rectangle {
@@ -97,7 +98,24 @@ Rectangle {
                 
                 buttonText: "Save"
                 onClicked: {
-                    console.log("Clicked save button - not yet implemented")
+                    saveFileDialog.open()
+                }
+
+                FileDialog {
+                    id: saveFileDialog
+                    //currentFolder: "file:///home/"
+                    defaultSuffix: "pickle"
+                    acceptLabel: "Save"
+                    fileMode: FileDialog.SaveFile
+
+                    nameFilters: ["Pickle Files (*.pickle)", "All Files (*)"]
+
+                    onAccepted: {
+                        context_OGraph.saveAsFile(selectedFile)
+                    }
+                    onRejected: {
+                        console.log("Rejected File")
+                    }
                 }
             }
 

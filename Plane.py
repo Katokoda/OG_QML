@@ -1,7 +1,5 @@
 
-# Insert the name as they will be present in the DATA
-# And in top-to-bottom order according to GUI
-PLANE_NAMES = ["Indiv.", "Team", "Class"]
+from params import PLANE_NAMES
 
 def intFromPlane(string : str):
     # Convert a string representing the plane to an int

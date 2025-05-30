@@ -23,12 +23,32 @@ Rectangle {
     property int dragExtendedLength: 0    // the dropzones change this length if they accept a drag
     property int selectExtendedLength: 0    // the dropzones change this length if they get selected or unselected
     property int labelRightMargin: 30
-    // KNOWN BUG: when the selected gap is dragged over, the size is counted in both extended lengths but it should not.
+    // KNOWN VISUAL GLITCH: when the selected gap is dragged over, the size is counted in both extended lengths but it should not.
     property int myPixelLength: lessonIdealWidth + dragExtendedLength + selectExtendedLength // This is the pixel-width from the start to the finish of the current lesson
     property int myPixelHeight: 40*context_OGraph.numberPlanes
 
 
-    // LABELS for each plane + Line for each planes
+    // WHEN EMPTY
+    Rectangle {
+        anchors.centerIn: parent
+        visible: context_OGraph.totalTime == 0
+        width: 200
+        height: 200
+        color: "transparent"
+
+        border.width: 1
+        border.color: "lightgray"
+
+        DropZoneWhenEmpty{
+            id: startDropZone
+            myIdx: 0
+            localOGreference: og
+        }
+    }
+
+
+
+    // LABELS for each plane + Line for each planes + time
     Item {
         id: labelColumn
         visible: lessonRow.visible
@@ -63,28 +83,31 @@ Rectangle {
                     }
                 }
             }
-
         }
     }
-
-
-    Rectangle {
-        anchors.centerIn: parent
-        visible: context_OGraph.totalTime == 0
-        width: 200
-        height: 200
-        color: "transparent"
-
-        border.width: 1
-        border.color: "lightgray"
-
-        DropZoneWhenEmpty{
-            id: startDropZone
-            myIdx: 0
-            localOGreference: og
+    
+    Text{
+        visible: lessonRow.visible
+        anchors.top: lessonRow.bottom
+        anchors.horizontalCenter: lessonRow.left
+        text: "Start"
+        color: "gray"
     }
-}
-
+    Text{
+        id: textTotTime
+        visible: lessonRow.visible
+        anchors.top: lessonRow.bottom
+        anchors.horizontalCenter: lessonRow.right
+        text: context_OGraph.totalTime + " min"
+        color: (context_OGraph.totalTime > context_OGraph.lessonTime? "#dd0000" : "gray")
+    }
+    Text{
+        visible: lessonRow.visible
+        anchors.top: textTotTime.bottom
+        anchors.horizontalCenter: textTotTime.horizontalCenter
+        text: "(max " + context_OGraph.lessonTime + " min)"
+        color: "gray"
+    }
 
     // This holds the lesson itself
     Row {

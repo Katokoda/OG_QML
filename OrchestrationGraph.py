@@ -124,7 +124,7 @@ class OrchestrationGraphData:
     
 
     def insert(self, actIdx:int, idx:int):
-        instanceToAdd = InstanciatedActData(self.lib.getActData(actIdx), self.reached, len(self.listOfFixedInstancedAct))
+        instanceToAdd = InstanciatedActData(self.lib.getActData(actIdx), self.reached)
         if len(self.listOfFixedInstancedAct) < idx:
             print("WARNING: inserted at index", idx)
         self.quantities[actIdx] += 1

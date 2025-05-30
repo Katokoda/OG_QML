@@ -11,18 +11,17 @@ from Library import Library
 from Plane import planeFromInt
 
 import params as p
-from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, QVariant
+from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal
 
 class InstanciatedActData:
-    def __init__(self, activityData:ActivityData, pstate, notDefTime = None, rec_depth = 0):
+    def __init__(self, activityData:ActivityData, pstate):
         self.actData = activityData
         self.start, self.end, self.time = self.actData.what_from(pstate)
-        self.depth = rec_depth
         self.plane_ = self.actData.defPlane
     
     def __repr__(self):
         string = "InstAct of " + p.FORMAT_NAME.format(self.actData.name) + " from "
-        string += str(self.start) + " to " + str(self.end) + " (" + str(self.depth) + ")"
+        string += str(self.start) + " to " + str(self.end)
         string += "(" + str(self.time) + "')"
         string += " on " + planeFromInt(self.plane_)
         return string

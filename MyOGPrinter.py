@@ -22,25 +22,39 @@ def myExternalPrint(OG:OrchestrationGraphData):
 
     fig, ax = plt.subplots(1)
     
-    reached = None
+    reached = OG.start
     res = ""
     for iAct in OG.listOfFixedInstancedAct:
         res += str(iAct) + "\n"
         temp_effect = iAct.end.minus(iAct.start)
+
+        # draw arrow from reached to act.start
+        ax.add_patch( patches.FancyArrowPatch(reached.v, iAct.start.v, arrowstyle='->', mutation_scale=10, color='red'))
+
         ax.add_patch( patches.Rectangle(iAct.start.v,
                     temp_effect.v[0], temp_effect.v[1], fc = 'none', #facecolor
-                    color = p.COLORS_DEPTH[iAct.depth], linewidth = 1, linestyle="-"))
-        if reached != None:
-            ax.add_patch( patches.FancyArrowPatch(reached.v, iAct.start.v, arrowstyle='->', mutation_scale=10))
-            # draw arrow from reached to act.start
+                    color = "black",
+                    linewidth = 1, linestyle="-"))
+        
+        ax.text(iAct.start.v[0] + 0.5*temp_effect.v[0],
+                iAct.start.v[1] + 0.5*temp_effect.v[1],
+                iAct.actData.name,
+            horizontalalignment='center',
+            verticalalignment='center',
+            fontsize=10, color='gray')
+
         reached = iAct.end
     
-    ax.scatter(OG.start.v[0], OG.start.v[1], marker='x')
-    ax.scatter(OG.goal.v[0], OG.goal.v[1], marker='x')
+
+    # draw arrow from reached to the goal (if progression still needed)
+    ax.add_patch( patches.FancyArrowPatch(reached.v, reached.needToReach(OG.goal).v, arrowstyle='->', mutation_scale=10, color='red'))
+    
+    ax.scatter(OG.goal.v[0], OG.goal.v[1], marker='x', label="goal")
+    ax.scatter(OG.start.v[0], OG.start.v[1], marker='x', label="start")
     plt.xlabel("fluency")
     plt.ylabel("depth")
     plt.title("OG")
-    
+    plt.legend()
     plt.show()
 
 

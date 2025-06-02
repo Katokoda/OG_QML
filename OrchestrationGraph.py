@@ -27,6 +27,7 @@ from PyQt6.QtCore import QUrl
 #For tests
 from pValues import pVal
 from Library import Library
+import random as r
 
 class OrchestrationGraphData:
     def __init__(self, library:Library, timeBudget:int, start, goal):
@@ -61,8 +62,8 @@ class OrchestrationGraphData:
     def __getstate__(self):
         # https://stackoverflow.com/questions/1939058/simple-example-of-use-of-setstate-and-getstate
         out = self.__dict__.copy()
-        del out["currentListForSelectedGap"]
-        del out["gapFocus"]
+        out.pop("currentListForSelectedGap", None)
+        out.pop("gapFocus", None)
         return out
     
     def __setstate__(self, d):
@@ -74,25 +75,26 @@ class OrchestrationGraphData:
     # ========== ACTIONNABLES ========== #
 
     def saveAsFile(self, filename:str):
-        # chatGPT indicated the existance of QUrl
-        # https://doc.qt.io/archives/qtforpython-5/PySide2/QtCore/QUrl.html
-
-        qurl = QUrl(filename)
-        if qurl.isValid():
-            filename = qurl.toLocalFile()
-        else:
-            print("WARNING: QUrl is not valid, using filename as is.")
-
         if not filename.endswith(".pickle"):
             filename += ".pickle"
         with open(filename, 'wb') as f:
             # Pickle the 'data' dictionary using the highest protocol available.
             pickle.dump(self, f, pickle.HIGHEST_PROTOCOL)
 
+    def saveAsFileFromQt(self, filename:str):
+        # chatGPT indicated the existance of QUrl. Find more at:
+        # https://doc.qt.io/archives/qtforpython-5/PySide2/QtCore/QUrl.html
+
+        qurl = QUrl(filename)
+        if qurl.isValid():
+            filename = qurl.toLocalFile()
+        else:
+            raise OSError("ERROR: QUrl is not valid:", filename)
+
+        self.saveAsFile(filename)
+
     def saveAsTempFile(self):
-        with open("temp/saveForPrint.pickle", 'wb') as f:
-            # Pickle the 'data' dictionary using the highest protocol available.
-            pickle.dump(self, f, pickle.HIGHEST_PROTOCOL)
+        self.saveAsFile("temp/saveForPrint.pickle")
 
     def loadFromFile(filename:str):
         qurl = QUrl(filename)
@@ -279,7 +281,7 @@ class OrchestrationGraph(QObject):
 
     @pyqtSlot(str)
     def saveAsFile(self, filename):
-        self.data.saveAsFile(filename)
+        self.data.saveAsFileFromQt(filename)
 
 
     @pyqtSlot(str)
@@ -323,6 +325,7 @@ class OrchestrationGraph(QObject):
     def autoAdd(self):
         print("WARNING: autoAdd not implemented yet.")
         print("Should disable the button if the selected gap has no gap")
+        print("SettingGapFocus to 0 ! SHOULD BE CHANGED TODO !")
         self.setGapFocus(0) #TODO
         self.autoAddFromSelectedGap()
 
@@ -375,18 +378,33 @@ class OrchestrationGraph(QObject):
 def tests():
     myLib = Library("inputData/interpolation_2D_library.csv")
     
-    #"""
-    OG = OrchestrationGraph(myLib, 50, pVal((0.0, 0.0)), pVal((0.9, 0.9)))
-    for actIdx in range(5):
-        OG.insert(actIdx, actIdx)
+    print("Testing insertion and reStructuration of OrchestrationGraph")
+    OG1 = OrchestrationGraph(myLib, 50, pVal((0.0, 0.0)), pVal((0.9, 0.9)))
+    for i in range(len(myLib.liste)):
+        OG1.insert(i, i)
 
-    print(OG)
-    OG.saveAsFile("test/OG_file_test")
+    print(OG1)
+    OG1.myCustomPrintFunction()
+    input("Press Enter to continue... (after the visual representation has appeared)")
 
-    OG2 = pickle.load(open("test/OG_file_test.pickle", 'rb'))
-    print("")
-    print("PICKLED OG:")
-    print(OG2)
+    r.shuffle(OG1.data.listOfFixedInstancedAct)
+    print("After shuffling, the Instantiated Activities are the same but in a different order and the technical representation (visual) has a lot of red arrows to it.")
+    print(OG1)
+    OG1.myCustomPrintFunction()
+    input("Press Enter to continue... (after the visual representation has appeared)")
+
+    OG1.reStructurate()
+    print(OG1)
+    OG1.myCustomPrintFunction()
+    input("Press Enter to continue... (after the visual representation has appeared)")
+    
+    print("Testing autoAddFromSelectedGap")
+    OG2 = OrchestrationGraph(myLib, 50, pVal((0.0, 0.0)), pVal((0.9, 0.9)))
+    while 0 < OG2.remainingGapsCount:
+        OG2.autoAdd()
+        print(OG2)
+        OG2.myCustomPrintFunction()
+        input("Press Enter to continue... (after the visual representation has appeared)")
 
 if __name__=="__main__":
     tests()

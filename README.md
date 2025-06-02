@@ -10,13 +10,10 @@ I developped the Python Engine mostly from Windows but then switched to Linux fo
 
 If you want to run the application, I recommend using a linux machine which can already run Python code and create a new virtual environnement. Within this environnement, you can install all required packages using
 
-\>>> pip install -r requirements.txt
+\>>> python3 -m pip install -r requirements.txt
 
-TEMP: 
-pip install git+https://github.com/jmitrevs/matplotlib_backend_qtquick
-pip install PyQt5
 
-This installs all packages listed in the requirements.txt file. Note for myself: This file was generated using \>>> pipreqs --ignore myVenvForOGraph/
+This installs all packages listed in the requirements.txt file. Note: This file was generated using \>>> pipreqs --ignore myVenvForOGraph/
 
 Then, you can run the application using
 
@@ -25,4 +22,7 @@ Then, you can run the application using
 // TODO include a screenshot of the first viewed image.
 
 
-Please contact me at samuel.belisle@epfl.ch and samuel.belisle@alumni.epfl.ch for any details.
+If you wish to change the Library of activities, you can edit the inputData/interpolation_2D_library.csv input file.
+
+
+Please contact me at samuel.belisle@epfl.ch and/or samuel.belisle@alumni.epfl.ch for any details.

@@ -3,29 +3,19 @@
 Created on Thu Mar  6 14:27:39 2025
 
 @author: Samuel
-"""
 
-"""  # for either windows or linux to enable color in terminal
-import os
-os.system('color')
-C_PURPLE = '\033[95m'
-C_BLUE = '\033[94m'
-C_CYAN = '\033[96m'
-C_GREEN = '\033[92m'
-C_WARNING = '\033[93m'
-C_FAIL = '\033[91m'
-C_ENDC = '\033[0m'
-C_UNDERLINE = '\033[4m'
+This holds the parameters used in the program. You can (and should) adujst PLANE_NAMES according to your data.
+You can also adjust PRECISION and TRESHOLD to your needs. Note that they mostly affect the detailed technical view (of the state of the class)
 """
 
 # Insert the name as they will be present in the DATA
-# And in top-to-bottom order according to GUI
+# And in top-down order according to GUI
 PLANE_NAMES = ["Indiv.", "Team", "Class"]
 
 PRECISION = 0.01 # to avoid saying "not reached" when 0.00001 from goal.
 TRESHOLD = 0.05 # To allow a "gap" between two pValues before saying a goal is not reached.
-                # It should depend of the dimensionality.
-                # Another way to do would be to restrict bigger difference
+# NOTE: this should depend of the dimensionality.
+# Another way to do would be to restrict bigger difference.
 
 
 
@@ -35,11 +25,6 @@ TRESHOLD = 0.05 # To allow a "gap" between two pValues before saying a goal is n
 FORMAT_NAME = '{:>20}'
 FORMAT_PVAL = '{:^12}'
 FORMAT_TIME = '{:>2}'
-FORMAT_DIST = '{:<6}'
-FORMAT_NUMB = '{:>5}'
-
-NUMBER_PRINT = ["first", "secnd", "third"]
-NUMBER_PRINT.extend([FORMAT_NUMB.format(str(x)+"th") for x in range(4, 100)])
 
 
 def tests():

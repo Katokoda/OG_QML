@@ -29,7 +29,7 @@ class InstantiatedActData:
     def __getstate__(self):
         # https://stackoverflow.com/questions/1939058/simple-example-of-use-of-setstate-and-getstate
         out = self.__dict__.copy()
-        del out["QTObjectNotVisibleFromPickle"]
+        out.pop("QTObjectNotVisibleFromPickle", None)
         return out
     
     def adjust(self, pNew, notDefTime = None):
@@ -66,30 +66,31 @@ class InstantiatedAct(QObject):
     
 def tests():
     print("testing Activities and Librairies")
-    myLib = Library("inputData/basic_2D_library.txt")
+    myLib = Library("inputData/interpolation_2D_library.csv")
     print(myLib)
         
         
-    print("The library if all were instantiated for a class at", end = '')
+    print("We start by instantiating all activities of the library for students in a state", end = ' ')
     startingPValue = pVal((0.0, 0.0))
     print(startingPValue)
-    liste_one = [InstantiatedAct(myLib.getAct(i), startingPValue) for i in range(len(myLib.liste))]
+    liste_one = [InstantiatedActData(myLib.getActData(i), startingPValue) for i in range(len(myLib.liste))]
     [print(liste_one[i]) for i in range(len(liste_one))]
     
     print()
-    print("Updated to", end = ' ')
+    print("Then, we update each of those instantiated activities to start at", end = ' ')
     adjustPValue = pVal((0.15, 0.4))
     print(adjustPValue)
+    print("This represents the teacher adding an activity before them.")
     for act in liste_one:
         act.adjust(adjustPValue)
         print(act)
             
     
     print()
-    print("The library if all were instantiated for a class at", end = '')
+    print("The library if all were instantiated for students in a state", end = ' ')
     startingPValue = pVal((0.3, 0.3))
     print(startingPValue)
-    liste_two = [InstantiatedAct(myLib.getAct(i), startingPValue) for i in range(len(myLib.liste))]
+    liste_two = [InstantiatedActData(myLib.getActData(i), startingPValue) for i in range(len(myLib.liste))]
     [print(liste_two[i]) for i in range(len(liste_two))]
     
 if __name__=="__main__":

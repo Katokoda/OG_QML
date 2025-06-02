@@ -81,7 +81,7 @@ class ActivityData:
     def __getstate__(self):
         # https://stackoverflow.com/questions/1939058/simple-example-of-use-of-setstate-and-getstate
         out = self.__dict__.copy()
-        del out["QTObjectNotVisibleFromPickle"]
+        out.pop("QTObjectNotVisibleFromPickle", None)
         return out
     
     def what_from(self, start, notDefTime = None):

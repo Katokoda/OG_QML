@@ -1,3 +1,7 @@
+"""
+    This modules converts integers representing planes to the corresponding string.
+    The names are defined in params.py and should correspond with the input data.
+"""
 
 from params import PLANE_NAMES
 

@@ -326,21 +326,13 @@ class OrchestrationGraph(QObject):
 
     @pyqtSlot()
     def autoAdd(self):
-        print("")
-        print("WARNING: autoAdd not implemented yet.")
-        print("Should disable the button if the OG has no gap TODO")
-        print("SettingGapFocus to 0 ! SHOULD BE CHANGED TODO !")
         temp = self.data.evaluate_gaps()
-        print(temp)
         temp.sort(reverse = True)
-        print(temp)
-        self.setGapFocus(temp[0][1]) #TODO
+        self.setGapFocus(temp[0][1])
         self.autoAddFromSelectedGap()
 
     @pyqtSlot()
     def autoAddFromSelectedGap(self):
-        #TODO
-        print("Should disable the button if the selected gap has no recommended activity TODO")
         self.insert(self.data.insertBestForSelectedGap(), self.data.gapFocus)
 
     

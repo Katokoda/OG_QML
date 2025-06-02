@@ -63,7 +63,7 @@ Rectangle {
         }
     }
 
-    // DEBUG TEXT
+    // DEBUG TEXT // TODO
     Text {
         anchors.bottom: parent.bottom
         anchors.left: parent.right

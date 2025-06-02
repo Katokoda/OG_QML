@@ -51,6 +51,17 @@ Rectangle {
             myColor: "#222222"
             mySize: 10
         }
+
+        // Small text displaying the time taken by that instantiated activity
+        Text {
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 2
+            anchors.right: parent.right
+            anchors.rightMargin: 4
+            text: (invisibleAct.instAct != null ? invisibleAct.instAct.myTime + "'" : "null")
+            color: "black"
+            font.pixelSize: 10
+        }
     }
 
 

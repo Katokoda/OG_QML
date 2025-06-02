@@ -166,6 +166,30 @@ class OrchestrationGraphData:
             current = iAct.end
         self.reached = current
         self.evaluate_gaps()
+
+
+    def evaluate_gaps(self):
+        # returns the (distance, idx) of the all gaps to cover.
+        # As well, it updates the remainingGapsCount and remainingGapsDistance attributes.
+        self.remainingGapsCount = 0
+        self.remainingGapsDistance = 0
+        gapsToCover = []
+        current = self.start
+        
+        for gap_idx in range(len(self.listOfFixedInstancedAct)+1):
+            if gap_idx < len(self.listOfFixedInstancedAct):
+                act = self.listOfFixedInstancedAct[gap_idx]
+                curr_gap = current.distance_onlyForward(act.start)
+                current = act.end
+            else:
+                curr_gap = current.distance_onlyForward(self.goal)
+                
+            if p.TRESHOLD < curr_gap:
+                self.remainingGapsCount += 1
+                self.remainingGapsDistance += curr_gap
+                gapsToCover.append((curr_gap, gap_idx))
+
+        return gapsToCover
     
 
     def insert(self, actIdx:int, idx:int):
@@ -216,28 +240,6 @@ class OrchestrationGraphData:
         if self.tBudget < self.totTime + self.lib.getActData(actIdx).defT:
             flags.append("long")
         return flags
-    
-    def evaluate_gaps(self):
-        # returns the idx of the all gaps to cover
-        self.remainingGapsCount = 0
-        self.remainingGapsDistance = 0
-        gapsToCover = []
-        current = self.start
-        
-        for gap_idx in range(len(self.listOfFixedInstancedAct)+1):
-            if gap_idx < len(self.listOfFixedInstancedAct):
-                act = self.listOfFixedInstancedAct[gap_idx]
-                curr_gap = current.distance_onlyForward(act.start)
-                current = act.end
-            else:
-                curr_gap = current.distance_onlyForward(self.goal)
-                
-            if p.TRESHOLD < curr_gap:
-                self.remainingGapsCount += 1
-                self.remainingGapsDistance += curr_gap
-                gapsToCover.append((curr_gap, gap_idx))
-
-        return gapsToCover
 
   
 
@@ -258,8 +260,9 @@ class OrchestrationGraph(QObject):
         self.gapSelectionChangeSignal.emit()
 
     def reStructurate(self):
+        self.setGapFocus(-1)  # Reset the gap focus to avoid issues with the current gap.
         self.data.reStructurateData()
-        self.reEvaluate()        
+        self.reEvaluate()
         self.ogChangeSignal.emit()
 
 
@@ -323,16 +326,21 @@ class OrchestrationGraph(QObject):
 
     @pyqtSlot()
     def autoAdd(self):
+        print("")
         print("WARNING: autoAdd not implemented yet.")
-        print("Should disable the button if the selected gap has no gap")
+        print("Should disable the button if the OG has no gap TODO")
         print("SettingGapFocus to 0 ! SHOULD BE CHANGED TODO !")
-        self.setGapFocus(0) #TODO
+        temp = self.data.evaluate_gaps()
+        print(temp)
+        temp.sort(reverse = True)
+        print(temp)
+        self.setGapFocus(temp[0][1]) #TODO
         self.autoAddFromSelectedGap()
 
     @pyqtSlot()
     def autoAddFromSelectedGap(self):
         #TODO
-        print("Should disable the button if the selected gap has no recommended activity")
+        print("Should disable the button if the selected gap has no recommended activity TODO")
         self.insert(self.data.insertBestForSelectedGap(), self.data.gapFocus)
 
     
@@ -364,6 +372,12 @@ class OrchestrationGraph(QObject):
     @pyqtProperty(int, notify=ogChangeSignal)
     def remainingGapsCount(self):
         return self.data.remainingGapsCount
+    
+    @pyqtProperty(bool, notify=gapSelectionChangeSignal)
+    def isSelectedGapHard(self):
+        if self.data.gapFocus is None:
+            return False
+        return self.data.gapFocus in [item[1] for item in self.data.evaluate_gaps()]
 
     @pyqtProperty(int, notify=ogChangeSignal)
     def numberPlanes(self):
@@ -388,7 +402,7 @@ def tests():
     input("Press Enter to continue... (after the visual representation has appeared)")
 
     r.shuffle(OG1.data.listOfFixedInstancedAct)
-    print("After shuffling, the Instantiated Activities are the same but in a different order and the technical representation (visual) has a lot of red arrows to it.")
+    print("After shuffling, the Instantiated Activities are the same but in a different order and the technical representation (visual) has a lot of arrows to it.")
     print(OG1)
     OG1.myCustomPrintFunction()
     input("Press Enter to continue... (after the visual representation has appeared)")
@@ -405,6 +419,14 @@ def tests():
         print(OG2)
         OG2.myCustomPrintFunction()
         input("Press Enter to continue... (after the visual representation has appeared)")
+
+    print("The goal has been completed! There is no hard transition left.")
+
+
+    print("Putting the last activity at the beggining of the lesson, just for fun ;)")
+    OG2.exchange(len(OG2.data.listOfFixedInstancedAct)-1, 0)
+    print(OG2)
+    OG2.myCustomPrintFunction()
 
 if __name__=="__main__":
     tests()

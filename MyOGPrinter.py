@@ -21,6 +21,8 @@ def myExternalPrint(OG:OrchestrationGraphData):
     # https://stackoverflow.com/questions/36675269/cannot-move-matplotlib-plot-window-and-exit-it-using-red-x-button/36704822#36704822
 
     fig, ax = plt.subplots(1)
+    HAVE_RED_ARROW = False
+    HAVE_BLACK_ARROW = False
     
     reached = OG.start
     res = ""
@@ -28,8 +30,15 @@ def myExternalPrint(OG:OrchestrationGraphData):
         res += str(iAct) + "\n"
         temp_effect = iAct.end.minus(iAct.start)
 
-        # draw arrow from reached to act.start
-        ax.add_patch( patches.FancyArrowPatch(reached.v, iAct.start.v, arrowstyle='->', mutation_scale=10, color='red'))
+        if p.PRECISION < reached.distance(iAct.start):
+            # draw arrow from reached to act.start
+
+            if p.TRESHOLD < reached.distance_onlyForward(iAct.start):
+                HAVE_RED_ARROW = True
+                ax.add_patch( patches.FancyArrowPatch(reached.v, iAct.start.v, arrowstyle='->', mutation_scale=10, color='red'))
+            else:
+                HAVE_BLACK_ARROW = True
+                ax.add_patch( patches.FancyArrowPatch(reached.v, iAct.start.v, arrowstyle='->', mutation_scale=10, color='black'))
 
         ax.add_patch( patches.Rectangle(iAct.start.v,
                     temp_effect.v[0], temp_effect.v[1], fc = 'none', #facecolor
@@ -46,15 +55,41 @@ def myExternalPrint(OG:OrchestrationGraphData):
         reached = iAct.end
     
 
-    # draw arrow from reached to the goal (if progression still needed)
-    ax.add_patch( patches.FancyArrowPatch(reached.v, reached.needToReach(OG.goal).v, arrowstyle='->', mutation_scale=10, color='red'))
+    tempReachedGoal = reached.needToReach(OG.goal)
+    if p.PRECISION < reached.distance(tempReachedGoal):
+        # draw arrow from reached to the goal (if progression still needed)
+
+        if p.TRESHOLD < reached.distance_onlyForward(tempReachedGoal):
+            HAVE_RED_ARROW = True
+            ax.add_patch( patches.FancyArrowPatch(reached.v, tempReachedGoal.v, arrowstyle='->', mutation_scale=10, color='red'))
+        else:
+            HAVE_BLACK_ARROW = True
+            ax.add_patch( patches.FancyArrowPatch(reached.v, tempReachedGoal.v, arrowstyle='->', mutation_scale=10, color='black'))
     
     ax.scatter(OG.goal.v[0], OG.goal.v[1], marker='x', label="goal")
     ax.scatter(OG.start.v[0], OG.start.v[1], marker='x', label="start")
     plt.xlabel("fluency")
     plt.ylabel("depth")
     plt.title("OG")
-    plt.legend()
+
+    # https://stackoverflow.com/questions/13303928/how-to-make-custom-legend
+    # Get artists and labels for legend and chose which ones to display
+    handles, labels = ax.get_legend_handles_labels()
+    display = tuple(range(len(handles)))
+    # Latex arrows found thanks to https://stackoverflow.com/questions/22348229/matplotlib-legend-for-an-arrow
+    redArrows   = plt.Line2D((0,1),(0,0), linestyle="", color='red', marker=r'$\rightarrow$')
+    blackArrows = plt.Line2D((0,1),(0,0), linestyle="", color='black', marker=r'$\longrightarrow$')
+    ArrowsHandles = []
+    ArrowsLabels = []
+    if HAVE_RED_ARROW:
+        ArrowsHandles.append(redArrows)
+        ArrowsLabels.append('Hard transitions')
+    if HAVE_BLACK_ARROW:
+        ArrowsHandles.append(blackArrows)
+        ArrowsLabels.append('Accepted transitions')
+    ax.legend([handle for i,handle in enumerate(handles) if i in display]+ArrowsHandles,
+            [label for i,label in enumerate(labels) if i in display]+ArrowsLabels)
+
     plt.show()
 
 

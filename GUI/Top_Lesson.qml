@@ -151,7 +151,10 @@ Rectangle {
 
             MyButton {
                 id: button_addRecoGeneral
+            
                 visible: (app_selectedGap == null)
+                enabled: (context_OGraph.remainingGapsCount > 0)
+
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.leftMargin: 5
                 
@@ -163,7 +166,10 @@ Rectangle {
 
             MyButton {
                 id: button_addRecoGap
+
                 visible: (app_selectedGap != null)
+                enabled: (context_OGraph.isSelectedGapHard)
+
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.leftMargin: 5
                 

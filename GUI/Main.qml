@@ -29,6 +29,7 @@ ApplicationWindow {
 
     property var app_selectedGap: null
 
+    // This function gets called at each time there is a consequent change in the Orchestration Graph. (linked in main.py) 
     function myGraphUpdate() {
         resetActSelection()
         resetGapSelection()

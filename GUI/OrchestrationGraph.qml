@@ -12,11 +12,19 @@ Rectangle {
     property int lessonTotalTime: context_OGraph.totalTime
     property double pixelPerMinute: lessonIdealWidth / lessonTotalTime
 
+    function isHard(index) {
+        // This functions has been written by chatGPT
+        // Returns true if the index is in the hardGapList
+        return hardGapList.indexOf(index) !== -1;
+    }
+    property list<int> hardGapList: context_OGraph.hardGapList
+
         // // DEBUG to make some property visible live
         // Text{
+        //     id:debugText
         //     anchors.top: parent.top
         //     anchors.horizontalCenter: parent.horizontalCenter
-        //     text: pixelPerMinute
+        //     text: "\"" + hardGapList + "\" DEBUG"
         //     color: "white"
         // }
 
@@ -119,19 +127,21 @@ Rectangle {
 
         // First item holding only a DropZone for inserting things at the start
         Rectangle {
+            z: 1.9
             width: mydropzone.occuping_width
             height: myPixelHeight
             color: "transparent"
 
-                // //DEBUG to make the item visible
-                // border.width: 1
-                // border.color: "red"
-                // //DEBUG
+                //DEBUG to make the item visible
+                border.width: 1
+                border.color: "red"
+                //DEBUG
 
             DropZoneOG{
                 id: mydropzone
                 myIdx: 0
                 localOGreference: og
+                isAHardGap: isHard(0)
             }
         }
 
@@ -153,18 +163,20 @@ Rectangle {
                     id: thisAct
                     instAct: modelData
                     myIdx: index
-                    z: 2
+                    z: (thisAct.shouldBeAbove ? 2 : 1)
                 }
 
                 DropZoneOG{
                     id: mydropzone
                     myIdx: index + 1
-                    z: 1
+                    z: 1.5
                     localOGreference: og
+                    isAHardGap: isHard(index + 1)
                 }
 
                 // ONLY in relation to the other items in the same parent
-                z: (thisAct.shouldBeAbove ? 2 : 1)
+                // This is extremely cursed but ensures that the red indicator of a hard gap is always above the instantiated activity
+                z: (thisAct.shouldBeAbove ? 2 : 1.9 - (index+1) * 0.001)
             }
         }
     }

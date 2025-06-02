@@ -3,16 +3,6 @@ import QtQuick.Shapes 1.9
 
 Rectangle {
     id: mydropzone
-    height: parent.height + 20
-    anchors.verticalCenter: parent.verticalCenter
-
-    property bool isCurrentlySelected: false
-
-    width:  (acceptsDrag ? 60 : 20)
-    property int occuping_width: width + 2*anchors.rightMargin
-    anchors.right: parent.right
-    anchors.rightMargin: (isCurrentlySelected ? 0 : -10)
-
     color: "transparent"
 
         // // DEBUG to make the dropZone visible
@@ -22,9 +12,56 @@ Rectangle {
 
     required property QtObject localOGreference
     required property int myIdx
-    property bool acceptsDrag: false
+    required property bool isAHardGap
 
-    // 
+
+    property bool acceptsDrag: false
+    property bool isCurrentlySelected: false
+    property int myHeightMargin: 35
+
+
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.right: parent.right
+    anchors.rightMargin: (isCurrentlySelected ? 0 : -10)
+
+    height: parent.height + 2 * myHeightMargin
+    width:  (acceptsDrag ? 60 : 20)
+    property int occuping_width: width + 2*anchors.rightMargin
+    
+
+
+
+
+
+        
+    // Indicator that the gap is considered HARD
+    Rectangle {
+        id: hardIndicator
+        visible: isAHardGap
+        anchors.fill: parent
+        color: "transparent"
+
+        Text {
+            anchors.top: parent.top
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            text: "!"
+            color: "#FF0000"
+            font.pixelSize: 30
+        }
+
+        Shape {
+            ShapePath {
+                strokeWidth: 1
+                strokeColor: "#FF0000"
+
+                startX:       mydropzone.width/2; startY: myHeightMargin
+                PathLine { x: mydropzone.width/2; y: mydropzone.height - myHeightMargin}
+            }
+        }
+    }
+
+    // Indicator of selection
     Rectangle{
         visible: isCurrentlySelected
         anchors.fill: parent
@@ -37,8 +74,8 @@ Rectangle {
                 strokeWidth: 2
                 strokeColor: "white"
 
-                startX:       mydropzone.width/2; startY: 0
-                PathLine { x: mydropzone.width/2; y: mydropzone.height}
+                startX:       mydropzone.width/2; startY: myHeightMargin
+                PathLine { x: mydropzone.width/2; y: mydropzone.height - myHeightMargin}
             }
         }
 

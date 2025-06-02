@@ -29,7 +29,7 @@ Rectangle {
         id: visibleAct
 
         property bool isCurrentlySelected: false
-        width: invisibleAct.width
+        width: invisibleAct.width - 1
         height: 40
         radius: 8
 

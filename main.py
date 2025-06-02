@@ -39,8 +39,9 @@ OG = OrchestrationGraph(myLib, 50, pVal((0.0, 0.0)), pVal((0.9, 0.9)))
 engine.rootContext().setContextProperty("context_OGraph", OG)
 engine.rootContext().setContextProperty("context_textShortener", myTextShortener)
 
-#for i in range(5):
+# for i in range(5):
 #    OG.insert(2*i, i)
+OG.autoAdd()
 print(OG)
 
 engine.load('./GUI/Main.qml')

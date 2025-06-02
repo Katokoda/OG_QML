@@ -149,7 +149,9 @@ class OrchestrationGraphData:
         
         bestCAct = listOfContextAct[0]
         for CAct in listOfContextAct:
-            if (CAct.hasNoFlag and not bestCAct.hasNoFlag) or (CAct.myScore > bestCAct.myScore):
+            if (((not bestCAct.hasNoFlag()) and CAct.hasNoFlag()) # True iff Cat is better than bestCAct
+                or ((bestCAct.hasNoFlag()  == CAct.hasNoFlag())
+                    and (bestCAct.myScore < CAct.myScore))):
                 bestCAct = CAct
         if bestCAct.flags.isWorse:
             return None
@@ -188,6 +190,8 @@ class OrchestrationGraphData:
                 self.remainingGapsCount += 1
                 self.remainingGapsDistance += curr_gap
                 gapsToCover.append((curr_gap, gap_idx))
+
+        self.hardGapList = [item[1] for item in gapsToCover]
 
         return gapsToCover
     
@@ -361,6 +365,10 @@ class OrchestrationGraph(QObject):
     def lessonTime(self):
         return self.data.tBudget
     
+    @pyqtProperty(QVariant, notify=ogChangeSignal)
+    def hardGapList(self):
+        return self.data.hardGapList
+    
     @pyqtProperty(int, notify=ogChangeSignal)
     def remainingGapsCount(self):
         return self.data.remainingGapsCount
@@ -369,7 +377,7 @@ class OrchestrationGraph(QObject):
     def isSelectedGapHard(self):
         if self.data.gapFocus is None:
             return False
-        return self.data.gapFocus in [item[1] for item in self.data.evaluate_gaps()]
+        return self.data.gapFocus in self.data.hardGapList
 
     @pyqtProperty(int, notify=ogChangeSignal)
     def numberPlanes(self):

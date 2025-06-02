@@ -5,7 +5,7 @@ Rectangle {
     anchors.fill: parent
     color: "transparent"
 
-    // Drop zone filling the entire Library which accepts to "delete" the dragged instanciated activity
+    // Drop zone filling the entire Library which accepts to "delete" the dragged instantiated activity
     DropZoneLibrary{}
 
     Text {

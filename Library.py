@@ -39,6 +39,6 @@ class Library:
     
 def tests():
     print("testing Activities")
-    print("See file InstanciatedAct.py instead")
+    print("See file InstantiatedAct.py instead")
 if __name__=="__main__":
     tests()

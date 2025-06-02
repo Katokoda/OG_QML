@@ -13,7 +13,7 @@ import pickle
 
 
 from Library import Library
-from InstanciatedAct import InstanciatedActData
+from InstantiatedAct import InstantiatedActData
 from ContextActivity import ContextActivity
 from Efficience import getEff
 from Plane import PLANE_NAMES
@@ -167,7 +167,7 @@ class OrchestrationGraphData:
     
 
     def insert(self, actIdx:int, idx:int):
-        instanceToAdd = InstanciatedActData(self.lib.getActData(actIdx), self.reached)
+        instanceToAdd = InstantiatedActData(self.lib.getActData(actIdx), self.reached)
         if len(self.listOfFixedInstancedAct) < idx:
             print("WARNING: inserted at index", idx)
         self.quantities[actIdx] += 1

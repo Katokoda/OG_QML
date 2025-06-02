@@ -13,7 +13,7 @@ from Plane import planeFromInt
 import params as p
 from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal
 
-class InstanciatedActData:
+class InstantiatedActData:
     def __init__(self, activityData:ActivityData, pstate):
         self.actData = activityData
         self.start, self.end, self.time = self.actData.what_from(pstate)
@@ -39,13 +39,13 @@ class InstanciatedActData:
 
     def getQtObject(self):
         # Returns a PyQt6 object to be used in the GUI
-        self.QTObjectNotVisibleFromPickle = InstanciatedAct(self)
+        self.QTObjectNotVisibleFromPickle = InstantiatedAct(self)
         return self.QTObjectNotVisibleFromPickle
 
-class InstanciatedAct(QObject):
+class InstantiatedAct(QObject):
     instActChangeSignal = pyqtSignal()
 
-    def __init__(self, data:InstanciatedActData):
+    def __init__(self, data:InstantiatedActData):
         super().__init__()
         self.data = data
     
@@ -70,10 +70,10 @@ def tests():
     print(myLib)
         
         
-    print("The library if all were instanciated for a class at", end = '')
+    print("The library if all were instantiated for a class at", end = '')
     startingPValue = pVal((0.0, 0.0))
     print(startingPValue)
-    liste_one = [InstanciatedAct(myLib.getAct(i), startingPValue) for i in range(len(myLib.liste))]
+    liste_one = [InstantiatedAct(myLib.getAct(i), startingPValue) for i in range(len(myLib.liste))]
     [print(liste_one[i]) for i in range(len(liste_one))]
     
     print()
@@ -86,10 +86,10 @@ def tests():
             
     
     print()
-    print("The library if all were instanciated for a class at", end = '')
+    print("The library if all were instantiated for a class at", end = '')
     startingPValue = pVal((0.3, 0.3))
     print(startingPValue)
-    liste_two = [InstanciatedAct(myLib.getAct(i), startingPValue) for i in range(len(myLib.liste))]
+    liste_two = [InstantiatedAct(myLib.getAct(i), startingPValue) for i in range(len(myLib.liste))]
     [print(liste_two[i]) for i in range(len(liste_two))]
     
 if __name__=="__main__":

@@ -9,7 +9,7 @@ Rectangle {
 
     // Proposed activity info
     Text {
-        visible: (app_selectedActIsInstanciated == false)
+        visible: (app_selectedActIsInstantiated == false)
         anchors.top: parent.top
         anchors.left: parent.left
         font.bold: true
@@ -19,9 +19,9 @@ Rectangle {
     }
 
 
-    // Instanciated activity info
+    // Instantiated activity info
     Text {
-        visible: (app_selectedActIsInstanciated == true)
+        visible: (app_selectedActIsInstantiated == true)
         anchors.top: parent.top
         anchors.left: parent.left
         font.bold: true

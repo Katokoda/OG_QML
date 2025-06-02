@@ -138,7 +138,7 @@ Rectangle {
         Repeater {
             model: context_OGraph.listeReal
 
-            // Item holding an InstanciatedActivity followed by a DropZone
+            // Item holding an InstantiatedActivity followed by a DropZone
             delegate: Rectangle {
                 width: thisAct.width + mydropzone.occuping_width
                 height: myPixelHeight

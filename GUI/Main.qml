@@ -25,7 +25,7 @@ ApplicationWindow {
 
 
     property var app_selectedAct: null
-    property bool app_selectedActIsInstanciated: false
+    property bool app_selectedActIsInstantiated: false
 
     property var app_selectedGap: null
 
@@ -39,14 +39,14 @@ ApplicationWindow {
             app_selectedAct.isCurrentlySelected = false
         }
         app_selectedAct = null
-        app_selectedActIsInstanciated = false
+        app_selectedActIsInstantiated = false
     }
     
-    function setActSelection(selAct: var, isInstanciated: bool){
+    function setActSelection(selAct: var, isInstantiated: bool){
         resetActSelection()
         selAct.isCurrentlySelected = true
         app_selectedAct = selAct
-        app_selectedActIsInstanciated = isInstanciated
+        app_selectedActIsInstantiated = isInstantiated
     }
 
     function resetGapSelection() {

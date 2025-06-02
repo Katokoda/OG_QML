@@ -41,7 +41,7 @@ engine.rootContext().setContextProperty("context_textShortener", myTextShortener
 
 # for i in range(5):
 #    OG.insert(2*i, i)
-OG.autoAdd()
+#OG.autoAdd()
 print(OG)
 
 engine.load('./GUI/Main.qml')

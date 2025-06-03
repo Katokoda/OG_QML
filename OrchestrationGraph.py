@@ -43,6 +43,7 @@ class OrchestrationGraphData:
 
         self.remainingGapsCount = 1
         self.remainingGapsDistance = start.distance_onlyForward(goal)
+        self.hardGapList = []
 
         self.gapFocus = None # Index of the gap currently selected in QML.
         self.currentListForSelectedGap = [] # REQUIRED --> Segmentation Fault

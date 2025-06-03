@@ -3,10 +3,13 @@
 Created on Tue Feb 25 09:43:43 2025
 
 @author: Samuel
+
+
+This module is used to shorten text (Activities names).
+It reduced the text with a reduction ratio computed dynamically based on the display area.
 """
 
 from PyQt6.QtCore import QObject, pyqtSignal, pyqtSlot
-# This module is used to shorten text (Activities names). It reduced the text with a reduction ratio computed dynamically based on the display area.
 
 
 def extractCapitals(s: str):

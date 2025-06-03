@@ -70,7 +70,7 @@ def myExternalPrint(OG:OrchestrationGraphData):
     ax.scatter(OG.start.v[0], OG.start.v[1], marker='x', label="start")
     plt.xlabel("fluency")
     plt.ylabel("depth")
-    plt.title("OG")
+    plt.title("Technical representation of the lesson's model")
 
     # https://stackoverflow.com/questions/13303928/how-to-make-custom-legend
     # Get artists and labels for legend and chose which ones to display

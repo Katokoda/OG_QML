@@ -4,6 +4,8 @@ Created on Tue Feb 25 09:43:43 2025
 
 @author: Samuel
 """
+
+
 import math as m
 import params as p
 

@@ -43,13 +43,19 @@ Rectangle {
 
         Text {
             id: text_gaps
+            visible: (context_OGraph.totalTime > 0)
             anchors.top: text_time.bottom
             anchors.topMargin: parent.lineSpacing
             anchors.left: text_time.left
             
             color: "white"
-            text: "Has "+ context_OGraph.remainingGapsCount + " transitions considerered too hard by the engine (NOT marked <!>)."
+            text: "Has "+ context_OGraph.remainingGapsCount + " transitions considerered too hard by the engine, marked"
             font.pointSize: 12
+
+            MyWarning {
+                anchors.left: text_gaps.right
+                anchors.bottom: text_gaps.bottom
+            }
         }
     }
 

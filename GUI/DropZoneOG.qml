@@ -41,13 +41,10 @@ Rectangle {
         anchors.fill: parent
         color: "transparent"
 
-        Text {
+        MyWarning {
             anchors.top: parent.top
             anchors.horizontalCenter: parent.horizontalCenter
 
-            text: "!"
-            color: "#FF0000"
-            font.pixelSize: 30
         }
 
         Shape {

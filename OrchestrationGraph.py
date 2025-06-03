@@ -285,6 +285,7 @@ class OrchestrationGraph(QObject):
     @pyqtSlot()
     def myCustomPrintFunction(self):
         t_thread = threading.Thread(target=self.myCallerForPrintingSubprocess)
+        t_thread.daemon = True # This will allow the main program to exit even if the threads have not.
         t_thread.start()
 
     @pyqtSlot(str)
@@ -393,7 +394,9 @@ class OrchestrationGraph(QObject):
 def tests():
     myLib = Library("inputData/interpolation_2D_library.csv")
     
-    print("Testing insertion and reStructuration of OrchestrationGraph")
+    print("")
+    print("===== Testing insertion and reStructuration of OrchestrationGraph. =====")
+    print("We insert ALL activities from the library in their order.")
     OG1 = OrchestrationGraph(myLib, 50, pVal((0.0, 0.0)), pVal((0.9, 0.9)))
     for i in range(len(myLib.liste)):
         OG1.insert(i, i)
@@ -402,32 +405,40 @@ def tests():
     OG1.myCustomPrintFunction()
     input("Press Enter to continue... (after the visual representation has appeared)")
 
+    print("We shuffle the activities in a random order whitout modifying them (this is not a feature of the class, but a test).")
     r.shuffle(OG1.data.listOfFixedInstancedAct)
     print("After shuffling, the Instantiated Activities are the same but in a different order and the technical representation (visual) has a lot of arrows to it.")
     print(OG1)
     OG1.myCustomPrintFunction()
     input("Press Enter to continue... (after the visual representation has appeared)")
 
+    print("Now we re-structurate the graph which will modify the instantiated activities to adapt to this new order.")
     OG1.reStructurate()
     print(OG1)
     OG1.myCustomPrintFunction()
     input("Press Enter to continue... (after the visual representation has appeared)")
     
-    print("Testing autoAddFromSelectedGap")
-    OG2 = OrchestrationGraph(myLib, 50, pVal((0.0, 0.0)), pVal((0.9, 0.9)))
-    while 0 < OG2.remainingGapsCount:
-        OG2.autoAdd()
-        print(OG2)
-        OG2.myCustomPrintFunction()
+    print("")
+    print("")
+    print("===== Testing autoAddFromSelectedGap =====")
+    print("Now we reset the graph to its original state and add the recommended activity until no hard transition remains.")
+    OG1.reset()
+    while 0 < OG1.remainingGapsCount:
+        OG1.autoAdd()
+        print(OG1)
+        OG1.myCustomPrintFunction()
         input("Press Enter to continue... (after the visual representation has appeared)")
 
     print("The goal has been completed! There is no hard transition left.")
 
 
+    print("")
     print("Putting the last activity at the beggining of the lesson, just for fun ;)")
-    OG2.exchange(len(OG2.data.listOfFixedInstancedAct)-1, 0)
-    print(OG2)
-    OG2.myCustomPrintFunction()
+    OG1.exchange(len(OG1.data.listOfFixedInstancedAct)-1, 0)
+    print(OG1)
+    OG1.myCustomPrintFunction()
+
+    print("The tests are completed.")
 
 if __name__=="__main__":
     tests()

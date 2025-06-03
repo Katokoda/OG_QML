@@ -1,28 +1,45 @@
 # An Engine producing Orchestration Graphs.
 
-This repository contains my QML application that helps creating Orchestration Graphs. It is part of my semester project done  at EPFL with Pr. Dillenbourg during spring 2025, my IN-MA2.
+This repository contains my QML application that helps creating Orchestration Graphs. It is part of my semester project done at EPFL with Pr. Dillenbourg during spring 2025, my IN-MA2.
 
-This application uses the engine implemented with Python at the start of the semester. It is interactive application built with PyQt and QML as this was the framework chosen after a few weeks of testing.
+This application uses the engine implemented with Python at the start of the semester. It is an interactive application built with PyQt and QML as this was the framework chosen after a few weeks of testing.
 
 ## Installation
 
 I developped the Python Engine mostly from Windows but then switched to Linux for the interactive application.
 
-If you want to run the application, I recommend using a linux machine which can already run Python code and create a new virtual environnement. Within this environnement, you can install all required packages using
+If you want to run the application, I recommend using a linux machine which can already run Python code, clone the code in a new folder and create a new virtual environnement. Within this environnement, you can install all required packages using
 
 \>>> python3 -m pip install -r requirements.txt
 
 
 This installs all packages listed in the requirements.txt file. Note: This file was generated using \>>> pipreqs --ignore myVenvForOGraph/
 
-Then, you can run the application using
+## Run
+
+After the installation, you can run the application using
 
 \>>> python3 main.py
 
 // TODO include a screenshot of the first viewed image.
 
+## Tests
+
+Some files include tests that were useful during developpement. One can run them using
+
+\>>> python3 OrchestrationGraph.py
+
+and
+
+\>>> python3 InstantiatedAct.py
+
+The tests in OrchestrationGraph.py use the external print functionnality which is explained in MyOGPrinter.py. One need to manually press enter to continue the tests after having seen the visual representation.
+
+
+## Modifications
 
 If you wish to change the Library of activities, you can edit the inputData/interpolation_2D_library.csv input file.
+There are other parameters that can be modified in params.py.
 
 
 Please contact me at samuel.belisle@epfl.ch and/or samuel.belisle@alumni.epfl.ch for any details.

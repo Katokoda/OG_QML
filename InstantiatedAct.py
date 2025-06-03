@@ -3,6 +3,9 @@
 Created on Tue Feb 25 09:43:43 2025
 
 @author: Samuel
+
+Handles the instantiation of an activity for a given pState as given by the place in the lesson.
+
 """
 
 from Activity import ActivityData
@@ -32,10 +35,11 @@ class InstantiatedActData:
         out.pop("QTObjectNotVisibleFromPickle", None)
         return out
     
-    def adjust(self, pNew, notDefTime = None):
+    def adjust(self, pNew = None, notDefTime = None):
         # Modify the start and end pValues given a new starting-position
+        if pNew is None: # This happens when only the duration of the activity is changed.
+            pNew = self.start
         self.start, self.end, self.time = self.actData.what_from(pNew, notDefTime)
-        #self.instActChangeSignal.emit() # This will bug but it is trouble for later
 
     def getQtObject(self):
         # Returns a PyQt6 object to be used in the GUI

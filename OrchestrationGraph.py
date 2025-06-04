@@ -127,16 +127,22 @@ class OrchestrationGraphData:
         return result
     
     def evaluateFor(self, start, goal):
+        if p.PRINT_DETAILS_EFFICIENCE:
+            print("\n\n\n==============================")
+            print("PRINT_DETAILS_EFFICIENCE - from start=", start, " to goal=", goal, sep = '')
         result = []
         d = start.distance_onlyForward(goal)
         
         for i in range(self.lib.getLength()):
             flags = self.getFlags(i)
             actData = self.lib.getActData(i)
+            if p.PRINT_DETAILS_EFFICIENCE:
+                print("\n===== Details for", actData.name)
             wouldStart, wouldEnd, _ = actData.what_from(start)
             d1 = start.distance_onlyForward(wouldStart)
             d2 = wouldEnd.distance_onlyForward(goal)
             if wouldStart.isPast(goal):
+                # TODO: remove. The "IsPast" flag actually only warns that the activities will have to be restructurated which is not that bad
                 flags.append("isPast")
             efficiency = getEff(d, d1, d2, actData.defT, self.tBudget - self.totTime)
             result.append(ContextActivity(actData, efficiency, flags))
@@ -153,8 +159,6 @@ class OrchestrationGraphData:
                 or ((bestCAct.hasNoFlag()  == CAct.hasNoFlag())
                     and (bestCAct.myScore < CAct.myScore))):
                 bestCAct = CAct
-        if bestCAct.flags.isWorse:
-            return None
         bestCAct.isBest = True
         return bestCAct
     

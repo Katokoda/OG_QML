@@ -17,6 +17,9 @@ TRESHOLD = 0.05 # To allow a "gap" between two pValues before saying a goal is n
 # NOTE: this should depend of the dimensionality.
 # Another way to do would be to restrict bigger difference.
 
+# This variable defines if the details of the efficiency computation should be printed.
+PRINT_DETAILS_EFFICIENCE = True
+
 
 
 # === Formatting strings for printing === #
@@ -25,6 +28,7 @@ TRESHOLD = 0.05 # To allow a "gap" between two pValues before saying a goal is n
 FORMAT_NAME = '{:>20}'
 FORMAT_PVAL = '{:^12}'
 FORMAT_TIME = '{:>2}'
+
 
 
 def tests():

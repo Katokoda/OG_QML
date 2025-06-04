@@ -40,9 +40,9 @@ class OrchestrationGraphData:
         self.quantities = [0]*self.lib.getLength()
         self.totTime = 0
 
-        self.remainingGapsCount = 1
+        self.hardGapsCount = 1
         self.remainingGapsDistance = start.distance_onlyForward(goal)
-        self.hardGapList = []
+        self.hardGapsList = [0]
 
         self.gapFocus = None # Index of the gap currently selected in QML.
         self.currentListForSelectedGap = [] # REQUIRED --> Segmentation Fault
@@ -56,7 +56,7 @@ class OrchestrationGraphData:
                 + textList\
                 + "Time spent " + str(self.totTime) + " min (budget = "\
                 + str(self.tBudget) + " min).\n"\
-                + "Remains " + str(self.remainingGapsCount) + " gaps to cover, "\
+                + "Remains " + str(self.hardGapsCount) + " gaps to cover, "\
                 + "for a \"distance\" of " + str(self.remainingGapsDistance) + ".\n"
     
     def __getstate__(self):
@@ -172,8 +172,8 @@ class OrchestrationGraphData:
 
     def evaluate_gaps(self):
         # returns the (distance, idx) of the all gaps to cover.
-        # As well, it updates the remainingGapsCount and remainingGapsDistance attributes.
-        self.remainingGapsCount = 0
+        # As well, it updates the hardGapsCount and remainingGapsDistance attributes.
+        self.hardGapsCount = 0
         self.remainingGapsDistance = 0
         gapsToCover = []
         current = self.start
@@ -181,17 +181,17 @@ class OrchestrationGraphData:
         for gap_idx in range(len(self.listOfFixedInstancedAct)+1):
             if gap_idx < len(self.listOfFixedInstancedAct):
                 act = self.listOfFixedInstancedAct[gap_idx]
-                curr_gap = current.distance_onlyForward(act.start)
+                curr_dist = current.distance_onlyForward(act.start)
                 current = act.end
             else:
-                curr_gap = current.distance_onlyForward(self.goal)
+                curr_dist = current.distance_onlyForward(self.goal)
                 
-            if p.TRESHOLD < curr_gap:
-                self.remainingGapsCount += 1
-                self.remainingGapsDistance += curr_gap
-                gapsToCover.append((curr_gap, gap_idx))
+            if p.TRESHOLD < curr_dist:
+                self.hardGapsCount += 1
+                self.remainingGapsDistance += curr_dist
+                gapsToCover.append((curr_dist, gap_idx))
 
-        self.hardGapList = [item[1] for item in gapsToCover]
+        self.hardGapsList = [item[1] for item in gapsToCover]
 
         return gapsToCover
     
@@ -379,17 +379,17 @@ class OrchestrationGraph(QObject):
     
     @pyqtProperty(QVariant, notify=ogChangeSignal)
     def hardGapList(self):
-        return self.data.hardGapList
+        return self.data.hardGapsList
     
     @pyqtProperty(int, notify=ogChangeSignal)
     def remainingGapsCount(self):
-        return self.data.remainingGapsCount
+        return self.data.hardGapsCount
     
     @pyqtProperty(bool, notify=gapSelectionChangeSignal)
     def isSelectedGapHard(self):
         if self.data.gapFocus is None:
             return False
-        return self.data.gapFocus in self.data.hardGapList
+        return self.data.gapFocus in self.data.hardGapsList
 
     @pyqtProperty(int, notify=ogChangeSignal)
     def numberPlanes(self):

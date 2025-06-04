@@ -24,7 +24,7 @@ Rectangle {
         horizontalAlignment:Text.AlignHCenter
         verticalAlignment:Text.AlignVCenter
 
-        text: "The color indicates which activity fits in the selected gap"
+        text: "The information indicates which activity fits for the selected transition"
         //font.pointSize: 8
         color: "white"
     }

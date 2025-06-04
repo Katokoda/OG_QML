@@ -101,7 +101,8 @@ Rectangle {
                 FileDialog {
                     id: loadFileDialog
                     defaultSuffix: "pickle"
-                    acceptLabel: "Save"
+                    
+                    acceptLabel: "Load"
 
                     nameFilters: ["Pickle Files (*.pickle)", "All Files (*)"]
 

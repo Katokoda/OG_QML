@@ -127,7 +127,6 @@ Rectangle {
         anchors.fill: parent
 
         onClicked: (mouse) => {
-            console.log("Main process: clicked detected! You can move thins around!")
             setGapSelection(mydropzone)
         }
     }

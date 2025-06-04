@@ -273,16 +273,13 @@ class OrchestrationGraph(QObject):
 
     def myCallerForPrintingSubprocess(self):
         self.data.saveAsTempFile()
-        try:    #This works in Linux but seems to fail in (my) Windows
-            subprocess.call(['sh', './callMyPythonPrinter.sh'])
+        try:    # This works both on Linux and Windows.
+            subprocess.run([sys.executable, 'MyOGPrinter.py'], check=True)
         except:
-            try:
-                subprocess.run([sys.executable, 'MyOGPrinter.py'], check=True)
-            except:
-                print("Something went wrong during the external (technical) print.")
-                print("Consider opening a second terminal at the same location and running")
-                print(">>> python3 MyOGPrinter.py")
-                print("in order to see that aborted print.")
+            print("Something went wrong during the external (technical) print.")
+            print("Consider opening a second terminal at the same location and running")
+            print(">>> python3 MyOGPrinter.py")
+            print("in order to see that aborted print.")
 
 
     # ============== SLOTS ============== #

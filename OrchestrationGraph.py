@@ -286,10 +286,14 @@ class OrchestrationGraph(QObject):
 
     @pyqtSlot()
     def print(self):
+        # This prints as TEXT.
         print(self)
     
     @pyqtSlot()
     def myCustomPrintFunction(self):
+        # This handles the TECHNICAL printing.
+        # See MyOGPrinter.py for more details.
+
         t_thread = threading.Thread(target=self.myCallerForPrintingSubprocess)
         t_thread.daemon = True # This will allow the main program to exit even if the threads have not.
         t_thread.start()

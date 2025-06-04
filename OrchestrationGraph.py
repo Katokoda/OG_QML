@@ -5,7 +5,7 @@ Created on Tue Feb 25 09:43:43 2025
 @author: Samuel
 """
 
-
+import sys # Needed for windows printing
 import subprocess
 import threading
 
@@ -273,7 +273,16 @@ class OrchestrationGraph(QObject):
 
     def myCallerForPrintingSubprocess(self):
         self.data.saveAsTempFile()
-        subprocess.call(['sh', './callMyPythonPrinter.sh'])
+        try:    #This works in Linux but seems to fail in (my) Windows
+            subprocess.call(['sh', './callMyPythonPrinter.sh'])
+        except:
+            try:
+                subprocess.run([sys.executable, 'MyOGPrinter.py'], check=True)
+            except:
+                print("Something went wrong during the external (technical) print.")
+                print("Consider opening a second terminal at the same location and running")
+                print(">>> python3 MyOGPrinter.py")
+                print("in order to see that aborted print.")
 
 
     # ============== SLOTS ============== #

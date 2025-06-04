@@ -5,7 +5,7 @@ Created on Tue Feb 25 09:43:43 2025
 @author: Samuel
 """
 
-import sys # Needed for windows printing
+import sys
 import subprocess
 import threading
 
@@ -26,7 +26,6 @@ from PyQt6.QtCore import QUrl
 
 #For tests
 from pValues import pVal
-from Library import Library
 import random as r
 
 class OrchestrationGraphData:

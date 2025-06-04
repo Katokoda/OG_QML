@@ -1,6 +1,21 @@
 """
-This file is an external process called by an external script (in file callMyPythonPrinter.sh).
+This file is an external process.
+
 It loads an OrchestrationGraphData object from a pickle file and prints it using matplotlib.
+The file has to be named `temp/saveForPrint.pickle`.
+
+One can run either by:
+1. clicking on the "Technical Print" button within the Application.
+
+Or, if this results in an error, by
+1. clicking on the "Technical Print" button within the Application.
+2. running the command `python3 MyOGPrinter.py` from another terminal.
+
+Or, if this results in an error, by
+1. Manually saving the OrchestrationGraphData object to a file named `temp/saveForPrint.pickle` using:
+    <yourOG>.data.saveAsFile("temp/saveForPrint.pickle")
+2. running the command `python3 MyOGPrinter.py` from another terminal.
+
 
 This is necessary because the matplotlib package conflicts heavily with PyQt
 and because both librairies need to be called from the main thread.

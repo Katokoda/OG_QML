@@ -197,7 +197,8 @@ class OrchestrationGraphData:
     
 
     def insert(self, actIdx:int, idx:int):
-        instanceToAdd = InstantiatedActData(self.lib.getActData(actIdx), self.reached)
+        reachedBeforeIdx = self.listOfFixedInstancedAct[idx - 1].end if idx > 0 else self.start
+        instanceToAdd = InstantiatedActData(self.lib.getActData(actIdx), reachedBeforeIdx)
         if len(self.listOfFixedInstancedAct) < idx:
             print("WARNING: inserted at index", idx)
         self.quantities[actIdx] += 1
@@ -438,10 +439,19 @@ def tests():
 
 
     print("")
-    print("Putting the last activity at the beggining of the lesson, just for fun ;)")
-    OG1.exchange(len(OG1.data.listOfFixedInstancedAct)-1, 0)
+    print("Addind the first activity of the library at the beginning of the lesson.")
+    OG1.data.insert(0, 0)
+    print("WARNING: this insertion has been done by blocking the re-structuration. See the result:")
     print(OG1)
     OG1.myCustomPrintFunction()
+    input("Press Enter to continue... (after the visual representation has appeared)")
+
+    print("")
+    print("Now we restruturate:")
+    OG1.reStructurate()
+    print(OG1)
+    OG1.myCustomPrintFunction()
+    input("Press Enter to continue... (after the visual representation has appeared)")
 
     print("The tests are completed.")
 

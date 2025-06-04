@@ -26,7 +26,7 @@ Rectangle {
         anchors.left: parent.left
         font.bold: true
         color: "white"
-        text: "Info about the activity in the lesson"
+        text: "Info about the activity in the lesson" // TODO
         font.pointSize: 12
     }
 

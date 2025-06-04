@@ -132,10 +132,10 @@ Rectangle {
             height: myPixelHeight
             color: "transparent"
 
-                //DEBUG to make the item visible
-                border.width: 1
-                border.color: "red"
-                //DEBUG
+                // //DEBUG to make the item visible
+                // border.width: 1
+                // border.color: "red"
+                // //DEBUG
 
             DropZoneOG{
                 id: mydropzone

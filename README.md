@@ -6,14 +6,22 @@ This application uses the engine implemented with Python at the start of the sem
 
 ## Installation
 
-I developped the Python Engine mostly from Windows but then switched to Linux for the interactive application.
+### Linux
 
-If you want to run the application, I recommend using a linux machine which can already run Python code, clone the code in a new folder and create a new virtual environnement. Within this environnement, you can install all required packages using
+If you want to run the application, I recommend using a linux machine which can already run Python code, clone the repository in a new folder and create a new virtual environnement. Within this environnement, you can install all required packages using
 
 \>>> python3 -m pip install -r requirements.txt
 
-
 This installs all packages listed in the requirements.txt file. Note: This file was generated using \>>> pipreqs --ignore myVenvForOGraph/
+
+### Windows
+
+Even if I managed to install and run the application on Windows, I do not recommend it. Here is what worked for me:
+
+I had to run the following command *outside of a virtual environnement* from a "windows command terminal opened with admin rights*.
+\>>> pip install -r requirements.txt
+
+I highly recommend to try first within a good IDE that manages modules or on your normal windows command terminal within a virtual environnement.
 
 ## Run
 

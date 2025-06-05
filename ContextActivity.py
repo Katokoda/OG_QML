@@ -79,7 +79,7 @@ class ContextActivity(QObject):
         return self.myScore
     
     @pyqtProperty(bool, notify=contextActivityChangeSignal)
-    def isRecommended(self): #TODO
+    def isRecommended(self):
         return self.isBest
 
 

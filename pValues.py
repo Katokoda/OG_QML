@@ -111,6 +111,7 @@ class InterPVal:
         self.tMin = tMin
         self.tMax = tMax
         self.tDef = tDef
+        self.defaultPEffect = None
         
         
     def __str__(self):
@@ -134,8 +135,10 @@ class InterPVal:
     
     def default(self):
         # Returns the p-effect corresponding to the default time.
-        # WARNING TODO we should store that value instead of computing it.
-        return self.get(self.tDef)
+        if self.defaultPEffect is None:
+            # Only compute it once
+            self.defaultPEffect = self.get(self.tDef)
+        return self.defaultPEffect
         
 
 

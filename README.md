@@ -29,7 +29,10 @@ After the installation, you can run the application using
 
 \>>> python3 main.py
 
-// TODO include a screenshot of the first viewed image.
+You should see something like:
+<img src="Reports/Images/FirstView.png" alt="First view of the application">
+Then, you can drag and drop general actvities (green) from the library to the lesson. Try clicking on the activities and on the "spaces" between the activities in the orchestration graph. Later on, you can see things like:
+<img src="Reports/Images/CompleteLesson.png" alt="Example of the view with a complete lesson">
 
 ## Tests
 

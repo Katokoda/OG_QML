@@ -123,7 +123,7 @@ class OrchestrationGraphData:
         for i in range(self.lib.getLength()):
             flags = self.getFlags(i)
             actData = self.lib.getActData(i)
-            result.append(ContextActivity(actData, 100, flags))
+            result.append(ContextActivity(actData, None, flags))
         return result
     
     def evaluateFor(self, start, goal):
@@ -405,6 +405,10 @@ class OrchestrationGraph(QObject):
     @pyqtProperty(QVariant, notify=ogChangeSignal)
     def labelPlanes(self):
         return PLANE_NAMES
+    
+    @pyqtProperty(bool, notify=ogChangeSignal)
+    def shouldOutputScore(self):
+        return p.SHOULD_OUTPUT_SCORE
     
 
 

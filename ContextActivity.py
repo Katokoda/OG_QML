@@ -69,8 +69,13 @@ class ContextActivity(QObject):
     def flags(self):
         return self.myFlags
     
+
+    @pyqtProperty(bool, notify=contextActivityChangeSignal)
+    def hasScore(self):
+        return (self.myScore != None)
+    
     @pyqtProperty(float, notify=contextActivityChangeSignal)
-    def efficiencyDEBUG(self):
+    def score(self):
         return self.myScore
     
     @pyqtProperty(bool, notify=contextActivityChangeSignal)

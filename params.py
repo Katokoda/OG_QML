@@ -20,6 +20,9 @@ TRESHOLD = 0.05 # To allow a "gap" between two pValues before saying a goal is n
 # This variable defines if the details of the efficiency computation should be printed.
 PRINT_DETAILS_EFFICIENCE = True
 
+# This variable defined if the score is shown in the GUI, as a small text near the activity.
+SHOULD_OUTPUT_SCORE = False
+
 
 
 # === Formatting strings for printing === #

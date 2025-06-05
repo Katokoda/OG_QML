@@ -63,13 +63,13 @@ Rectangle {
         }
     }
 
-    // DEBUG TEXT // TODO
     Text {
+        visible: context_OGraph.shouldOutputScore
         anchors.bottom: parent.bottom
         anchors.left: parent.right
-        text: (contextActObject != null ? contextActObject.efficiencyDEBUG : "null")
-        color: "gray"
-        font.pixelSize: 10
+        text: (contextActObject != null ? (contextActObject.hasScore ? contextActObject.score : "") : "null")
+        color: "#BBBBBB"
+        font.pixelSize: 11
     }
 }
  

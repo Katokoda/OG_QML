@@ -141,10 +141,9 @@ class OrchestrationGraphData:
             wouldStart, wouldEnd, _ = actData.what_from(start)
             d1 = start.distance_onlyForward(wouldStart)
             d2 = wouldEnd.distance_onlyForward(goal)
-            if wouldStart.isPast(goal):
-                # TODO: remove. The "IsPast" flag actually only warns that the activities will have to be restructurated which is not that bad
-                flags.append("isPast")
-            efficiency = getEff(d, d1, d2, actData.defT, self.tBudget - self.totTime)
+            efficiency = getEff(d, d1, d2, actData.defT, self.tBudget - self.totTime, self.remainingGapsDistance)
+            if efficiency <= p.PRECISION:
+                flags.append("noProg")
             result.append(ContextActivity(actData, efficiency, flags))
         self.getAndSetBestFromList(result)
         return result
@@ -152,13 +151,17 @@ class OrchestrationGraphData:
     def getAndSetBestFromList(self, listOfContextAct):
         if self.gapFocus is None:
             return None
-        
         bestCAct = listOfContextAct[0]
         for CAct in listOfContextAct:
-            if (((not bestCAct.hasNoFlag()) and CAct.hasNoFlag()) # True iff Cat is better than bestCAct
-                or ((bestCAct.hasNoFlag()  == CAct.hasNoFlag())
-                    and (bestCAct.myScore < CAct.myScore))):
-                bestCAct = CAct
+            if (bestCAct.okeyToTake() and not CAct.okeyToTake()):
+                # In this situation we should avoid taking the CAct activity and keep the current best one.
+                pass
+            else:
+                if ((CAct.okeyToTake() and not bestCAct.okeyToTake())
+                    or (CAct.countFlags() < bestCAct.countFlags()) # Then we consider the CAct activity better
+                    or ((bestCAct.countFlags()  == CAct.countFlags())
+                        and (bestCAct.myScore < CAct.myScore))):
+                    bestCAct = CAct
         bestCAct.isBest = True
         return bestCAct
     

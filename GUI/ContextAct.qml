@@ -40,7 +40,7 @@ Rectangle {
         Text {
             anchors.verticalCenter: parent.verticalCenter
             text: (contextActObject != null ?
-                (contextActObject.flags.isExhausted ? "tooMuch" : "")
+                (contextActObject.flags.isExhausted ? "TooMuch" : "")
                 : "null")
             color: "white"
             font.pixelSize: 12
@@ -48,7 +48,7 @@ Rectangle {
         Text {
             anchors.verticalCenter: parent.verticalCenter
             text: (contextActObject != null ?
-                (contextActObject.flags.isTooLong ? "time" : "")
+                (contextActObject.flags.isTooLong ? "Time" : "")
                 : "null")
             color: "white"
             font.pixelSize: 12
@@ -56,7 +56,7 @@ Rectangle {
         Text {
             anchors.verticalCenter: parent.verticalCenter
             text: (contextActObject != null ?
-                (contextActObject.flags.isWorse ? "NO" : "")
+                (contextActObject.flags.makesNoProgress ? "Useless" : "")
                 : "null")
             color: "white"
             font.pixelSize: 12

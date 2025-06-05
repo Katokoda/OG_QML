@@ -15,24 +15,24 @@ Hence, this module provides several ways to compute it, and the user can choose 
 import params as p
 import math as m
 
-def distRemoved(fromStartToGoal, fromStartToWouldStart, fromWouldEndToGoal, actTime, remTime):
+def distRemoved(fromStartToGoal, fromStartToWouldStart, fromWouldEndToGoal, actTime, remTime, totalRemDistance):
     return (fromStartToGoal- fromStartToWouldStart - fromWouldEndToGoal)
 
-def distRemoved_over_usedTime(fromStartToGoal, fromStartToWouldStart, fromWouldEndToGoal, actTime, remTime):
+def distRemoved_over_usedTime(fromStartToGoal, fromStartToWouldStart, fromWouldEndToGoal, actTime, remTime, totalRemDistance):
     return (fromStartToGoal- fromStartToWouldStart - fromWouldEndToGoal)/actTime
 
-def leftTime_over_leftDist(fromStartToGoal, fromStartToWouldStart, fromWouldEndToGoal, actTime, remTime):
-    leftDistance = (fromStartToWouldStart + fromWouldEndToGoal)
+def leftTime_over_leftDist(fromStartToGoal, fromStartToWouldStart, fromWouldEndToGoal, actTime, remTime, totalRemDistance):
+    leftDistance = totalRemDistance - distRemoved(fromStartToGoal, fromStartToWouldStart, fromWouldEndToGoal, actTime, remTime, totalRemDistance)
     if leftDistance < p.TRESHOLD:
         return m.inf
     return (remTime - actTime)/leftDistance
 
     
 
-def getEff(fromStartToGoal, fromStartToWouldStart, fromWouldEndToGoal, actTime, remTime):
-    distRemoved_                = distRemoved               (fromStartToGoal, fromStartToWouldStart, fromWouldEndToGoal, actTime, remTime)
-    distRemoved_over_usedTime_  = distRemoved_over_usedTime (fromStartToGoal, fromStartToWouldStart, fromWouldEndToGoal, actTime, remTime)
-    leftTime_over_leftDist_     = leftTime_over_leftDist    (fromStartToGoal, fromStartToWouldStart, fromWouldEndToGoal, actTime, remTime)
+def getEff(fromStartToGoal, fromStartToWouldStart, fromWouldEndToGoal, actTime, remTime, totalRemDistance):
+    distRemoved_                = distRemoved               (fromStartToGoal, fromStartToWouldStart, fromWouldEndToGoal, actTime, remTime, totalRemDistance)
+    distRemoved_over_usedTime_  = distRemoved_over_usedTime (fromStartToGoal, fromStartToWouldStart, fromWouldEndToGoal, actTime, remTime, totalRemDistance)
+    leftTime_over_leftDist_     = leftTime_over_leftDist    (fromStartToGoal, fromStartToWouldStart, fromWouldEndToGoal, actTime, remTime, totalRemDistance)
     if p.PRINT_DETAILS_EFFICIENCE:
         print(  "tot=",          round(fromStartToGoal, 2),       sep = '', end = ", ")
         print(  "toWouldStard=", round(fromStartToWouldStart, 2), sep = '', end = ", ")
@@ -49,11 +49,11 @@ def getEff(fromStartToGoal, fromStartToWouldStart, fromWouldEndToGoal, actTime, 
     # This favorises the activity which "removes" the most imcomprehension from the students.
     #return distRemoved_
 
-
+    # THIS IS THE DEFAULT HEURISTIC
     # This favorises the activity which "removes" the most imcomprehension from the students with the LEAST time used.
-    #return distRemoved_over_usedTime_
+    return distRemoved_over_usedTime_
 
 
     # This favorises the activity which leaves the most time for the least imcomprehension.
-    # WARNING: Despite its elegance this has a big problem when time gets to zero. #TODO
-    return leftTime_over_leftDist_
+    # WARNING: Despite its elegance this have big problems.
+    # return leftTime_over_leftDist_

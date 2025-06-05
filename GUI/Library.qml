@@ -9,6 +9,26 @@ Rectangle {
     DropZoneLibrary{}
 
     Text {
+        id: explainationOfFlags
+
+        anchors {
+            left: parent.left
+            right: parent.right
+            top: libraryColumn.bottom
+            bottom: parent.bottom
+            rightMargin: 5
+            leftMargin: 5
+        }
+        wrapMode: Text.Wrap
+        horizontalAlignment:Text.AlignHCenter
+        verticalAlignment:Text.AlignVCenter
+
+        text: "Note: The goal was to have symbols indicating that an activity is too long or used too many times as flags for the user.\n\
+        The user could hover them to see more details.\n\
+        There are currently simply textual currently."
+        color: "white"
+    }
+    Text {
         id: selectedGapText
         visible: false
 
@@ -28,6 +48,7 @@ Rectangle {
         //font.pointSize: 8
         color: "white"
     }
+    
 
     // This is the standard library column. It is shown when no gap is selected.
     Column {

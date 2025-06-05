@@ -13,7 +13,7 @@ class FlagContainer(QObject):
         super().__init__()
         self.exhausted = "tooM" in list
         self.tooLong = "long" in list
-        self.worse = "isPast" in list
+        self.noProgress = "noProg" in list
 
     flagChangeSignal = pyqtSignal()
     
@@ -26,14 +26,19 @@ class FlagContainer(QObject):
         return self.tooLong
     
     @pyqtProperty(bool, notify=flagChangeSignal)
-    def isWorse(self):
-        return self.worse
+    def makesNoProgress(self):
+        return self.noProgress
     
-    def hasNoFlag(self):
-        return not (self.exhausted or self.tooLong or self.worse)
+    def countFlags(self):
+        som = 0
+        if self.exhausted:
+            som += 1
+        if self.tooLong:
+            som += 1
+        return som
     
     def __repr__(self):
-        return f"FlagContainer(exhausted={self.exhausted}, tooLong={self.tooLong}, worse={self.worse})"
+        return f"FlagContainer(exhausted={self.exhausted}, tooLong={self.tooLong}, makesNoProgress={self.noProgress})"
 
 
 
@@ -50,8 +55,11 @@ class ContextActivity(QObject):
     def __repr__(self):
         return f"ContextActivity({self.myActData.name}, {self.myScore}, {self.myFlags})"
 
-    def hasNoFlag(self):
-        return self.myFlags.hasNoFlag()
+    def countFlags(self):
+        return self.myFlags.countFlags()
+    
+    def okeyToTake(self):
+        return not self.myFlags.makesNoProgress
     
     @pyqtProperty(QObject, notify=contextActivityChangeSignal)
     def activity(self):

@@ -25,7 +25,7 @@ Rectangle {
 
         text: "Note: The goal was to have symbols indicating that an activity is too long or used too many times as flags for the user.\n\
         The user could hover them to see more details.\n\
-        There are currently simply textual currently."
+        There are currently only textual."
         color: "white"
     }
     Text {

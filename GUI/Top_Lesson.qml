@@ -23,7 +23,6 @@ Rectangle {
             anchors.leftMargin: 20
 
             Text {
-                id: text_title
                 font.bold: true
                 color: "white"
                 text: "Lesson teaching <description of the lesson>."
@@ -32,15 +31,12 @@ Rectangle {
             }
 
             Text {
-                id: text_time
-
                 color: "white"
                 text: "Using "+ context_OGraph.totalTime + " out of allowed "+ context_OGraph.lessonTime + " minutes."
                 font.pointSize: 12
             }
 
             Text {
-                id: text_gaps_StillHaveGaps
                 visible: (context_OGraph.totalTime > 0 && context_OGraph.remainingGapsCount > 0)
                 
                 color: "white"
@@ -48,13 +44,12 @@ Rectangle {
                 font.pointSize: 12
 
                 MyWarning {
-                    anchors.left: text_gaps_StillHaveGaps.right
-                    anchors.bottom: text_gaps_StillHaveGaps.bottom
+                    anchors.left: parent.right
+                    anchors.bottom: parent.bottom
                 }
             }
 
             Text {
-                id: text_gaps_Done
                 visible: (context_OGraph.remainingGapsCount == 0)
                 
                 color: "white"

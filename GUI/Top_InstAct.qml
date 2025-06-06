@@ -67,7 +67,7 @@ Rectangle {
                     anchors.left: parent.right
 
                     color: "#CCCCCC"
-                    // " The engine recommends it to use between XX and YY minutes. Change to"
+                    // " The engine recommends it to use between XX and YY minutes. Change to "
                     text:   (app_selectedModel_InstAct != null ?
                                 " The engine recommends it to use between " +
                                 app_selectedModel_InstAct.minTime +

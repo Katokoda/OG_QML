@@ -4,6 +4,10 @@ This repository contains my QML application that helps creating Orchestration Gr
 
 This application uses the engine implemented with Python at the start of the semester. It is an interactive application built with PyQt and QML as this was the framework chosen after a few weeks of testing.
 
+## Reports
+
+The report is available at Reports/Samuel_Belisle_Report.pdf.
+
 ## Installation
 
 ### Linux (with python - HIGHLY recommended)
@@ -65,8 +69,13 @@ The tests in OrchestrationGraph.py use the external print functionnality which i
 
 ## Modifications
 
+You can make modifications to the application only if you run it with Python.
+
 If you wish to change the Library of activities, you can edit the inputData/interpolation_2D_library.csv input file.
 There are other parameters that can be modified in params.py.
+There is also a choice that can be made by commenting/uncommenting return statements in Efficience.py.
 
 
-Please contact me at samuel.belisle@epfl.ch and/or samuel.belisle@alumni.epfl.ch for any details.
+## Contact
+
+Please contact me at samuel.belisle@epfl.ch (samuel.belisle@alumni.epfl.ch if after 2026) for any details.

@@ -6,28 +6,44 @@ This application uses the engine implemented with Python at the start of the sem
 
 ## Installation
 
-### Linux
+### Linux (with python - HIGHLY recommended)
 
 If you want to run the application, I recommend using a linux machine which can already run Python code, clone the repository in a new folder and create a new virtual environnement. Within this environnement, you can install all required packages using
 
 \>>> python3 -m pip install -r requirements.txt
 
-This installs all packages listed in the requirements.txt file. Note: This file was generated using \>>> pipreqs --ignore myVenvForOGraph/
+This installs all packages listed in the requirements.txt file.
 
-### Windows
+After the installation, you can run the application using
 
-Even if I managed to install and run the application on Windows, I do not recommend it. Here is what worked for me:
+\>>> python3 main.py
+
+### Linux (built version - Not recommended)
+
+If running the code with python fails, you can simply run the executable file I built.
+If you are before 6th of July 2025, you can Download the zip archive from SwissTransfer (https://www.swisstransfer.com/d/5e47a67e-8efc-44bc-aad3-27f45ad20af2).
+Otherwise, send me an e-mail.
+Unzip the BuildForLinux.zip archive on the folder of your choice. Then, you can execute the main.exe file in it and refer to the Run section below.
+
+### Windows (built version - Recommended)
+
+For windows, you can simply run the executable file I built.
+Unzip the BuildForWindows.zip archive (from this githup repo) on the folder of your choice. Then, you can execute the main.exe file in it and refer to the Run section below.
+
+### Windows (with python - Not recommended)
+
+Even if I managed to install and run the application using python on Windows, I do not recommend it. Here is what worked for me:
 
 I had to run the following command *outside of a virtual environnement* from a "windows command terminal opened with admin rights*.
 \>>> pip install -r requirements.txt
 
 I highly recommend to try first within a good IDE that manages modules or on your normal windows command terminal within a virtual environnement.
 
-## Run
-
 After the installation, you can run the application using
 
 \>>> python3 main.py
+
+## Run
 
 You should see something like:
 <img src="Reports/Images/FirstView.png" alt="First view of the application">

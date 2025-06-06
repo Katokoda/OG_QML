@@ -5,3 +5,4 @@ test/
 temp/*.pickle
 dist
 build/
+BuildForLinux.zip

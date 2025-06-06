@@ -79,7 +79,7 @@ Rectangle {
                     TextField {
                         id: timeInput
                         anchors.left: parent.right
-                        anchors.bottom: parent.bottom
+                        anchors.verticalCenter: parent.verticalCenter
 
                         placeholderText: (app_selectedModel_InstAct != null ? app_selectedModel_InstAct.myTime : "0")
                         validator: IntValidator{bottom:
@@ -90,6 +90,15 @@ Rectangle {
                             app_selectedModel_InstAct.setTime(timeInput.text);
                             timeInput.clear()
                             context_OGraph.forceRestructuration();
+                        }
+
+                        palette.text: "white"
+                        palette.placeholderText: "#CCCCCC"
+                        background: Rectangle {
+                            implicitWidth: 50
+                            color: "#333333"
+                            border.color: "black"
+                            radius: 8
                         }
                     }
                 }

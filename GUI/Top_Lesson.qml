@@ -14,60 +14,53 @@ Rectangle {
         width: parent.width
         height: parent.height * 0.75
 
+        Column {
+            spacing: 10
 
-        property int lineSpacing: 10
-
-        Text {
-            id: text_title
             anchors.top: parent.top
             anchors.topMargin: 20
             anchors.left: parent.left
             anchors.leftMargin: 20
-            font.bold: true
-            color: "white"
-            text: "Lesson teaching <description of the lesson>."
-            font.pointSize: 16
 
-        }
+            Text {
+                id: text_title
+                font.bold: true
+                color: "white"
+                text: "Lesson teaching <description of the lesson>."
+                font.pointSize: 16
 
-        Text {
-            id: text_time
-            anchors.top: text_title.bottom
-            anchors.topMargin: parent.lineSpacing
-            anchors.left: text_title.left
-
-            color: "white"
-            text: "Using "+ context_OGraph.totalTime + " out of allowed "+ context_OGraph.lessonTime + " minutes."
-            font.pointSize: 12
-        }
-
-        Text {
-            id: text_gaps_StillHaveGaps
-            visible: (context_OGraph.totalTime > 0 && context_OGraph.remainingGapsCount > 0)
-            anchors.top: text_time.bottom
-            anchors.topMargin: parent.lineSpacing
-            anchors.left: text_time.left
-            
-            color: "white"
-            text: "Has "+ context_OGraph.remainingGapsCount + " transitions considerered too hard by the engine, marked"
-            font.pointSize: 12
-
-            MyWarning {
-                anchors.left: text_gaps_StillHaveGaps.right
-                anchors.bottom: text_gaps_StillHaveGaps.bottom
             }
-        }
 
-        Text {
-            id: text_gaps_Done
-            visible: (context_OGraph.remainingGapsCount == 0)
-            anchors.top: text_time.bottom
-            anchors.topMargin: parent.lineSpacing
-            anchors.left: text_time.left
-            
-            color: "white"
-            text: "Has only valid transitions according to the engine!"
-            font.pointSize: 12
+            Text {
+                id: text_time
+
+                color: "white"
+                text: "Using "+ context_OGraph.totalTime + " out of allowed "+ context_OGraph.lessonTime + " minutes."
+                font.pointSize: 12
+            }
+
+            Text {
+                id: text_gaps_StillHaveGaps
+                visible: (context_OGraph.totalTime > 0 && context_OGraph.remainingGapsCount > 0)
+                
+                color: "white"
+                text: "Has "+ context_OGraph.remainingGapsCount + " transitions considerered too hard by the engine, marked"
+                font.pointSize: 12
+
+                MyWarning {
+                    anchors.left: text_gaps_StillHaveGaps.right
+                    anchors.bottom: text_gaps_StillHaveGaps.bottom
+                }
+            }
+
+            Text {
+                id: text_gaps_Done
+                visible: (context_OGraph.remainingGapsCount == 0)
+                
+                color: "white"
+                text: "Has only valid transitions according to the engine!"
+                font.pointSize: 12
+            }
         }
     }
 

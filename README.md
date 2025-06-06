@@ -7,6 +7,7 @@ This application uses the engine implemented with Python at the start of the sem
 ## Reports
 
 The report is available at Reports/Samuel_Belisle_Report.pdf.
+A summary is available at Reports/Samuel_Belisle_Summary.pdf.
 
 ## Installation
 

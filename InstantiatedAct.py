@@ -89,9 +89,15 @@ class InstantiatedAct(QObject):
     def maxTime(self):
         return self.data.actData.maxT
     
+
+    # SLOTS
     @pyqtSlot(int)
     def setTime(self, newTime):
         self.data.time = newTime
+
+    @pyqtSlot(int)
+    def setPlane(self, newPlane):
+        self.data.plane_ = newPlane
     
 def tests():
     print("testing Activities and Librairies")

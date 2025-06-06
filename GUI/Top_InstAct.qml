@@ -88,7 +88,6 @@ Rectangle {
                                                     (app_selectedModel_InstAct != null ? app_selectedModel_InstAct.maxTime : 0)}
                         onAccepted : {
                             app_selectedModel_InstAct.setTime(timeInput.text);
-                            console.log("InstAct: Time changed to " + app_selectedModel_InstAct.myTime);
                             timeInput.clear()
                             context_OGraph.forceRestructuration();
                         }
@@ -122,14 +121,25 @@ Rectangle {
 
             id: buttonRow
 
-            MyButton {
-                id: button_reset
-                anchors.verticalCenter: parent.verticalCenter
-                enabled: (context_OGraph.totalTime > 0) // TODO - enabling condition
+            Repeater {
+                model: context_OGraph.labelPlanes
+                delegate: Item {
+                    anchors.verticalCenter: parent.verticalCenter
 
-                buttonText: "Button" // TODO - name
-                onClicked: {
-                    console.log("InstAct: Button clicked") // TODO - apply changes
+                    width: button_reset.width
+                    height: buttonRow.height - 10
+
+                    MyButton {
+                        id: button_reset
+                        anchors.verticalCenter: parent.verticalCenter
+                        enabled: (app_selectedModel_InstAct != null ? app_selectedModel_InstAct.plane != index : false)
+
+                        buttonText: "Change to " + modelData
+                        onClicked: {
+                            app_selectedModel_InstAct.setPlane(index);
+                            context_OGraph.forceRestructuration();
+                        }
+                    }
                 }
             }
         }

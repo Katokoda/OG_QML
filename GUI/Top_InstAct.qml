@@ -1,10 +1,15 @@
 import QtQuick 2.15
 import QtQuick.Shapes 1.9
+import QtQuick.Controls 2.5
 
 
 Rectangle {
     anchors.fill: parent
     color: "transparent"
+
+    function forceResetSelection() {
+        timeInput.clear();
+    }
     
     // DESCRIPTION OF THE INST_ACT
     Rectangle{
@@ -13,7 +18,6 @@ Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width
         height: parent.height * 0.75
-
 
         property int lineSpacing: 10
 
@@ -78,16 +82,37 @@ Rectangle {
             }
         }
 
-        Text {
-            id: text_plane
+        TextField {
+            id: timeInput
+            visible: (app_selectedModel_InstAct != null ? app_selectedModel_InstAct.canChangeTime : false)
+
             anchors.top: text_time.bottom
             anchors.topMargin: parent.lineSpacing
             anchors.left: text_time.left
+            placeholderText: (app_selectedModel_InstAct != null ? app_selectedModel_InstAct.myTime : "0")
+            validator: IntValidator{bottom:
+                                        (app_selectedModel_InstAct != null ? app_selectedModel_InstAct.minTime : 0);
+                                    top:
+                                        (app_selectedModel_InstAct != null ? app_selectedModel_InstAct.maxTime : 0)}
+            onAccepted : {
+                app_selectedModel_InstAct.setTime(timeInput.text);
+                console.log("InstAct: Time changed to " + app_selectedModel_InstAct.myTime);
+                timeInput.clear()
+                context_OGraph.forceRestructuration();
+            }
+        }
+
+        Text {
+            id: text_plane
+            anchors.top: timeInput.bottom
+            anchors.topMargin: parent.lineSpacing
+            anchors.left: timeInput.left
             
             color: "white"
             text: (app_selectedModel_InstAct != null ? "Is done <b>"+ app_selectedModel_InstAct.planeDescription + "</b>." : "null")
             font.pointSize: 12
         }
+        
     }
 
     // ACTIONS FOR THE INST_ACT

@@ -89,6 +89,10 @@ class InstantiatedAct(QObject):
     def maxTime(self):
         return self.data.actData.maxT
     
+    @pyqtSlot(int)
+    def setTime(self, newTime):
+        self.data.time = newTime
+    
 def tests():
     print("testing Activities and Librairies")
     myLib = Library("inputData/interpolation_2D_library.csv")

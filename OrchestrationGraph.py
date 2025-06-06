@@ -291,6 +291,10 @@ class OrchestrationGraph(QObject):
 
 
     # ============== SLOTS ============== #
+    
+    @pyqtSlot()
+    def forceRestructuration(self):
+        self.reStructurate()
 
     @pyqtSlot()
     def print(self):

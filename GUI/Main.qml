@@ -39,6 +39,7 @@ ApplicationWindow {
 
     function resetActSelection() {
         if (app_selectedAct != null){
+            topForInstAct.forceResetSelection()
             app_selectedAct.isCurrentlySelected = false
         }
         if (app_selectedModel_InstAct != null){
@@ -119,6 +120,7 @@ ApplicationWindow {
         }
 
         Top_InstAct {
+            id: topForInstAct
             anchors.fill: parent
             visible: (app_selectedAct != null ? (app_selectedActIsInstantiated == true) : false)
         }

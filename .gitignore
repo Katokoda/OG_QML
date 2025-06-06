@@ -3,3 +3,5 @@ myVenvForOGraph/
 output.txt
 test/
 temp/*.pickle
+dist
+build/

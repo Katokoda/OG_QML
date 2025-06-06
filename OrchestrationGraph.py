@@ -6,6 +6,7 @@ Created on Tue Feb 25 09:43:43 2025
 """
 
 import sys
+import os
 import subprocess
 import threading
 
@@ -94,7 +95,11 @@ class OrchestrationGraphData:
         self.saveAsFile(filename)
 
     def saveAsTempFile(self):
-        self.saveAsFile("temp/saveForPrint.pickle")
+        # Get the directory where the current file is located #chatGPT helped for that
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        save_for_print_name = os.path.join(script_dir, "temp", "saveForPrint.pickle")
+
+        self.saveAsFile(save_for_print_name)
 
     def loadFromFile(filename:str):
         qurl = QUrl(filename)
@@ -281,13 +286,33 @@ class OrchestrationGraph(QObject):
 
     def myCallerForPrintingSubprocess(self):
         self.data.saveAsTempFile()
-        try:    # This works both on Linux and Windows.
-            subprocess.run([sys.executable, 'MyOGPrinter.py'], check=True)
-        except:
-            print("Something went wrong during the external (technical) print.")
-            print("Consider opening a second terminal at the same location and running")
-            print(">>> python3 MyOGPrinter.py")
-            print("in order to see that aborted print.")
+
+
+        if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+            print('running in a PyInstaller bundle')
+
+            # This is the way for calling the process used within the built application
+            try:    # This works on Linux
+
+                # Get the directory where the current file is located #chatGPT helped for that
+                script_dir = os.path.dirname(os.path.abspath(__file__))
+                otherScriptPath = os.path.join(script_dir, "..", "MyOGPrinter")
+                
+                subprocess.run([otherScriptPath], check=True)
+            except:
+                print("Something went wrong during the external (technical) print.")
+                print("Consider opening a second terminal at the same location and running")
+                print(">>> python3 MyOGPrinter.py")
+                print("in order to see that aborted print.")
+
+        else :
+            # This is the way for calling the process that work when develloping (run with python)
+            # Get the directory where the current file is located #chatGPT helped for that
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            otherPythonPath = os.path.join(script_dir, "MyOGPrinter.py")
+
+            subprocess.run([sys.executable, otherPythonPath], check=True)
+
 
 
     # ============== SLOTS ============== #

@@ -1,4 +1,5 @@
 import sys
+import os
 
 from PyQt6.QtGui import QGuiApplication
 from PyQt6.QtQml import QQmlApplicationEngine
@@ -31,7 +32,12 @@ engine.quit.connect(app.quit)
 myTextShortener = TextShortener()
 
 
-myLib = Library("inputData/interpolation_2D_library.csv")
+# Get the directory where the current file is located #chatGPT helped for that
+script_dir = os.path.dirname(os.path.abspath(__file__))
+csv_path = os.path.join(script_dir, "inputData", "interpolation_2D_library.csv")
+
+# Pass the absolute path to your Library class
+myLib = Library(csv_path)
 print("Printing my library")
 print(myLib)
 
@@ -44,7 +50,9 @@ engine.rootContext().setContextProperty("context_textShortener", myTextShortener
 #OG.autoAdd()
 print(OG)
 
-engine.load('./GUI/Main.qml')
+
+gui_path = os.path.join(script_dir, "GUI", "Main.qml")
+engine.load(gui_path)
 if not engine.rootObjects():
     print("Failed to load QML file.")
     sys.exit(-1)

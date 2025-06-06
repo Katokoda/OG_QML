@@ -23,6 +23,7 @@ and because both librairies need to be called from the main thread.
 
 
 import pickle
+import os
 
 from OrchestrationGraph import OrchestrationGraphData
 import params as p
@@ -108,7 +109,11 @@ def myExternalPrint(OG:OrchestrationGraphData):
     plt.show()
 
 
-with open("temp/saveForPrint.pickle", 'rb') as f:
+# Get the directory where the current file is located #chatGPT helped for that
+script_dir = os.path.dirname(os.path.abspath(__file__))
+input_path = os.path.join(script_dir, "temp", "saveForPrint.pickle")
+
+with open(input_path, 'rb') as f:
     OG = pickle.load(f)
     myExternalPrint(OG)
 

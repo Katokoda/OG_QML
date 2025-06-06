@@ -21,6 +21,7 @@ class InstantiatedActData:
         self.actData = activityData
         self.start, self.end, self.time = self.actData.what_from(pstate)
         self.plane_ = self.actData.defPlane
+        self.startsAfter = 0 #default
     
     def __repr__(self):
         string = "InstAct of " + p.FORMAT_NAME.format(self.actData.name) + " from "
@@ -61,6 +62,10 @@ class InstantiatedAct(QObject):
         return self.data.time
     
     @pyqtProperty(int, notify=instActChangeSignal)
+    def startsAfter(self):
+        return self.data.startsAfter
+    
+    @pyqtProperty(int, notify=instActChangeSignal)
     def plane(self):
         return self.data.plane_
     
@@ -72,9 +77,17 @@ class InstantiatedAct(QObject):
     def label(self):
         return self.data.actData.name
     
-    # @pyqtSlot()
-    # def notifySelection(self):
-    #     self.instActChangeSignal.emit()
+    @pyqtProperty(bool, notify=instActChangeSignal)
+    def canChangeTime(self):
+        return self.data.actData.canChangeTime
+
+    @pyqtProperty(int, notify=instActChangeSignal)
+    def minTime(self):
+        return self.data.actData.minT
+
+    @pyqtProperty(int, notify=instActChangeSignal)
+    def maxTime(self):
+        return self.data.actData.maxT
     
 def tests():
     print("testing Activities and Librairies")

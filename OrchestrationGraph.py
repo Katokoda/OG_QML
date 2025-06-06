@@ -170,6 +170,7 @@ class OrchestrationGraphData:
         current = self.start
         self.totTime = 0
         for iAct in self.listOfFixedInstancedAct:
+            iAct.startsAfter = self.totTime
             self.totTime += iAct.time
             iAct.adjust(current, iAct.time)
             current = iAct.end

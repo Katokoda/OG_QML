@@ -25,20 +25,57 @@ Rectangle {
             anchors.leftMargin: 20
             font.bold: true
             color: "white"
-            text: (app_selectedModel_InstAct != null ? "Instantiated activity named "+ app_selectedModel_InstAct.label + "." : "null")
+            text: (app_selectedModel_InstAct != null ? "Specific activity named "+ app_selectedModel_InstAct.label + "." : "null")
             font.pointSize: 16
+        }
 
+
+        Text {
+            id: text_position
+            anchors.top: text_title.bottom
+            anchors.topMargin: parent.lineSpacing
+            anchors.left: text_title.left
+            
+            color: "white"
+            text:   (app_selectedAct != null && app_selectedModel_InstAct != null?
+                        "Starts after " +
+                        app_selectedModel_InstAct.startsAfter +
+                        " minutes" + 
+                            (app_selectedAct.myIdx > 0 ?
+                                ", with " +
+                                app_selectedAct.myIdx + 
+                                " prior activit" + 
+                                (app_selectedAct.myIdx > 1 ? "ies" : "y")
+                            : "") +
+                        "."
+                    : "null" )
+            font.pointSize: 12
         }
 
         Text {
             id: text_time
-            anchors.top: text_title.bottom
+            anchors.top: text_position.bottom
             anchors.topMargin: parent.lineSpacing
-            anchors.left: text_title.left
+            anchors.left: text_position.left
 
             color: "white"
-            text: (app_selectedModel_InstAct != null ? "Using "+ app_selectedModel_InstAct.myTime + " minutes." : "null")
+            text: (app_selectedModel_InstAct != null ? "Uses "+ app_selectedModel_InstAct.myTime + " minutes." : "null")
             font.pointSize: 12
+
+            Text{
+                visible: (app_selectedModel_InstAct != null ? app_selectedModel_InstAct.canChangeTime : false)
+                anchors.bottom: text_time.bottom
+                anchors.left: text_time.right
+
+                color: "#CCCCCC"
+                text:   (app_selectedModel_InstAct != null ?
+                            " The engine recommends it to use between " +
+                            app_selectedModel_InstAct.minTime +
+                            " and " +
+                            app_selectedModel_InstAct.maxTime +
+                            " minutes."
+                        : "null" )
+            }
         }
 
         Text {

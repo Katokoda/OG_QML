@@ -6,28 +6,80 @@ Rectangle {
     anchors.fill: parent
     color: "transparent"
 
-
-    // Proposed activity info
-    Text {
-        visible: (app_selectedActIsInstantiated == false)
+    // DESCRIPTION OF THE ACT
+    Rectangle{
+        color: "transparent"
         anchors.top: parent.top
-        anchors.left: parent.left
-        font.bold: true
-        color: "white"
-        text: "Info about the proposed activity"
-        font.pointSize: 12
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width
+        height: parent.height * 0.75
+
+
+        property int lineSpacing: 10
+
+        Text {
+            id: text_title
+            anchors.top: parent.top
+            anchors.topMargin: 20
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            font.bold: true
+            color: "white"
+            text: (app_selectedModel_Act != null ? "General activity named "+ app_selectedModel_Act.label + "." : "null")
+            font.pointSize: 16
+
+        }
+
+        Text {
+            id: text_time
+            anchors.top: text_title.bottom
+            anchors.topMargin: parent.lineSpacing
+            anchors.left: text_title.left
+
+            color: "white"
+            text: (app_selectedModel_Act != null ? "Would use "+ app_selectedModel_Act.defTime + " minutes by default." : "null")
+            font.pointSize: 12
+        }
+
+        Text {
+            id: text_plane
+            anchors.top: text_time.bottom
+            anchors.topMargin: parent.lineSpacing
+            anchors.left: text_time.left
+            
+            color: "white"
+            text: (app_selectedModel_Act != null ? "Would be done <b>"+ app_selectedModel_Act.planeDescription + "</b> by default." : "null")
+            font.pointSize: 12
+        }
     }
 
+    // ACTIONS FOR THE ACT
+    Rectangle{
+        color: "transparent"
+        anchors.bottom: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width
+        height: parent.height * 0.25
 
-    // Instantiated activity info
-    Text {
-        visible: (app_selectedActIsInstantiated == true)
-        anchors.top: parent.top
-        anchors.left: parent.left
-        font.bold: true
-        color: "white"
-        text: "Info about the activity in the lesson" // TODO
-        font.pointSize: 12
+        Row {
+            anchors.fill: parent
+            anchors.leftMargin: 20
+            anchors.rightMargin: 20
+            spacing: 5
+
+            id: buttonRow
+
+            MyButton {
+                id: button_reset
+                anchors.verticalCenter: parent.verticalCenter
+                enabled: (context_OGraph.totalTime > 0) // TODO - enabling condition
+
+                buttonText: "Button" // TODO - name
+                onClicked: {
+                    console.log("Act: Button clicked") // TODO - apply changes
+                }
+            }
+        }
     }
 
 
@@ -47,7 +99,7 @@ Rectangle {
             anchors.centerIn: parent
 
             ShapePath {
-                fillColor: (app_selectedAct!=null ? app_selectedAct.color : "pink")
+                fillColor: (app_selectedAct!=null ? app_selectedAct.shownColor : "pink")
                 strokeColor: "white"
                 strokeWidth: 2
 

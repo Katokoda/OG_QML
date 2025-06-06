@@ -42,8 +42,8 @@ Rectangle {
         }
 
         Text {
-            id: text_gaps
-            visible: (context_OGraph.totalTime > 0)
+            id: text_gaps_StillHaveGaps
+            visible: (context_OGraph.totalTime > 0 && context_OGraph.remainingGapsCount > 0)
             anchors.top: text_time.bottom
             anchors.topMargin: parent.lineSpacing
             anchors.left: text_time.left
@@ -53,9 +53,21 @@ Rectangle {
             font.pointSize: 12
 
             MyWarning {
-                anchors.left: text_gaps.right
-                anchors.bottom: text_gaps.bottom
+                anchors.left: text_gaps_StillHaveGaps.right
+                anchors.bottom: text_gaps_StillHaveGaps.bottom
             }
+        }
+
+        Text {
+            id: text_gaps_Done
+            visible: (context_OGraph.remainingGapsCount == 0)
+            anchors.top: text_time.bottom
+            anchors.topMargin: parent.lineSpacing
+            anchors.left: text_time.left
+            
+            color: "white"
+            text: "Has only valid transitions according to the engine!"
+            font.pointSize: 12
         }
     }
 

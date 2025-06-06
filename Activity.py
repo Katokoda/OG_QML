@@ -9,7 +9,7 @@ from pValues import pVal
 from pValues import InterPVal
 from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal
 from Plane import intFromPlane
-from Plane import planeFromInt
+from Plane import planeFromInt, descriptionFromInt
 
 import params as p
 
@@ -110,6 +110,14 @@ class Activity(QObject):
     @pyqtProperty(str, notify=activityChangeSignal)
     def label(self):
         return self.data.name
+    
+    @pyqtProperty(int, notify=activityChangeSignal)
+    def defTime(self):
+        return self.data.defT
+    
+    @pyqtProperty(str, notify=activityChangeSignal)
+    def planeDescription(self):
+        return descriptionFromInt(self.data.defPlane)
         
     
     

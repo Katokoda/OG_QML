@@ -26,6 +26,8 @@ ApplicationWindow {
 
     property var app_selectedAct: null
     property bool app_selectedActIsInstantiated: false
+    property var app_selectedModel_InstAct: null
+    property var app_selectedModel_Act: null
 
     property var app_selectedGap: null
 
@@ -39,6 +41,12 @@ ApplicationWindow {
         if (app_selectedAct != null){
             app_selectedAct.isCurrentlySelected = false
         }
+        if (app_selectedModel_InstAct != null){
+            app_selectedModel_InstAct = null
+        }
+        if (app_selectedModel_Act != null){
+            app_selectedModel_Act = null
+        }
         app_selectedAct = null
         app_selectedActIsInstantiated = false
     }
@@ -48,6 +56,11 @@ ApplicationWindow {
         selAct.isCurrentlySelected = true
         app_selectedAct = selAct
         app_selectedActIsInstantiated = isInstantiated
+        if (isInstantiated){
+            app_selectedModel_InstAct = app_selectedAct.instAct
+        } else {
+            app_selectedModel_Act = app_selectedAct.activity
+        }
     }
 
     function resetGapSelection() {
@@ -102,7 +115,12 @@ ApplicationWindow {
 
         Top_Activity {
             anchors.fill: parent
-            visible: (app_selectedAct != null)
+            visible: (app_selectedAct != null ? (app_selectedActIsInstantiated == false) : false)
+        }
+
+        Top_InstAct {
+            anchors.fill: parent
+            visible: (app_selectedAct != null ? (app_selectedActIsInstantiated == true) : false)
         }
 
     }

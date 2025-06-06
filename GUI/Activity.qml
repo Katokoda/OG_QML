@@ -2,6 +2,10 @@ import QtQuick 2.15
 
 Rectangle {
     id: actId
+
+    property string myType: "activity"
+    property color shownColor: actId.color
+    
     width: 80
     height: 40
     radius: 8
@@ -11,6 +15,7 @@ Rectangle {
     border.color : (isCurrentlySelected ? "white" : "black")
     border.width: 2
 
+
     scale: ((isCurrentlyDragged)? 1.2 : 1.0)
     property bool isCurrentlyDragged: false
     property bool isCurrentlySelected: false
@@ -18,7 +23,7 @@ Rectangle {
     property bool willBeAdded: false
     property point beginDrag
 
-    property string myType: "activity"
+
     required property int myIdx
     required property var activity
 

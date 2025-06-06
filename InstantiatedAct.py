@@ -11,10 +11,10 @@ Handles the instantiation of an activity for a given pState as given by the plac
 from Activity import ActivityData
 from pValues import pVal
 from Library import Library
-from Plane import planeFromInt
+from Plane import planeFromInt, descriptionFromInt
 
 import params as p
-from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal
+from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
 
 class InstantiatedActData:
     def __init__(self, activityData:ActivityData, pstate):
@@ -65,8 +65,16 @@ class InstantiatedAct(QObject):
         return self.data.plane_
     
     @pyqtProperty(str, notify=instActChangeSignal)
+    def planeDescription(self):
+        return descriptionFromInt(self.data.plane_)
+    
+    @pyqtProperty(str, notify=instActChangeSignal)
     def label(self):
         return self.data.actData.name
+    
+    # @pyqtSlot()
+    # def notifySelection(self):
+    #     self.instActChangeSignal.emit()
     
 def tests():
     print("testing Activities and Librairies")

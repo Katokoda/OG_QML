@@ -11,6 +11,7 @@ You can also adjust PRECISION and TRESHOLD to your needs. Note that they mostly 
 # Insert the name as they will be present in the DATA
 # And in top-down order according to GUI
 PLANE_NAMES = ["Indiv.", "Team", "Class"]
+PLANE_DESCRIPTIONS = ["individually", "in teams", "as a class"]
 
 PRECISION = 0.01 # to avoid saying "not reached" when 0.00001 from goal.
 TRESHOLD = 0.05 # To allow a "gap" between two pValues before saying a goal is not reached.

@@ -2,13 +2,17 @@ import QtQuick 2.15
 
 Rectangle {
     id: invisibleAct
+
     property string myType: "instAct"
+    property color shownColor: visibleAct.color
 
     property bool isCurrentlyDragged: false
     property bool shouldBeAbove: (isCurrentlyDragged || labelText.isCurrentlyHovered)
     property bool acceptedDrag: false
     property bool willBeDeleted: false
     property point beginDrag
+
+    property bool isCurrentlySelected: false
 
     required property int myIdx
     required property var instAct
@@ -28,14 +32,13 @@ Rectangle {
     Rectangle{
         id: visibleAct
 
-        property bool isCurrentlySelected: false
         width: invisibleAct.width - 1
         height: 40
         radius: 8
 
         // cyan = "#00FFFF" hence the un-selected color will be de-saturated, "#00CCCC"
-        color: ((parent.willBeDeleted)? "lime" : (isCurrentlySelected ? "cyan" : "#00CCCC"))
-        border.color : (isCurrentlySelected ? "white" : "black")
+        color: ((parent.willBeDeleted)? "lime" : (invisibleAct.isCurrentlySelected ? "cyan" : "#00CCCC"))
+        border.color : (invisibleAct.isCurrentlySelected ? "white" : "black")
         border.width: 2
 
         anchors.top: parent.top
@@ -97,7 +100,7 @@ Rectangle {
         }
 
         onClicked: (mouse) => {
-            setActSelection(visibleAct, true)
+            setActSelection(invisibleAct, true)
         }
     }
     ParallelAnimation {

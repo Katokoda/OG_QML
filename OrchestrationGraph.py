@@ -147,7 +147,7 @@ class OrchestrationGraphData:
             d1 = start.distance_onlyForward(wouldStart)
             d2 = wouldEnd.distance_onlyForward(goal)
             efficiency = getEff(d, d1, d2, actData.defT, self.tBudget - self.totTime, self.remainingGapsDistance)
-            if efficiency <= p.PRECISION:
+            if efficiency <= 0: # For the two first efficience metrics, non-positive values indicates that the activitiy is "useless".
                 flags.append("noProg")
             result.append(ContextActivity(actData, efficiency, flags))
         self.getAndSetBestFromList(result)
